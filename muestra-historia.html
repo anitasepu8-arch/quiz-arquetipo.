@@ -9,18 +9,20 @@ h1.t{font-family:Montserrat,sans-serif;font-size:18px;letter-spacing:.1em}
 .op{display:flex;flex-direction:column;gap:8px;align-items:center}
 .op b{font-family:Montserrat,sans-serif;letter-spacing:.2em;font-size:13px;color:#D4AF78}
 .story{width:min(360px,90vw);aspect-ratio:9/16;position:relative;overflow:hidden;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.6);
-  background-size:cover;background-position:center;container-type:inline-size}
-.story::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,5,6,.45) 0%,rgba(14,5,6,0) 18%,rgba(14,5,6,0) 45%,rgba(14,5,6,.55) 100%)}
+  background:#0E0506;container-type:inline-size}
+.bg{position:absolute;inset:0;background-size:cover;background-position:center top;-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 38%,rgba(0,0,0,.55) 55%,rgba(0,0,0,.12) 72%,transparent 86%);mask-image:linear-gradient(180deg,#000 0%,#000 38%,rgba(0,0,0,.55) 55%,rgba(0,0,0,.12) 72%,transparent 86%)}
+.bg.bruma{filter:blur(14px) brightness(.8);transform:scale(1.06);-webkit-mask-image:linear-gradient(180deg,transparent 34%,rgba(0,0,0,.7) 52%,rgba(0,0,0,.35) 75%,transparent 95%);mask-image:linear-gradient(180deg,transparent 34%,rgba(0,0,0,.7) 52%,rgba(0,0,0,.35) 75%,transparent 95%)}
+.story::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(14,5,6,.4) 0%,rgba(14,5,6,0) 16%)}
 .in{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;padding:8.5cqw 5cqw 5cqw}
 .marca{padding-left:3cqw;font-family:Montserrat,sans-serif;font-weight:800;font-size:2.9cqw;letter-spacing:.3em}
 .marca span{color:#D4AF78}
-.abajo{margin-top:auto;display:flex;flex-direction:column;gap:2.4cqw;padding:5cqw 5cqw 4.5cqw;border-radius:5cqw;background:linear-gradient(180deg,rgba(20,6,8,.45),rgba(14,5,6,.7));-webkit-backdrop-filter:blur(22px) saturate(1.1) brightness(.75);backdrop-filter:blur(22px) saturate(1.1) brightness(.75);border:1px solid rgba(212,175,120,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 40px rgba(0,0,0,.35)}
+.abajo{margin-top:auto;display:flex;flex-direction:column;gap:2.4cqw;padding:0 3cqw}
 .lbl{font-weight:500;font-size:2.8cqw;letter-spacing:.24em;text-transform:uppercase;color:#E9D3A8}
-.es,.lbl,.url,.at{text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.es,.lbl,.url,.at,.nom,.q,.ejes{text-shadow:0 2px 14px rgba(0,0,0,.85),0 0 2px rgba(0,0,0,.6)}
 .nom{font-family:Montserrat,sans-serif;font-weight:800;font-size:10cqw;line-height:.95;text-transform:uppercase;text-shadow:0 2px 20px rgba(0,0,0,.6)}
 .nom em{font-style:normal;color:#D4AF78;display:block}
 .fila2{display:flex;align-items:center;gap:3cqw}
-.animal{display:inline-flex;align-items:center;gap:2cqw;padding:1.6cqw 3.2cqw;border:1px solid rgba(212,175,120,.7);border-radius:999px;background:rgba(14,5,6,.5);font-family:Montserrat,sans-serif;font-weight:700;font-size:3.6cqw;white-space:nowrap}
+.animal{backdrop-filter:blur(6px);display:inline-flex;align-items:center;gap:2cqw;padding:1.6cqw 3.2cqw;border:1px solid rgba(212,175,120,.7);border-radius:999px;background:rgba(14,5,6,.5);font-family:Montserrat,sans-serif;font-weight:700;font-size:3.6cqw;white-space:nowrap}
 .animal span{font-family:Poppins,sans-serif;font-weight:500;font-size:2.2cqw;letter-spacing:.2em;text-transform:uppercase;color:#D4AF78}
 .radar{width:30cqw;flex:none;margin-left:auto}
 .es{font-weight:300;font-size:3.7cqw;line-height:1.45}
@@ -32,7 +34,7 @@ h1.t{font-family:Montserrat,sans-serif;font-size:18px;letter-spacing:.1em}
 <h1 class="t">MUESTRA · 21/02/1990 · LA VOZ QUE CONVOCA</h1>
 <div class="fila">
 <div class="op"><b>4.1 · AJUSTADA</b>
-<div class="story" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_224900_efb4d3b0-49c8-41bd-a06c-c6b8c0862234.png')"><div class="in">
+<div class="story"><div class="bg" style="background-image:url(\'https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_224900_efb4d3b0-49c8-41bd-a06c-c6b8c0862234.png\')"></div><div class="bg bruma" style="background-image:url(\'https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_224900_efb4d3b0-49c8-41bd-a06c-c6b8c0862234.png\')"></div><div class="in">
  <div class="marca">QUANTUM <span>BRANDING</span></div>
  <div class="abajo">
   <div class="lbl">Mi arquetipo de marca</div>
@@ -42,7 +44,7 @@ h1.t{font-family:Montserrat,sans-serif;font-size:18px;letter-spacing:.1em}
   <div class="pie"><div class="q">¿Cuál es el tuyo?</div><div class="url">iprosper28.com/quiz-arquetipo</div><div class="at">@anitasepum</div></div>
  </div></div></div></div>
 <div class="op"><b>4.2 · AJUSTADA</b>
-<div class="story" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_224900_6d629b36-0ab7-41aa-8df6-560464dd51e6.png')"><div class="in">
+<div class="story"><div class="bg" style="background-image:url(\'https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_224900_6d629b36-0ab7-41aa-8df6-560464dd51e6.png\')"></div><div class="bg bruma" style="background-image:url(\'https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_224900_6d629b36-0ab7-41aa-8df6-560464dd51e6.png\')"></div><div class="in">
  <div class="marca">QUANTUM <span>BRANDING</span></div>
  <div class="abajo">
   <div class="lbl">Mi arquetipo de marca</div>
@@ -55,7 +57,7 @@ h1.t{font-family:Montserrat,sans-serif;font-size:18px;letter-spacing:.1em}
 <h1 class="t" style="margin-top:20px;opacity:.7">PRUEBAS ANTERIORES</h1>
 <div class="fila">
 <div class="op"><b>A · LUJO SUTIL (NUEVA)</b>
-<div class="story" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_224435_47b6bf02-b560-4efe-9607-a4c850196272.png')"><div class="in">
+<div class="story"><div class="bg" style="background-image:url(\'https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_224435_47b6bf02-b560-4efe-9607-a4c850196272.png\')"></div><div class="bg bruma" style="background-image:url(\'https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_224435_47b6bf02-b560-4efe-9607-a4c850196272.png\')"></div><div class="in">
  <div class="marca">QUANTUM <span>BRANDING</span></div>
  <div class="abajo">
   <div class="lbl">Mi arquetipo de marca</div>
@@ -65,7 +67,7 @@ h1.t{font-family:Montserrat,sans-serif;font-size:18px;letter-spacing:.1em}
   <div class="pie"><div class="q">¿Cuál es el tuyo?</div><div class="url">iprosper28.com/quiz-arquetipo</div><div class="at">@anitasepum</div></div>
  </div></div></div></div>
 <div class="op"><b>B · LUJO SUTIL (NUEVA)</b>
-<div class="story" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_224435_fc1abcf5-a8c1-43a5-999f-ba2d23c8e83b.png')"><div class="in">
+<div class="story"><div class="bg" style="background-image:url(\'https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_224435_fc1abcf5-a8c1-43a5-999f-ba2d23c8e83b.png\')"></div><div class="bg bruma" style="background-image:url(\'https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_224435_fc1abcf5-a8c1-43a5-999f-ba2d23c8e83b.png\')"></div><div class="in">
  <div class="marca">QUANTUM <span>BRANDING</span></div>
  <div class="abajo">
   <div class="lbl">Mi arquetipo de marca</div>
@@ -78,7 +80,7 @@ h1.t{font-family:Montserrat,sans-serif;font-size:18px;letter-spacing:.1em}
 <h1 class="t" style="margin-top:20px;opacity:.7">VERSIONES ANTERIORES</h1>
 <div class="fila">
 <div class="op"><b>OPCIÓN 1 · FLORES</b>
-<div class="story" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_223531_5b63b7c7-8a3d-447a-86df-273e4fd42878.png')"><div class="in">
+<div class="story"><div class="bg" style="background-image:url(\'https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_223531_5b63b7c7-8a3d-447a-86df-273e4fd42878.png\')"></div><div class="bg bruma" style="background-image:url(\'https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_223531_5b63b7c7-8a3d-447a-86df-273e4fd42878.png\')"></div><div class="in">
  <div class="marca">QUANTUM <span>BRANDING</span></div>
  <div class="abajo">
   <div class="lbl">Mi arquetipo de marca</div>
@@ -88,7 +90,7 @@ h1.t{font-family:Montserrat,sans-serif;font-size:18px;letter-spacing:.1em}
   <div class="pie"><div class="q">¿Cuál es el tuyo?</div><div class="url">iprosper28.com/quiz-arquetipo</div><div class="at">@anitasepum</div></div>
  </div></div></div></div>
 <div class="op"><b>OPCIÓN 2 · FLORES</b>
-<div class="story" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_223531_01261700-586b-4c69-8e47-5f6a692695bf.png')"><div class="in">
+<div class="story"><div class="bg" style="background-image:url(\'https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_223531_01261700-586b-4c69-8e47-5f6a692695bf.png\')"></div><div class="bg bruma" style="background-image:url(\'https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_223531_01261700-586b-4c69-8e47-5f6a692695bf.png\')"></div><div class="in">
  <div class="marca">QUANTUM <span>BRANDING</span></div>
  <div class="abajo">
   <div class="lbl">Mi arquetipo de marca</div>
@@ -98,7 +100,7 @@ h1.t{font-family:Montserrat,sans-serif;font-size:18px;letter-spacing:.1em}
   <div class="pie"><div class="q">¿Cuál es el tuyo?</div><div class="url">iprosper28.com/quiz-arquetipo</div><div class="at">@anitasepum</div></div>
  </div></div></div></div>
 <div class="op"><b>OPCIÓN 3 · PERLAS Y DIAMANTES</b>
-<div class="story" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_224136_df068c49-ce26-4e00-88ea-784b86439f67.png')"><div class="in">
+<div class="story"><div class="bg" style="background-image:url(\'https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_224136_df068c49-ce26-4e00-88ea-784b86439f67.png\')"></div><div class="bg bruma" style="background-image:url(\'https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_224136_df068c49-ce26-4e00-88ea-784b86439f67.png\')"></div><div class="in">
  <div class="marca">QUANTUM <span>BRANDING</span></div>
  <div class="abajo">
   <div class="lbl">Mi arquetipo de marca</div>
@@ -108,7 +110,7 @@ h1.t{font-family:Montserrat,sans-serif;font-size:18px;letter-spacing:.1em}
   <div class="pie"><div class="q">¿Cuál es el tuyo?</div><div class="url">iprosper28.com/quiz-arquetipo</div><div class="at">@anitasepum</div></div>
  </div></div></div></div>
 <div class="op"><b>OPCIÓN 4 · PERLAS Y DIAMANTES</b>
-<div class="story" style="background-image:url('https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_224136_13db7897-0f68-43eb-9881-f030b98efa32.png')"><div class="in">
+<div class="story"><div class="bg" style="background-image:url(\'https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_224136_13db7897-0f68-43eb-9881-f030b98efa32.png\')"></div><div class="bg bruma" style="background-image:url(\'https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_224136_13db7897-0f68-43eb-9881-f030b98efa32.png\')"></div><div class="in">
  <div class="marca">QUANTUM <span>BRANDING</span></div>
  <div class="abajo">
   <div class="lbl">Mi arquetipo de marca</div>
