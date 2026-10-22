@@ -389,6 +389,7 @@ select:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 .cm-nota{font-size:12px;line-height:1.5;color:var(--crema-2);margin-top:2px}
 .cm-nota a{color:var(--oro)}
 .pago-costo{margin:-8px 0 0;font-size:14px;line-height:1.5;color:var(--oro-claro);font-style:italic}
+.pago-gancho{margin:0 0 4px;font-family:var(--display);font-weight:700;font-size:15px;line-height:1.35;text-align:center;color:var(--crema)}
 .pago-precio{display:flex;align-items:baseline;gap:10px}
 .pago-precio s{color:var(--crema-2);font-size:15px}
 .pago-precio strong{font-family:var(--display);font-weight:800;font-size:28px;color:var(--oro)}
@@ -1337,7 +1338,7 @@ render();
 /* ===== Género: nombres y textos en masculino si la persona eligió "Hombre" ===== */
 const NOMBRE_M={"La Arquitecta Visible":"El Arquitecto Visible","La Referente":"El Referente","La Anfitriona":"El Anfitrión","La Estratega Visible":"El Estratega Visible","La Tejedora":"El Tejedor","La Arquitecta de Expansión":"El Arquitecto de Expansión","Arquitecta de Método":"Arquitecto de Método","La Guardiana Estratégica":"El Guardián Estratégico","La Guardiana":"El Guardián","La Arquitecta Estratega":"El Arquitecto Estratega","La que Cruza Fronteras":"El que Cruza Fronteras","La Convocante":"El Convocante","La Negociadora":"El Negociador","La Aliada":"El Aliado","La Diplomática":"El Diplomático","La Pionera":"El Pionero","La Exploradora Exacta":"El Explorador Exacto","La Cultivadora":"El Cultivador","La Navegante":"El Navegante","La Guía Firme":"El Guía Firme","La Estratega Mayor":"El Estratega Mayor","La Artesana":"El Artesano"};
 /* Frases exactas con género (las neutras como "La Voz que Convoca" o "La Institución" no cambian) */
-const FRASES_M=[["cómo estás hecha","cómo estás hecho"],["para qué estás hecha","para qué estás hecho"],["para qué eres buena","para qué eres bueno"],["para qué soy buena","para qué soy bueno"],["No estoy segura","No estoy seguro"],["Qué tan segura estás","Qué tan seguro estás"],["Parcialmente desalineada","Parcialmente desalineado"],["Desalineada","Desalineado"],["Alineada","Alineado"],["alineada","alineado"],["tú sola","tú solo"],["te hace distinta","te hace distinto"],["Lo haces sola","Lo haces solo"],["Veo a otras avanzar","Veo a otros avanzar"],["Soy coach de emprendedoras","Soy coach de emprendedores"],["te hace única","te hace único"]];
+const FRASES_M=[["cómo estás hecha","cómo estás hecho"],["para qué estás hecha","para qué estás hecho"],["para qué eres buena","para qué eres bueno"],["para qué soy buena","para qué soy bueno"],["No estoy segura","No estoy seguro"],["Qué tan segura estás","Qué tan seguro estás"],["Parcialmente desalineada","Parcialmente desalineado"],["Desalineada","Desalineado"],["Alineada","Alineado"],["alineada","alineado"],["tú sola","tú solo"],["te hace distinta","te hace distinto"],["Lo haces sola","Lo haces solo"],["Veo a otras avanzar","Veo a otros avanzar"],["Soy coach de emprendedoras","Soy coach de emprendedores"],["te hace única","te hace único"],["cómo estás diseñada","cómo estás diseñado"]];
 const FRASES_M_ORD=[...Object.entries(NOMBRE_M),...FRASES_M].sort((a,b)=>b[0].length-a[0].length);
 function generoTxt(t){ if(S.genero!=="m"||!t) return t; for(const [f,m] of FRASES_M_ORD) t=t.split(f).join(m); return t; }
 function nombreArq(k){ const n=BANCO[k][0]; return S.genero==="m"&&NOMBRE_M[n]?NOMBRE_M[n]:n; }
@@ -1371,6 +1372,7 @@ function abrirPago(url){
       <div class="pago-local" id="pagoLocal" hidden></div>
     </div>
     <div class="pago-acc" id="pagoAcc">
+      <p class="pago-gancho">Cada decisión que tomas sin conocer cómo estás diseñada, la pagas dos veces.</p>
       <button class="btn" type="button" id="pagoIr">Reservar mi Diagnóstico · USD 152</button>
       <div class="nota">Pago seguro. Recibes el formulario privado en tu correo apenas pagas.<br><a href="${esc(wa)}" target="_blank" rel="noopener">¿Tienes una duda antes? Escríbele a Ana</a></div>
     </div>
