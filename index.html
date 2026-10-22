@@ -373,14 +373,14 @@ select:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 .carr-puntos i.on{background:var(--oro);width:18px;border-radius:3px}
 .carr-hint{position:absolute;right:0;top:-24px;font-size:11px;letter-spacing:.12em;color:var(--crema-2)}
 .pago-local{margin-top:-6px}
-.calc{border:1px solid var(--linea);border-radius:14px;padding:12px 14px;background:rgba(245,241,232,.03)}
-.calc-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.calc-top span{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
-.calc-top select{background:var(--tinto);color:var(--crema);border:1px solid var(--linea);border-radius:999px;padding:7px 12px;font-family:var(--body);font-size:13px;max-width:55%}
-.calc-monto{font-family:var(--display);font-weight:800;font-size:24px;color:var(--crema);margin-top:8px}
-.calc-monto small{font-size:16px;color:var(--crema-2);font-weight:600}
-.calc-nota{font-size:12px;line-height:1.5;color:var(--crema-2);margin-top:2px}
-.calc-nota a{color:var(--oro)}
+.cm{border:1px solid var(--linea);border-radius:14px;padding:12px 14px;background:rgba(245,241,232,.03)}
+.cm-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.cm-top span{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
+.cm-top select{background:var(--tinto);color:var(--crema);border:1px solid var(--linea);border-radius:999px;padding:7px 12px;font-family:var(--body);font-size:13px;max-width:55%}
+.cm-monto{font-family:var(--display);font-weight:800;font-size:24px;color:var(--crema);margin-top:8px}
+.cm-monto small{font-size:16px;color:var(--crema-2);font-weight:600}
+.cm-nota{font-size:12px;line-height:1.5;color:var(--crema-2);margin-top:2px}
+.cm-nota a{color:var(--oro)}
 .pago-precio{display:flex;align-items:baseline;gap:10px}
 .pago-precio s{color:var(--crema-2);font-size:15px}
 .pago-precio strong{font-family:var(--display);font-weight:800;font-size:28px;color:var(--oro)}
@@ -1391,9 +1391,9 @@ const PAISES_CALC=[["Bolivia","BOB"],["México","MXN"],["Colombia","COP"],["Per�
 async function precioLocal(el,usd){
   if(!el) return;
   const pl=paisLocal(); const ini=pl?Math.max(0,PAISES_CALC.findIndex(x=>x[0]===pl[0])):PAISES_CALC.length-1;
-  el.innerHTML=`<div class="calc"><div class="calc-top"><span>Calcula en tu moneda</span><select aria-label="Tu país">${PAISES_CALC.map((x,k)=>`<option value="${k}"${k===ini?" selected":""}>${esc(x[0])}</option>`).join("")}</select></div><div class="calc-monto" aria-live="polite">—</div><div class="calc-nota"></div></div>`;
+  el.innerHTML=`<div class="cm"><div class="cm-top"><span>Calcula en tu moneda</span><select aria-label="Tu país">${PAISES_CALC.map((x,k)=>`<option value="${k}"${k===ini?" selected":""}>${esc(x[0])}</option>`).join("")}</select></div><div class="cm-monto" aria-live="polite">—</div><div class="cm-nota"></div></div>`;
   el.hidden=false;
-  const sel=el.querySelector("select"), monto=el.querySelector(".calc-monto"), nota=el.querySelector(".calc-nota");
+  const sel=el.querySelector("select"), monto=el.querySelector(".cm-monto"), nota=el.querySelector(".cm-nota");
   async function pintar(){
     const [pais,cur]=PAISES_CALC[+sel.value];
     if(cur==="USD"){ monto.innerHTML=`USD ${usd}`; nota.innerHTML="Pagas en dólares, sin conversión."; }
