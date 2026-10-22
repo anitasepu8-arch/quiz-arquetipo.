@@ -321,6 +321,47 @@ select option{background:#170809;color:var(--crema)}
 select:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* Ventana de pago (Systeme) */
+.pago-capa{position:fixed;inset:0;z-index:100;background:rgba(8,3,4,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;animation:pagoIn .25s ease}
+@keyframes pagoIn{from{opacity:0}to{opacity:1}}
+.pago-caja{width:min(520px,100%);height:min(88vh,860px);background:var(--tinto-2);border:1px solid var(--linea);border-radius:20px 20px 0 0;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 -20px 60px rgba(0,0,0,.6)}
+@media(min-width:600px){.pago-capa{align-items:center}.pago-caja{border-radius:20px}}
+.pago-top{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--linea)}
+.pago-top b{font-family:var(--display);font-weight:800;font-size:14px;letter-spacing:.04em;color:var(--crema)}
+.pago-top small{display:block;font-size:12px;color:var(--oro)}
+.pago-x{margin-left:auto;width:36px;height:36px;border-radius:50%;border:1px solid var(--linea);background:transparent;color:var(--crema);font-size:20px;line-height:1;cursor:pointer}
+.pago-x:hover{border-color:var(--oro)}
+.pago-marco{flex:1;position:relative;background:#fff}
+.pago-marco iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.pago-cargando{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#666;font-size:14px}
+.pago-info{flex:1;overflow-y:auto;padding:22px 20px 8px;display:flex;flex-direction:column;gap:18px}
+.pago-info h3{font-family:var(--display);font-weight:800;font-size:22px;line-height:1.15;margin:0;color:var(--crema)}
+.pago-info h3 em{font-style:normal;color:var(--oro)}
+.pago-info p{margin:0;font-size:14px;line-height:1.55;color:var(--crema-2)}
+.pago-info .rot{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--oro);margin-bottom:8px}
+.pago-chips{display:flex;flex-wrap:wrap;gap:6px}
+.pago-chips span{font-size:12px;padding:6px 10px;border:1px solid var(--linea);border-radius:999px;color:var(--crema)}
+.pago-lista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.pago-lista li{font-size:14px;line-height:1.45;color:var(--crema);padding-left:22px;position:relative}
+.pago-lista li::before{content:"✓";position:absolute;left:0;color:var(--oro);font-weight:700}
+.pago-lista li small{display:block;color:var(--crema-2);font-size:12.5px}
+.pago-pasos{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;counter-reset:p}
+.pago-pasos div{font-size:11.5px;line-height:1.35;color:var(--crema-2);border-top:2px solid var(--oro);padding-top:8px}
+.pago-pasos b{display:block;font-family:var(--display);color:var(--oro);font-size:12px}
+.pago-tuyo{background:linear-gradient(135deg,var(--borgona),var(--borgona-2));border:1px solid var(--linea);border-radius:14px;padding:14px 16px;font-size:14px;line-height:1.5;color:var(--crema)}
+.pago-tuyo b{color:var(--oro-claro)}
+.pago-precio{display:flex;align-items:baseline;gap:10px}
+.pago-precio s{color:var(--crema-2);font-size:15px}
+.pago-precio strong{font-family:var(--display);font-weight:800;font-size:28px;color:var(--oro)}
+.pago-precio span{font-size:12px;color:var(--crema-2)}
+.pago-acc{padding:14px 20px 16px;border-top:1px solid var(--linea);display:flex;flex-direction:column;gap:8px;background:var(--tinto-2)}
+.pago-acc .btn{width:100%}
+.pago-acc .nota{font-size:12px;color:var(--crema-2);text-align:center}
+.pago-acc .nota a{color:var(--oro)}
+.pago-volver{background:none;border:0;color:var(--oro);font-size:13px;cursor:pointer;padding:0;font-family:var(--body)}
+.pago-pie{padding:10px 18px;font-size:12px;color:var(--crema-2);text-align:center;border-top:1px solid var(--linea)}
+.pago-pie a{color:var(--oro)}
 </style>
 
 <header class="cab">
@@ -338,6 +379,7 @@ const CONFIG = {
   mailerliteUrl: "",   // No se usa en la versión web: los datos van por /api/lead
   links: {
     diagnostico: "https://www.iprosper28.com/diagnosticoidentidadqb",
+    pagoDiagnostico: "https://www.iprosper28.com/75e08623",   // Formulario de pago de Systeme (se abre en ventana dentro del quiz)
     mini: "#",          // Enlace de pago de Stripe del Mini $27 (falta)
     auditoria: "https://www.iprosper28.com/quantubranding-audit",
     llamada: "",        // Enlace para agendar llamada (Calendly u otro). Mientras esté vacío, abre WhatsApp.
@@ -972,7 +1014,7 @@ function render(){
           <p class="ligero">¿Prefieres empezar más ligero?</p>
           <div class="cab-of"><h3>Diagnóstico de Identidad™</h3><span class="precio"><small>USD</small>152</span></div>
           <p>Es exclusivamente para ti. Vemos cómo funcionas, tus dones, patrones, dinero, decisiones y aquello que te hace única.</p>
-          <a class="btn sec full" href="${esc(CONFIG.links.diagnostico)}" target="_blank" rel="noopener">Quiero mi Diagnóstico</a>
+          <a class="btn sec full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Quiero mi Diagnóstico</a>
         </div>
       </div>`:tramoD?`<span class="kicker">Tus opciones</span>
       <div class="ofertas">
@@ -987,7 +1029,7 @@ function render(){
             <li>Acceso a un cuestionario para que preguntes lo que quieras</li>
             <li>El WhatsApp de Ana, para hacerle preguntas de aclaración cuando recibes tu entrega</li>
           </ul>
-          <a class="btn full" href="${esc(CONFIG.links.diagnostico)}" target="_blank" rel="noopener">Quiero mi Diagnóstico</a>
+          <a class="btn full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Quiero mi Diagnóstico</a>
         </div>
         ${lejos ? cardLlamadaVisible + cardAuditoriaUpgrade : cardAuditoriaUpgrade}
       </div>
@@ -1004,7 +1046,7 @@ function render(){
             <li>Acceso a un cuestionario para que preguntes lo que quieras</li>
             <li>El WhatsApp de Ana, para hacerle preguntas de aclaración cuando recibes tu entrega</li>
           </ul>
-          <a class="btn ${recoMini?'sec':''} full" href="${esc(CONFIG.links.diagnostico)}" target="_blank" rel="noopener">Quiero mi Diagnóstico</a>
+          <a class="btn ${recoMini?'sec':''} full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Quiero mi Diagnóstico</a>
         </div>
         <div class="oferta ${recoMini?'reco':''}">
           ${recoMini?'<span class="badge">Recomendado para ti</span>':''}
@@ -1079,7 +1121,7 @@ function render(){
         <p class="nota" style="text-align:center">Pago único y seguro. Sin suscripción.</p>
       </div>
       <div class="faq">${faq.map(f=>`<details><summary>${esc(f[0])}</summary><p>${esc(f[1])}</p></details>`).join("")}</div>
-      <p class="otra">¿Prefieres ver todo de una vez, con cuestionario y WhatsApp de Ana? <a href="${esc(CONFIG.links.diagnostico)}" target="_blank" rel="noopener">Diagnóstico de Identidad™ (USD 152)</a></p>
+      <p class="otra">¿Prefieres ver todo de una vez, con cuestionario y WhatsApp de Ana? <a href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Diagnóstico de Identidad™ (USD 152)</a></p>
     </section>`;
   }
   if(P==="tarjeta"){
@@ -1216,6 +1258,57 @@ function bind(){
 }
 
 render();
+
+/* ===== Ventana de pago del Diagnóstico: 1) resumen condensado 2) formulario de pago de Systeme ===== */
+function abrirPago(url){
+  cerrarPago();
+  const arq = S.real && BANCO[S.real] ? BANCO[S.real][0] : "";
+  const wa = "https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent("Hola Ana, hice el quiz"+(arq?" ("+arq+")":"")+" y tengo una duda sobre el Diagnóstico.");
+  const capa=document.createElement("div");
+  capa.className="pago-capa"; capa.id="pagoCapa"; capa.setAttribute("role","dialog"); capa.setAttribute("aria-modal","true"); capa.setAttribute("aria-label","Diagnóstico de Identidad");
+  capa.innerHTML=`<div class="pago-caja">
+    <div class="pago-top"><div><b>Diagnóstico de Identidad™</b><small>Personalizado · cupos del mes</small></div><button class="pago-x" type="button" aria-label="Cerrar">×</button></div>
+    <div class="pago-info" id="pagoInfo">
+      <h3>Tu arquetipo es la portada.<br><em>El Diagnóstico es el mapa completo.</em></h3>
+      ${arq?`<div class="pago-tuyo">El quiz te mostró <b>${esc(arq)}</b>: 2 de tus ejes. El Diagnóstico abre todo tu diseño y lo cruza con lo que estás viviendo hoy.</div>`:""}
+      <p>Un documento hecho solo para ti: cómo funcionas, qué te distingue y qué te pide atención en esta etapa. No es una predicción. Es entenderte mejor para decidir mejor.</p>
+      <div><div class="rot">7 lecturas</div><div class="pago-chips"><span>Cómo funcionas</span><span>Qué te distingue</span><span>Tus dones</span><span>Tus sombras</span><span>Tu dinero</span><span>Tus decisiones</span><span>Tus oportunidades</span></div></div>
+      <div><div class="rot">Qué recibes</div><ul class="pago-lista">
+        <li>Diagnóstico personalizado<small>Tu documento completo, creado con tus datos.</small></li>
+        <li>Formulario privado<small>Me cuentas qué vives y me haces todas las preguntas que quieras: negocio, dinero, una decisión, tu siguiente etapa.</small></li>
+        <li>Audio privado de aclaración<small>Te explico lo más importante con mi voz.</small></li>
+        <li>Acceso permanente<small>Tu diagnóstico queda contigo.</small></li>
+      </ul></div>
+      <div><div class="rot">Cómo funciona</div><div class="pago-pasos">
+        <div><b>01</b>Reservas</div><div><b>02</b>Llenas tu formulario</div><div><b>03</b>Cruzo tus datos</div><div><b>04</b>Recibes documento + audio</div>
+      </div></div>
+      <div class="pago-precio"><s>USD 297</s><strong>USD 152</strong><span>pago único</span></div>
+    </div>
+    <div class="pago-acc" id="pagoAcc">
+      <button class="btn" type="button" id="pagoIr">Reservar mi Diagnóstico · USD 152</button>
+      <div class="nota">Pago seguro. Recibes el formulario privado en tu correo apenas pagas.<br><a href="${esc(wa)}" target="_blank" rel="noopener">¿Tienes una duda antes? Escríbele a Ana</a></div>
+    </div>
+    <div class="pago-marco" id="pagoMarco" hidden><div class="pago-cargando">Cargando el pago seguro…</div></div>
+    <div class="pago-pie" id="pagoPie" hidden><button class="pago-volver" type="button" id="pagoVolver">← Ver qué incluye</button> · ¿No carga? <a href="${esc(url)}" target="_blank" rel="noopener">Abrir el pago en pantalla completa</a></div>
+  </div>`;
+  capa.addEventListener("click",e=>{ if(e.target===capa||e.target.closest(".pago-x")) cerrarPago(); });
+  const $=id=>capa.querySelector("#"+id);
+  $("pagoIr").addEventListener("click",()=>{
+    const m=$("pagoMarco");
+    if(!m.querySelector("iframe")){ const f=document.createElement("iframe"); f.src=url; f.title="Pago del Diagnóstico"; f.allow="payment *"; m.appendChild(f); }
+    $("pagoInfo").hidden=true; $("pagoAcc").hidden=true; m.hidden=false; $("pagoPie").hidden=false;
+    if(S.email){ try{ fetch("/api/lead",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(datosLead("pago_abierto")),keepalive:true}).catch(()=>{}); }catch(e){} }
+  });
+  $("pagoVolver").addEventListener("click",()=>{ $("pagoInfo").hidden=false; $("pagoAcc").hidden=false; $("pagoMarco").hidden=true; $("pagoPie").hidden=true; });
+  document.body.appendChild(capa); document.body.style.overflow="hidden";
+  capa.querySelector(".pago-x").focus();
+}
+function cerrarPago(){ const c=document.getElementById("pagoCapa"); if(c){ c.remove(); document.body.style.overflow=""; } }
+document.addEventListener("click",e=>{
+  const a=e.target.closest("a[data-pago]"); if(!a) return;
+  e.preventDefault(); abrirPago(a.href);
+});
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") cerrarPago(); });
 </script>
 
 </body></html>
