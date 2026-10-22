@@ -1408,16 +1408,29 @@ document.addEventListener("scroll",e=>{
 },true);
 
 /* ===== Precio en moneda local (país por zona horaria del celular) ===== */
-const TZ_PAIS={"America/La_Paz":["Bolivia","BOB"],"America/Lima":["Perú","PEN"],"America/Bogota":["Colombia","COP"],"America/Santiago":["Chile","CLP"],"America/Guayaquil":["Ecuador","USD"],"America/Asuncion":["Paraguay","PYG"],"America/Montevideo":["Uruguay","UYU"],"America/Caracas":["Venezuela","USD"],"America/Panama":["Panamá","USD"],"America/Costa_Rica":["Costa Rica","CRC"],"America/Guatemala":["Guatemala","GTQ"],"America/El_Salvador":["El Salvador","USD"],"America/Tegucigalpa":["Honduras","HNL"],"America/Managua":["Nicaragua","NIO"],"America/Santo_Domingo":["República Dominicana","DOP"],"America/Puerto_Rico":["Puerto Rico","USD"],"Europe/Madrid":["España","EUR"],"Atlantic/Canary":["España","EUR"],"Asia/Dubai":["Emiratos","AED"]};
+/* Moneda por país (código ISO de región → moneda). Cubre las Américas, Europa, Medio Oriente, Asia, Oceanía y África principal. */
+const REG_CUR={BO:"BOB",MX:"MXN",US:"USD",ES:"EUR",CO:"COP",PE:"PEN",CL:"CLP",AR:"ARS",EC:"USD",PY:"PYG",UY:"UYU",VE:"USD",PA:"USD",CR:"CRC",GT:"GTQ",HN:"HNL",SV:"USD",NI:"NIO",DO:"DOP",PR:"USD",CU:"USD",BR:"BRL",CA:"CAD",
+GB:"GBP",IE:"EUR",FR:"EUR",DE:"EUR",IT:"EUR",PT:"EUR",NL:"EUR",BE:"EUR",AT:"EUR",FI:"EUR",GR:"EUR",LU:"EUR",SK:"EUR",SI:"EUR",EE:"EUR",LV:"EUR",LT:"EUR",HR:"EUR",MT:"EUR",CY:"EUR",CH:"CHF",SE:"SEK",NO:"NOK",DK:"DKK",PL:"PLN",CZ:"CZK",HU:"HUF",RO:"RON",BG:"BGN",RS:"RSD",UA:"UAH",TR:"TRY",IS:"ISK",
+AE:"AED",SA:"SAR",QA:"QAR",KW:"KWD",BH:"BHD",OM:"OMR",IL:"ILS",JO:"JOD",LB:"USD",EG:"EGP",MA:"MAD",TN:"TND",DZ:"DZD",NG:"NGN",KE:"KES",GH:"GHS",ZA:"ZAR",
+IN:"INR",PK:"PKR",BD:"BDT",LK:"LKR",NP:"NPR",CN:"CNY",HK:"HKD",TW:"TWD",JP:"JPY",KR:"KRW",SG:"SGD",MY:"MYR",TH:"THB",ID:"IDR",PH:"PHP",VN:"VND",AU:"AUD",NZ:"NZD"};
+const TZ_REG={"America/La_Paz":"BO","America/Lima":"PE","America/Bogota":"CO","America/Santiago":"CL","America/Guayaquil":"EC","America/Asuncion":"PY","America/Montevideo":"UY","America/Caracas":"VE","America/Panama":"PA","America/Costa_Rica":"CR","America/Guatemala":"GT","America/El_Salvador":"SV","America/Tegucigalpa":"HN","America/Managua":"NI","America/Santo_Domingo":"DO","America/Puerto_Rico":"PR","America/Havana":"CU","America/Sao_Paulo":"BR","America/Fortaleza":"BR","America/Recife":"BR","America/Bahia":"BR","America/Manaus":"BR","America/Belem":"BR","America/Toronto":"CA","America/Vancouver":"CA","America/Edmonton":"CA","America/Winnipeg":"CA","America/Halifax":"CA","America/Montreal":"CA",
+"America/New_York":"US","America/Chicago":"US","America/Denver":"US","America/Phoenix":"US","America/Los_Angeles":"US","America/Anchorage":"US","Pacific/Honolulu":"US","America/Detroit":"US","America/Boise":"US","America/Indiana/Indianapolis":"US","America/Kentucky/Louisville":"US",
+"Europe/Madrid":"ES","Atlantic/Canary":"ES","Africa/Ceuta":"ES","Europe/London":"GB","Europe/Dublin":"IE","Europe/Paris":"FR","Europe/Berlin":"DE","Europe/Rome":"IT","Europe/Lisbon":"PT","Atlantic/Madeira":"PT","Atlantic/Azores":"PT","Europe/Amsterdam":"NL","Europe/Brussels":"BE","Europe/Vienna":"AT","Europe/Helsinki":"FI","Europe/Athens":"GR","Europe/Luxembourg":"LU","Europe/Bratislava":"SK","Europe/Ljubljana":"SI","Europe/Tallinn":"EE","Europe/Riga":"LV","Europe/Vilnius":"LT","Europe/Zagreb":"HR","Europe/Malta":"MT","Asia/Nicosia":"CY","Europe/Zurich":"CH","Europe/Stockholm":"SE","Europe/Oslo":"NO","Europe/Copenhagen":"DK","Europe/Warsaw":"PL","Europe/Prague":"CZ","Europe/Budapest":"HU","Europe/Bucharest":"RO","Europe/Sofia":"BG","Europe/Belgrade":"RS","Europe/Kiev":"UA","Europe/Kyiv":"UA","Europe/Istanbul":"TR","Atlantic/Reykjavik":"IS",
+"Asia/Dubai":"AE","Asia/Riyadh":"SA","Asia/Qatar":"QA","Asia/Kuwait":"KW","Asia/Bahrain":"BH","Asia/Muscat":"OM","Asia/Jerusalem":"IL","Asia/Tel_Aviv":"IL","Asia/Amman":"JO","Asia/Beirut":"LB","Africa/Cairo":"EG","Africa/Casablanca":"MA","Africa/Tunis":"TN","Africa/Algiers":"DZ","Africa/Lagos":"NG","Africa/Nairobi":"KE","Africa/Accra":"GH","Africa/Johannesburg":"ZA",
+"Asia/Kolkata":"IN","Asia/Calcutta":"IN","Asia/Karachi":"PK","Asia/Dhaka":"BD","Asia/Colombo":"LK","Asia/Kathmandu":"NP","Asia/Shanghai":"CN","Asia/Hong_Kong":"HK","Asia/Taipei":"TW","Asia/Tokyo":"JP","Asia/Seoul":"KR","Asia/Singapore":"SG","Asia/Kuala_Lumpur":"MY","Asia/Bangkok":"TH","Asia/Jakarta":"ID","Asia/Manila":"PH","Asia/Ho_Chi_Minh":"VN","Asia/Saigon":"VN","Australia/Sydney":"AU","Australia/Melbourne":"AU","Australia/Brisbane":"AU","Australia/Perth":"AU","Australia/Adelaide":"AU","Pacific/Auckland":"NZ"};
 const TIPO_FIJO={BOB:11}; // Bolivia: tipo de cambio real que usa Ana
-function paisLocal(){
+function nombrePais(reg){ try{ return new Intl.DisplayNames([document.documentElement.lang||"es"],{type:"region"}).of(reg); }catch(e){ return reg; } }
+function regionLocal(){
+  let reg=null;
   try{ const tz=Intl.DateTimeFormat().resolvedOptions().timeZone||"";
-    if(TZ_PAIS[tz]) return TZ_PAIS[tz];
-    if(tz.startsWith("America/Argentina")||tz==="America/Buenos_Aires") return ["Argentina","ARS"];
-    if(tz==="America/Mexico_City"||tz.startsWith("America/Monterrey")||tz.startsWith("America/Cancun")||tz.startsWith("America/Merida")||tz.startsWith("America/Chihuahua")||tz.startsWith("America/Tijuana")||tz.startsWith("America/Mazatlan")||tz.startsWith("America/Hermosillo")) return ["México","MXN"];
+    reg=TZ_REG[tz]||null;
+    if(!reg && tz.startsWith("America/Argentina")) reg="AR";
+    if(!reg && /^America\/(Mexico_City|Monterrey|Cancun|Merida|Chihuahua|Tijuana|Mazatlan|Hermosillo|Matamoros|Bahia_Banderas|Ciudad_Juarez|Ojinaga)/.test(tz)) reg="MX";
   }catch(e){}
-  return null;
+  if(!reg){ for(const l of (navigator.languages||[navigator.language||""])){ const m=/-([A-Z]{2})$/i.exec(l||""); if(m && REG_CUR[m[1].toUpperCase()]){ reg=m[1].toUpperCase(); break; } } }
+  return reg;
 }
+function paisLocal(){ const r=regionLocal(); return r?[nombrePais(r),REG_CUR[r],r]:null; }
 function fmtMoneda(n,cur){
   if(cur==="BOB") return "Bs "+Math.round(n).toLocaleString("es-BO");
   try{ return new Intl.NumberFormat("es",{style:"currency",currency:cur,maximumFractionDigits:0}).format(n); }catch(e){ return cur+" "+Math.round(n); }
@@ -1428,11 +1441,12 @@ async function tipoCambio(cur){
   try{ const r=await fetch("https://open.er-api.com/v6/latest/USD"); const j=await r.json(); if(j&&j.rates){ try{sessionStorage.setItem("qb-fx",JSON.stringify({t:Date.now(),rates:j.rates}));}catch(e){} return j.rates[cur]||null; } }catch(e){}
   return null;
 }
-const PAISES_CALC=[["Bolivia","BOB"],["México","MXN"],["Colombia","COP"],["Perú","PEN"],["Chile","CLP"],["Argentina","ARS"],["Ecuador","USD"],["Paraguay","PYG"],["Uruguay","UYU"],["Venezuela","USD"],["Panamá","USD"],["Costa Rica","CRC"],["Guatemala","GTQ"],["Honduras","HNL"],["El Salvador","USD"],["Nicaragua","NIO"],["República Dominicana","DOP"],["Puerto Rico","USD"],["Estados Unidos","USD"],["España","EUR"],["Emiratos","AED"],["Otro país","USD"]];
+const PRIORIDAD=["BO","MX","US","ES","CO","PE","CL","AR","EC","AE"];
+const PAISES_CALC=(()=>{ const todos=Object.keys(REG_CUR).map(r=>[nombrePais(r),REG_CUR[r],r]); const top=PRIORIDAD.map(r=>todos.find(x=>x[2]===r)); const resto=todos.filter(x=>!PRIORIDAD.includes(x[2])).sort((a,b)=>a[0].localeCompare(b[0],"es")); return [...top,...resto,["Otro país","USD","XX"]]; })();
 async function precioLocal(el,usd,prod,cuotas){
   prod=prod||"el Diagnóstico de Identidad"; const cq=cuotas?cuotas.split("x").map(Number):null;
   if(!el) return;
-  const pl=paisLocal(); const ini=pl?Math.max(0,PAISES_CALC.findIndex(x=>x[0]===pl[0])):PAISES_CALC.length-1;
+  const pl=paisLocal(); const ini=pl?Math.max(0,PAISES_CALC.findIndex(x=>x[2]===pl[2])):PAISES_CALC.length-1;
   el.innerHTML=`<div class="cm"><div class="cm-top"><span>Calcula en tu moneda</span><select aria-label="Tu país">${PAISES_CALC.map((x,k)=>`<option value="${k}"${k===ini?" selected":""}>${esc(x[0])}</option>`).join("")}</select></div><div class="cm-monto" aria-live="polite">—</div><div class="cm-nota"></div></div>`;
   el.hidden=false;
   const sel=el.querySelector("select"), monto=el.querySelector(".cm-monto"), nota=el.querySelector(".cm-nota");
