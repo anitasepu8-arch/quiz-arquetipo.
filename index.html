@@ -349,7 +349,7 @@ select:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 .cp-c.cp-ok.cp-diag small{color:var(--oro-claro);font-weight:600}
 .cp-c.cp-lock{color:rgba(245,241,232,.28);width:30px;height:30px;border-radius:50%;background:rgba(245,241,232,.05);justify-content:center}
 .cp-bloq>span:nth-child(2){background:repeating-linear-gradient(135deg,rgba(245,241,232,.025) 0 6px,transparent 6px 12px)}
-.cp-pie .cp-t{font-size:11.5px;color:var(--crema-2)}
+.cp-nota{border-top:1px solid rgba(212,175,120,.12);padding:12px 14px;font-size:12px;text-align:center;color:var(--crema-2)}
 .cp-btn{padding:10px 6px!important;font-size:10.5px!important;letter-spacing:.06em!important;width:100%}
 .pago-capa{position:fixed;inset:0;z-index:100;background:rgba(8,3,4,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;animation:pagoIn .25s ease}
 @keyframes pagoIn{from{opacity:0}to{opacity:1}}
@@ -1365,9 +1365,7 @@ function comparativa(recoMini){
       <span class="cp-h cp-hm" role="columnheader">${recoMini?'<i>Para empezar</i>':''}<b>Mini Exprés</b><em>USD 27</em></span>
       <span class="cp-h cp-hd" role="columnheader">${recoMini?'':'<i>Recomendado</i>'}<b>Diagnóstico</b><em>USD 152</em></span></div>
     ${COMPARA.map(([t,m,d])=>`<div class="cp-fila ${m===false?'cp-bloq':''}" role="row"><span class="cp-t" role="cell">${esc(t)}</span><span role="cell">${celda(m,'mini')}</span><span role="cell">${celda(d,'diag')}</span></div>`).join("")}
-    <div class="cp-fila cp-pie" role="row"><span class="cp-t" role="cell">Si tomas el Diagnóstico en 7 días, tus USD 27 se descuentan.</span>
-      <span role="cell"><button class="btn sec cp-btn" type="button" data-amini>Mini</button></span>
-      <span role="cell"><a class="btn cp-btn" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Diagnóstico</a></span></div>
+    <div class="cp-nota">Si tomas el Diagnóstico en los 7 días siguientes, tus USD 27 se descuentan.</div>
   </div>`;
 }
 /* ===== Género: nombres y textos en masculino si la persona eligió "Hombre" ===== */
