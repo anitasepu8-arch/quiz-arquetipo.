@@ -373,6 +373,10 @@ select:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 .carr-puntos i.on{background:var(--oro);width:18px;border-radius:3px}
 .carr-hint{position:absolute;right:0;top:-24px;font-size:11px;letter-spacing:.12em;color:var(--crema-2)}
 .pago-local{margin-top:-6px}
+.oferta .cuotas{margin:-4px 0 0;font-size:14px;color:var(--crema-2)}
+.oferta .cuotas b{color:var(--oro-claro);font-weight:600}
+.oferta .pago-local{margin:4px 0 8px}
+.cm-cuotas{display:block;font-family:var(--body);font-weight:500;font-size:13px;color:var(--oro-claro);margin-top:2px}
 .cm{border:1px solid var(--linea);border-radius:14px;padding:12px 14px;background:rgba(245,241,232,.03)}
 .cm-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .cm-top span{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
@@ -412,11 +416,13 @@ const CONFIG = {
     pagoDiagnostico: "https://www.iprosper28.com/75e08623",   // Formulario de pago de Systeme (se abre en ventana dentro del quiz)
     mini: "#",          // Enlace de pago de Stripe del Mini $27 (falta)
     auditoria: "https://www.iprosper28.com/quantubranding-audit",
+    pagoAuditoria: "",  // Formulario de pago de Systeme con plan de 2 cuotas (falta)
     llamada: "",        // Enlace para agendar llamada (Calendly u otro). Mientras esté vacío, abre WhatsApp.
     aplicacion1a1: ""   // Enlace de aplicación al trabajo 1:1 (falta). Mientras esté vacío, el botón abre WhatsApp.
   },
   instagram: "@anitasepum",
   whatsapp: "17865188044",
+  auditoriaCuotas: { n: 2, monto: 289 },  // Solo la Auditoría tiene cuotas. Diagnóstico y Mini: pago único.
   entregaMini: "",     // Ej.: "en tu correo en menos de 24 horas" (falta)
   testimonios: [ // capturas reales en /testimonios · frase = pie de foto resaltado
     { img:"/testimonios/t3.jpg", frase:"Todo lo que me dijiste fue totalmente cierto.", nombre:"Jacky", de:"Diagnóstico de Identidad" },
@@ -985,6 +991,8 @@ function render(){
     const cardAuditoriaUpgrade = `<div class="oferta">
           <p class="ligero">¿Quieres el plan completo?</p>
           <div class="cab-of"><h3>Auditoría de Marca™</h3><span class="precio"><small>USD</small>555</span></div>
+          <p class="cuotas">o <b>${CONFIG.auditoriaCuotas.n} cuotas de USD ${CONFIG.auditoriaCuotas.monto}</b></p>
+          <div class="pago-local" data-calc="555" data-prod="la Auditoría de Marca" data-cuotas="${CONFIG.auditoriaCuotas.n}x${CONFIG.auditoriaCuotas.monto}"></div>
           <p>Incluye tu Diagnóstico completo, la auditoría de tu negocio y tu marca, tus pilares de contenido y la estrategia lista para implementar.</p>
           <a class="btn sec full" href="${esc(CONFIG.links.auditoria)}" target="_blank" rel="noopener">Ver la Auditoría</a>
         </div>`;
@@ -1013,7 +1021,7 @@ function render(){
     const ejeTop = [...ORDEN].sort((x,y)=>(S.pReal[y]-S.pReal[x])||(ORDEN.indexOf(x)-ORDEN.indexOf(y)))[0];
     const TRAMO_TXT = {"0":"menos de USD 500 al mes","500":"entre USD 500 y 1.500 al mes","1500":"entre USD 1.500 y 3.000 al mes","3000":"entre USD 3.000 y 10.000 al mes","10000":"entre USD 10.000 y 50.000 al mes","50000":"más de USD 50.000 al mes"};
     const OBJETIVO = {vocacion:"saber para qué eres buena y a qué dedicarte",decision:"tomar la decisión importante que tienes pendiente",noavanza:"entender por qué tu trabajo o negocio no avanza",cobrar:"cobrar lo que vales por lo que ya haces",escalar:"hacer crecer una marca que ya funciona"};
-    const precioLinea = alto ? "La Auditoría cuesta USD 555." : (recoMini ? "El Mini Diagnóstico cuesta USD 27." : "El Diagnóstico cuesta USD 152.");
+    const precioLinea = alto ? `La Auditoría cuesta USD 555 o ${CONFIG.auditoriaCuotas.n} cuotas de USD ${CONFIG.auditoriaCuotas.monto}.` : (recoMini ? "El Mini Diagnóstico cuesta USD 27." : "El Diagnóstico cuesta USD 152.");
     const lineaTramo = !ing ? "" : (["0","500"].includes(ing)
       ? `A tu nivel (${TRAMO_TXT[ing]}), una decisión de marca bien tomada cambia lo que cobras todo el año. ${precioLinea}`
       : `A tu nivel (${TRAMO_TXT[ing]}), una sola decisión de marca mueve miles. ${precioLinea}`);
@@ -1052,7 +1060,8 @@ function render(){
           <h3 class="titulo-llamada">¿Auditoría o trabajo 1:1? Agenda tu llamada</h3>
           <p class="porque">A tu nivel, cada decisión de marca mueve miles de dólares. La Auditoría incluye tu Diagnóstico completo más la auditoría de tu negocio, tus pilares de contenido y la estrategia lista para implementar. Sin vueltas: qué falla y el plan para corregirlo.</p>
           <a class="btn full" href="${esc(llamada)}" target="_blank" rel="noopener">Agendar mi llamada</a>
-          <a class="btn sec full" href="${esc(CONFIG.links.auditoria)}" target="_blank" rel="noopener">Ver la Auditoría (USD 555)</a>
+          <a class="btn sec full" href="${esc(CONFIG.links.auditoria)}" target="_blank" rel="noopener">Ver la Auditoría (USD 555 o ${CONFIG.auditoriaCuotas.n} cuotas de ${CONFIG.auditoriaCuotas.monto})</a>
+          <div class="pago-local" data-calc="555" data-prod="la Auditoría de Marca" data-cuotas="${CONFIG.auditoriaCuotas.n}x${CONFIG.auditoriaCuotas.monto}"></div>
         </div>
         <div class="oferta">
           <p class="ligero">¿Prefieres empezar más ligero?</p>
@@ -1118,7 +1127,7 @@ function render(){
           <p class="nota" id="notaA" hidden></p>
         </form>
         ${(alto||tramoD)?"":`        <div class="salto">
-          <p>¿Quieres saltar directo a la solución? La <b>Auditoría de Marca™ (USD 555)</b> incluye tu Diagnóstico de Identidad completo, la auditoría de tu negocio y tu marca, tus pilares de contenido y toda la estrategia lista para implementar.</p>
+          <p>¿Quieres saltar directo a la solución? La <b>Auditoría de Marca™ (USD 555 o ${CONFIG.auditoriaCuotas.n} cuotas de USD ${CONFIG.auditoriaCuotas.monto})</b> incluye tu Diagnóstico de Identidad completo, la auditoría de tu negocio y tu marca, tus pilares de contenido y toda la estrategia lista para implementar.</p>
           <p>El análisis te dice qué falla; la Auditoría te da el plan para corregirlo en tu negocio.</p>
           <a class="btn full" href="${esc(waLink(`Hola Ana, hice el quiz y quiero la Auditoría de Marca.\n${resumenQuiz()}`))}" target="_blank" rel="noopener">Quiero la Auditoría: hablar con Ana</a>
           <a class="btn sec full" href="${esc(CONFIG.links.auditoria)}" target="_blank" rel="noopener">Ver qué incluye la Auditoría</a>
@@ -1388,7 +1397,8 @@ async function tipoCambio(cur){
   return null;
 }
 const PAISES_CALC=[["Bolivia","BOB"],["México","MXN"],["Colombia","COP"],["Perú","PEN"],["Chile","CLP"],["Argentina","ARS"],["Ecuador","USD"],["Paraguay","PYG"],["Uruguay","UYU"],["Venezuela","USD"],["Panamá","USD"],["Costa Rica","CRC"],["Guatemala","GTQ"],["Honduras","HNL"],["El Salvador","USD"],["Nicaragua","NIO"],["República Dominicana","DOP"],["Puerto Rico","USD"],["Estados Unidos","USD"],["España","EUR"],["Emiratos","AED"],["Otro país","USD"]];
-async function precioLocal(el,usd){
+async function precioLocal(el,usd,prod,cuotas){
+  prod=prod||"el Diagnóstico de Identidad"; const cq=cuotas?cuotas.split("x").map(Number):null;
   if(!el) return;
   const pl=paisLocal(); const ini=pl?Math.max(0,PAISES_CALC.findIndex(x=>x[0]===pl[0])):PAISES_CALC.length-1;
   el.innerHTML=`<div class="cm"><div class="cm-top"><span>Calcula en tu moneda</span><select aria-label="Tu país">${PAISES_CALC.map((x,k)=>`<option value="${k}"${k===ini?" selected":""}>${esc(x[0])}</option>`).join("")}</select></div><div class="cm-monto" aria-live="polite">—</div><div class="cm-nota"></div></div>`;
@@ -1396,20 +1406,24 @@ async function precioLocal(el,usd){
   const sel=el.querySelector("select"), monto=el.querySelector(".cm-monto"), nota=el.querySelector(".cm-nota");
   async function pintar(){
     const [pais,cur]=PAISES_CALC[+sel.value];
-    if(cur==="USD"){ monto.innerHTML=`USD ${usd}`; nota.innerHTML="Pagas en dólares, sin conversión."; }
+    const extra=(fx,c)=> cq ? `<span class="cm-cuotas">o ${cq[0]} cuotas de ${c==="USD"?"USD "+cq[1]:fmtMoneda(cq[1]*fx,c)}</span>` : "";
+    if(cur==="USD"){ monto.innerHTML=`USD ${usd}${extra(1,"USD")}`; nota.innerHTML="Pagas en dólares, sin conversión."; }
     else{
       monto.innerHTML=`<small>≈</small> …`;
       const fx=await tipoCambio(cur);
       if(!fx){ monto.innerHTML=`USD ${usd}`; nota.innerHTML="No pudimos cargar el tipo de cambio. Tu banco hace la conversión."; }
-      else{ monto.innerHTML=`<small>≈</small> ${fmtMoneda(usd*fx,cur)}`; nota.innerHTML= cur==="BOB" ? "Tipo de cambio 11 Bs por dólar." : "Tipo de cambio de hoy. Tu banco hace la conversión al pagar."; }
+      else{ monto.innerHTML=`<small>≈</small> ${fmtMoneda(usd*fx,cur)}${extra(fx,cur)}`; nota.innerHTML= cur==="BOB" ? "Tipo de cambio 11 Bs por dólar." : "Tipo de cambio de hoy. Tu banco hace la conversión al pagar."; }
     }
     if(cur==="BOB"){
-      const wa="https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent("Hola Ana, quiero el Diagnóstico de Identidad y quiero pagar con QR o transferencia en Bolivia.");
+      const wa="https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent("Hola Ana, quiero "+prod+" y quiero pagar con QR o transferencia en Bolivia.");
       nota.innerHTML+=`<br>¿Tu tarjeta no pasa en dólares? <a href="${esc(wa)}" target="_blank" rel="noopener">Te paso QR o transferencia por WhatsApp</a>`;
     }
   }
   sel.addEventListener("change",pintar); pintar();
 }
+
+/* Calculadoras de moneda dentro de las pantallas (data-calc) */
+new MutationObserver(()=>{ document.querySelectorAll("#app .pago-local[data-calc]:not([data-ok])").forEach(el=>{ el.dataset.ok="1"; precioLocal(el, +el.dataset.calc, el.dataset.prod, el.dataset.cuotas); }); }).observe(document.getElementById("app"),{childList:true,subtree:true});
 </script>
 
 </body></html>
