@@ -1345,14 +1345,17 @@ const ICO_OK=`<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke
 const ICO_LOCK=`<svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg>`;
 const COMPARA=[
   ["Tu arquetipo y el nombre completo de tu perfil",true,true],
-  ["Tus superpoderes","1","Todos"],
-  ["Tus bloqueos","El principal","Todos + cómo destrabarlos"],
-  ["Una acción para esta semana",true,true],
+  ["Tu superpoder: en qué eres buena de forma natural","1","Todos"],
+  ["Cómo aplicar tus superpoderes en un negocio y volverlos dinero",false,true],
+  ["Tu mejor forma de ganar dinero y cómo lo creas",false,true],
+  ["Tu bloqueo principal","1","Todos + cómo destrabarlos"],
+  ["Qué te impide encontrar oportunidades y hacer dinero",false,true],
+  ["Dónde te bloqueas en cada área de tu vida",false,true],
+  ["Tus ventanas ideales para tomar las mejores decisiones",false,true],
   ["Cómo funcionas: cómo decides, comunicas y lideras",false,true],
   ["Qué te distingue y cómo volverlo ventaja",false,true],
-  ["Tu dinero: cómo creas valor y cómo cobrar",false,true],
-  ["Tus decisiones: qué pide movimiento en esta etapa",false,true],
   ["Tus oportunidades: personas y contextos que te favorecen",false,true],
+  ["Una acción para esta semana",true,true],
   ["Formulario privado para hacerme todas tus preguntas",false,true],
   ["Audio privado de aclaración con mi voz",false,true],
   ["Acceso a mi WhatsApp para tus dudas",false,true],
@@ -1371,7 +1374,7 @@ function comparativa(recoMini){
 /* ===== Género: nombres y textos en masculino si la persona eligió "Hombre" ===== */
 const NOMBRE_M={"La Arquitecta Visible":"El Arquitecto Visible","La Referente":"El Referente","La Anfitriona":"El Anfitrión","La Estratega Visible":"El Estratega Visible","La Tejedora":"El Tejedor","La Arquitecta de Expansión":"El Arquitecto de Expansión","Arquitecta de Método":"Arquitecto de Método","La Guardiana Estratégica":"El Guardián Estratégico","La Guardiana":"El Guardián","La Arquitecta Estratega":"El Arquitecto Estratega","La que Cruza Fronteras":"El que Cruza Fronteras","La Convocante":"El Convocante","La Negociadora":"El Negociador","La Aliada":"El Aliado","La Diplomática":"El Diplomático","La Pionera":"El Pionero","La Exploradora Exacta":"El Explorador Exacto","La Cultivadora":"El Cultivador","La Navegante":"El Navegante","La Guía Firme":"El Guía Firme","La Estratega Mayor":"El Estratega Mayor","La Artesana":"El Artesano"};
 /* Frases exactas con género (las neutras como "La Voz que Convoca" o "La Institución" no cambian) */
-const FRASES_M=[["cómo estás hecha","cómo estás hecho"],["para qué estás hecha","para qué estás hecho"],["para qué eres buena","para qué eres bueno"],["para qué soy buena","para qué soy bueno"],["No estoy segura","No estoy seguro"],["Qué tan segura estás","Qué tan seguro estás"],["Parcialmente desalineada","Parcialmente desalineado"],["Desalineada","Desalineado"],["Alineada","Alineado"],["alineada","alineado"],["tú sola","tú solo"],["te hace distinta","te hace distinto"],["Lo haces sola","Lo haces solo"],["Veo a otras avanzar","Veo a otros avanzar"],["Soy coach de emprendedoras","Soy coach de emprendedores"],["te hace única","te hace único"],["cómo estás diseñada","cómo estás diseñado"]];
+const FRASES_M=[["cómo estás hecha","cómo estás hecho"],["para qué estás hecha","para qué estás hecho"],["para qué eres buena","para qué eres bueno"],["para qué soy buena","para qué soy bueno"],["No estoy segura","No estoy seguro"],["Qué tan segura estás","Qué tan seguro estás"],["Parcialmente desalineada","Parcialmente desalineado"],["Desalineada","Desalineado"],["Alineada","Alineado"],["alineada","alineado"],["tú sola","tú solo"],["te hace distinta","te hace distinto"],["Lo haces sola","Lo haces solo"],["Veo a otras avanzar","Veo a otros avanzar"],["Soy coach de emprendedoras","Soy coach de emprendedores"],["te hace única","te hace único"],["cómo estás diseñada","cómo estás diseñado"],["en qué eres buena de forma natural","en qué eres bueno de forma natural"]];
 const FRASES_M_ORD=[...Object.entries(NOMBRE_M),...FRASES_M].sort((a,b)=>b[0].length-a[0].length);
 function generoTxt(t){ if(S.genero!=="m"||!t) return t; for(const [f,m] of FRASES_M_ORD) t=t.split(f).join(m); return t; }
 function nombreArq(k){ const n=BANCO[k][0]; return S.genero==="m"&&NOMBRE_M[n]?NOMBRE_M[n]:n; }
