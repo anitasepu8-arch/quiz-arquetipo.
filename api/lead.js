@@ -5,7 +5,7 @@
 //   ML_GROUP_COMPLETADO     id del grupo "Quiz · completado" (opcional)
 
 const CAMPOS = [
-  "estado", "fecha_nac", "hora_nac", "lugar_nac", "arquetipo", "arquetipo_percibido",
+  "estado", "genero", "fecha_nac", "hora_nac", "lugar_nac", "arquetipo", "arquetipo_percibido",
   "dedica", "negocio", "modelo", "modelo_detalle", "modelo_encaje", "ingreso", "ubicacion",
   "busca", "dolor", "tiempo", "alineacion_vida", "alineacion_negocio", "acepta_mensajes", "paso",
   "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid",

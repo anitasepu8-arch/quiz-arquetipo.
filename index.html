@@ -323,6 +323,9 @@ select:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* Ventana de pago (Systeme) */
+.genero{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.genero .glbl{font-family:var(--display);font-weight:600;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
+.genero-op{display:flex;gap:8px}
 .pago-capa{position:fixed;inset:0;z-index:100;background:rgba(8,3,4,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;animation:pagoIn .25s ease}
 @keyframes pagoIn{from{opacity:0}to{opacity:1}}
 .pago-caja{width:min(520px,100%);height:min(88vh,860px);background:var(--tinto-2);border:1px solid var(--linea);border-radius:20px 20px 0 0;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 -20px 60px rgba(0,0,0,.6)}
@@ -674,7 +677,7 @@ const sinIngreso = ()=> S.dedica==="estudio" || S.dedica==="hogar";
 const MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
 
 /* ===== ESTADO ===== */
-const NUEVO = ()=>({utm:leerUTM(), paso:"inicio", nombre:"", d:"", m:"", a:"", hora:"", horaEstado:"", lugar:"", dedica:null, giro:"", modelo:null, modeloTxt:"", ubic:null, ingreso:null, busca:null, tiempo:null, esc:[null,null,null], escTxt:[null,null,null], apuesta:null, opcApuesta:null, dolor:null, real:null, perc:null, pReal:null, pPerc:null, email:""});
+const NUEVO = ()=>({utm:leerUTM(), paso:"inicio", nombre:"", genero:"", d:"", m:"", a:"", hora:"", horaEstado:"", lugar:"", dedica:null, giro:"", modelo:null, modeloTxt:"", ubic:null, ingreso:null, busca:null, tiempo:null, esc:[null,null,null], escTxt:[null,null,null], apuesta:null, opcApuesta:null, dolor:null, real:null, perc:null, pReal:null, pPerc:null, email:""});
 let S = NUEVO();
 const FLUJO = ["inicio","datos","teaser","dedica","giro","modelo","ingreso","ubicacion","busca","dolor","tiempo","e0","e1","e2","apuesta","calc","r1","r2","r3","r4","tarjeta","email","listo","mini"];
 const CONTABLES = ["datos","dedica","giro","modelo","ingreso","ubicacion","busca","dolor","tiempo","e0","e1","e2","apuesta"];
@@ -693,7 +696,7 @@ function datosLead(estado){
     email:S.email, nombre:S.nombre, estado,
     fecha_nac: S.a&&S.m&&S.d ? `${S.a}-${String(S.m).padStart(2,"0")}-${String(S.d).padStart(2,"0")}` : "",
     hora_nac: S.hora||"", lugar_nac: S.lugar||"",
-    arquetipo: S.real?BANCO[S.real][0]:"", arquetipo_percibido: S.perc&&estado!=="iniciado"?BANCO[S.perc][0]:"",
+    genero: S.genero==="m"?"hombre":(S.genero==="f"?"mujer":""), arquetipo: S.real?BANCO[S.real][0]:"", arquetipo_percibido: S.perc&&estado!=="iniciado"?BANCO[S.perc][0]:"",
     dedica: S.dedica||"", negocio: S.giro||"", modelo: S.modelo||"", modelo_detalle: S.modeloTxt||"",
     modelo_encaje: encajeModelo()?encajeModelo()[1]:"",
     ingreso: S.ingreso||"", ubicacion: S.ubic?UBIC.find(x=>x[0]===S.ubic)[1]:"",
@@ -822,8 +825,8 @@ function render(){
       <div class="sello">${selloSVG()}</div>
       <span class="kicker">Gratis · 3 minutos</span>
       <h1>Hay 28 arquetipos. <em>Solo uno es el tuyo.</em></h1>
-      <p class="lead"><strong>Y probablemente no es el que crees.</strong> Se calcula con tu fecha de nacimiento y muestra para qué estás hecha. Tus respuestas revelan la distancia entre cómo te ves y quién eres.</p>
-      <div class="chips"><span class="chip">Para qué eres buena</span><span class="chip">Cómo decides</span><span class="chip">Dónde rindes más</span></div>
+      <p class="lead"><strong>Y probablemente no es el que crees.</strong> Se calcula con tu fecha de nacimiento y muestra para qué naciste. Tus respuestas revelan la distancia entre cómo te ves y quién eres.</p>
+      <div class="chips"><span class="chip">Tu talento natural</span><span class="chip">Cómo decides</span><span class="chip">Dónde rindes más</span></div>
       ${(()=>{ const p=leerAvance(); if(!p) return `<button class="btn full" id="go">Descubrir el mío</button>`;
         const terminado=["r1","r2","r3","r4","tarjeta","email","listo","mini"].includes(p.paso);
         return `<div class="retomar"><p>${esc(p.nombre||"Hola")}, ${terminado?"tu resultado está guardado.":"dejaste tu quiz a medias."}</p>
@@ -837,6 +840,10 @@ function render(){
       <h2>Con esto se <em>calcula</em> tu arquetipo.</h2>
       <form class="campos" id="fdatos" novalidate>
         <label for="nombre">Tu nombre<input id="nombre" autocomplete="given-name" value="${esc(S.nombre)}" placeholder="Cómo te llamas"></label>
+        <div class="genero"><span class="glbl">Soy</span><div class="genero-op" role="group" aria-label="Soy">
+          <button type="button" class="mini ${S.genero==="f"?"on":""}" data-genero="f" aria-pressed="${S.genero==="f"}">Mujer</button>
+          <button type="button" class="mini ${S.genero==="m"?"on":""}" data-genero="m" aria-pressed="${S.genero==="m"}">Hombre</button>
+        </div></div>
         <label for="correo0">Tu correo <small>Para guardar tu avance y enviarte tu resultado.</small><input id="correo0" type="email" autocomplete="email" value="${esc(S.email)}" placeholder="tu@correo.com"></label>
         <label for="fd">Fecha de nacimiento${selectFecha()}</label>
         <div class="opcional">
@@ -1227,7 +1234,7 @@ function render(){
     const d=+S.d,m=+S.m,a=+S.a;
     h+=`<div class="verif"><b>Verificación (solo con #verificar)</b><br>Camino de Vida: ${caminoDeVida(d,m,a)} → 1º eje ${NUM_EJES[caminoDeVida(d,m,a)][0]} · Día ${d}: ${ejesDelDia(d).join(" + ")} · Animal: ${animalChino(d,m,a)}${ANL[a]?` (Año Nuevo Lunar ${a}: ${ANL[a][1]}/${ANL[a][0]})`:""}<br>Puntos: ${ORDEN.map(e=>`${e} ${S.pReal[e]}`).join(" · ")}<br>Resultado: ${BANCO[S.real][0]} (${S.real})</div>`;
   }
-  app.innerHTML=h; bind(); window.scrollTo(0,0); guardarAvance();
+  app.innerHTML=generoTxt(h); bind(); window.scrollTo(0,0); guardarAvance();
 }
 
 function bind(){
@@ -1261,6 +1268,11 @@ function bind(){
   app.querySelectorAll("[data-ap]").forEach(b=>b.onclick=()=>{ S.apuesta=S.opcApuesta[+b.dataset.ap]; siguiente(); });
   app.querySelectorAll("[data-dolor]").forEach(b=>b.onclick=()=>{ S.dolor=+b.dataset.dolor; siguiente(); });
 
+  app.querySelectorAll("[data-genero]").forEach(b=>b.onclick=()=>{
+    S.genero=b.dataset.genero;
+    app.querySelectorAll("[data-genero]").forEach(x=>{ const on=x.dataset.genero===S.genero; x.classList.toggle("on",on); x.setAttribute("aria-pressed",on); });
+    const h=app.querySelector('[data-hora="aprox"]'); if(h) h.textContent=S.genero==="m"?"No estoy seguro":"No estoy segura";
+  });
   app.querySelectorAll("[data-hora]").forEach(b=>b.onclick=()=>{
     const v=b.dataset.hora; S.horaEstado = S.horaEstado===v ? "" : v;
     app.querySelectorAll("[data-hora]").forEach(x=>{ const on=x.dataset.hora===S.horaEstado; x.classList.toggle("on",on); x.setAttribute("aria-pressed",on); });
@@ -1292,6 +1304,7 @@ function bind(){
     S.nombre=q("#nombre").value.trim(); S.email=q("#correo0").value.trim(); S.d=q("#fd").value.replace(/\D/g,""); S.m=q("#fm").value; S.a=q("#fa").value.replace(/\D/g,""); S.hora=S.horaEstado==="nose"?"":q("#hora").value; S.lugar=q("#lugar").value.trim();
     const mal=m=>{ err.textContent=m; err.hidden=false; };
     if(!S.nombre) return mal("Escribe tu nombre para continuar.");
+    if(!S.genero) return mal("Elige Mujer u Hombre para escribir tu resultado como corresponde.");
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.email)) return mal("Revisa tu correo: falta algo, por ejemplo la @ o el dominio.");
     if(!S.d||!S.m||!S.a) return mal("Escribe el día, elige el mes y escribe el año en que naciste.");
     if(+S.d<1||+S.d>31) return mal("El día va del 1 al 31.");
@@ -1319,6 +1332,14 @@ function bind(){
 
 render();
 
+
+/* ===== Género: nombres y textos en masculino si la persona eligió "Hombre" ===== */
+const NOMBRE_M={"La Arquitecta Visible":"El Arquitecto Visible","La Referente":"El Referente","La Anfitriona":"El Anfitrión","La Estratega Visible":"El Estratega Visible","La Tejedora":"El Tejedor","La Arquitecta de Expansión":"El Arquitecto de Expansión","Arquitecta de Método":"Arquitecto de Método","La Guardiana Estratégica":"El Guardián Estratégico","La Guardiana":"El Guardián","La Arquitecta Estratega":"El Arquitecto Estratega","La que Cruza Fronteras":"El que Cruza Fronteras","La Convocante":"El Convocante","La Negociadora":"El Negociador","La Aliada":"El Aliado","La Diplomática":"El Diplomático","La Pionera":"El Pionero","La Exploradora Exacta":"El Explorador Exacto","La Cultivadora":"El Cultivador","La Navegante":"El Navegante","La Guía Firme":"El Guía Firme","La Estratega Mayor":"El Estratega Mayor","La Artesana":"El Artesano"};
+/* Frases exactas con género (las neutras como "La Voz que Convoca" o "La Institución" no cambian) */
+const FRASES_M=[["cómo estás hecha","cómo estás hecho"],["para qué estás hecha","para qué estás hecho"],["para qué eres buena","para qué eres bueno"],["para qué soy buena","para qué soy bueno"],["No estoy segura","No estoy seguro"],["Qué tan segura estás","Qué tan seguro estás"],["Parcialmente desalineada","Parcialmente desalineado"],["Desalineada","Desalineado"],["Alineada","Alineado"],["alineada","alineado"],["tú sola","tú solo"],["te hace distinta","te hace distinto"],["Lo haces sola","Lo haces solo"],["Veo a otras avanzar","Veo a otros avanzar"],["Soy coach de emprendedoras","Soy coach de emprendedores"],["te hace única","te hace único"]];
+const FRASES_M_ORD=[...Object.entries(NOMBRE_M),...FRASES_M].sort((a,b)=>b[0].length-a[0].length);
+function generoTxt(t){ if(S.genero!=="m"||!t) return t; for(const [f,m] of FRASES_M_ORD) t=t.split(f).join(m); return t; }
+function nombreArq(k){ const n=BANCO[k][0]; return S.genero==="m"&&NOMBRE_M[n]?NOMBRE_M[n]:n; }
 /* ===== Ventana de pago del Diagnóstico: 1) resumen condensado 2) formulario de pago de Systeme ===== */
 function abrirPago(url){
   cerrarPago();
@@ -1326,7 +1347,7 @@ function abrirPago(url){
   const wa = "https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent("Hola Ana, hice el quiz"+(arq?" ("+arq+")":"")+" y tengo una duda sobre el Diagnóstico.");
   const capa=document.createElement("div");
   capa.className="pago-capa"; capa.id="pagoCapa"; capa.setAttribute("role","dialog"); capa.setAttribute("aria-modal","true"); capa.setAttribute("aria-label","Diagnóstico de Identidad");
-  capa.innerHTML=`<div class="pago-caja">
+  capa.innerHTML=generoTxt(`<div class="pago-caja">
     <div class="pago-top"><div><b>Diagnóstico de Identidad™</b><small>Personalizado · cupos del mes</small></div><button class="pago-x" type="button" aria-label="Cerrar">×</button></div>
     <div class="pago-info" id="pagoInfo">
       <h3>Tu arquetipo es la portada.<br><em>El Diagnóstico es el mapa completo.</em></h3>
@@ -1353,7 +1374,7 @@ function abrirPago(url){
     </div>
     <div class="pago-marco" id="pagoMarco" hidden><div class="pago-cargando">Cargando el pago seguro…</div></div>
     <div class="pago-pie" id="pagoPie" hidden><button class="pago-volver" type="button" id="pagoVolver">← Ver qué incluye</button> · ¿No carga? <a href="${esc(url)}" target="_blank" rel="noopener">Abrir el pago en pantalla completa</a></div>
-  </div>`;
+  </div>`);
   capa.addEventListener("click",e=>{ if(e.target===capa||e.target.closest(".pago-x")) cerrarPago(); });
   const $=id=>capa.querySelector("#"+id);
   $("pagoIr").addEventListener("click",()=>{
