@@ -372,6 +372,9 @@ select:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 .carr-puntos i{width:6px;height:6px;border-radius:50%;background:rgba(212,175,120,.3);transition:all .2s}
 .carr-puntos i.on{background:var(--oro);width:18px;border-radius:3px}
 .carr-hint{position:absolute;right:0;top:-24px;font-size:11px;letter-spacing:.12em;color:var(--crema-2)}
+.pago-local{margin-top:-10px;font-size:13px;line-height:1.5;color:var(--crema-2)}
+.pago-local b{color:var(--crema);font-weight:500}
+.pago-local a{color:var(--oro)}
 .pago-precio{display:flex;align-items:baseline;gap:10px}
 .pago-precio s{color:var(--crema-2);font-size:15px}
 .pago-precio strong{font-family:var(--display);font-weight:800;font-size:28px;color:var(--oro)}
@@ -1320,6 +1323,7 @@ function abrirPago(url){
       </div></div>
       ${CONFIG.testimonios.length?`<div><div class="rot">Lo que dicen</div>${carruselTestis()}</div>`:""}
       <div class="pago-precio"><s>USD 297</s><strong>USD 152</strong><span>pago único</span></div>
+      <div class="pago-local" id="pagoLocal" hidden></div>
     </div>
     <div class="pago-acc" id="pagoAcc">
       <button class="btn" type="button" id="pagoIr">Reservar mi Diagnóstico · USD 152</button>
@@ -1339,6 +1343,7 @@ function abrirPago(url){
   $("pagoVolver").addEventListener("click",()=>{ $("pagoInfo").hidden=false; $("pagoAcc").hidden=false; $("pagoMarco").hidden=true; $("pagoPie").hidden=true; });
   document.body.appendChild(capa); document.body.style.overflow="hidden";
   capa.querySelector(".pago-x").focus();
+  precioLocal(capa.querySelector("#pagoLocal"),152);
 }
 function cerrarPago(){ const c=document.getElementById("pagoCapa"); if(c){ c.remove(); document.body.style.overflow=""; } }
 document.addEventListener("click",e=>{
@@ -1354,6 +1359,39 @@ document.addEventListener("scroll",e=>{
   if(p.scrollLeft+p.clientWidth>=p.scrollWidth-4) k=items.length-1;
   p.parentElement.querySelectorAll(".carr-puntos i").forEach((d,j)=>d.classList.toggle("on",j===k));
 },true);
+
+/* ===== Precio en moneda local (país por zona horaria del celular) ===== */
+const TZ_PAIS={"America/La_Paz":["Bolivia","BOB"],"America/Lima":["Perú","PEN"],"America/Bogota":["Colombia","COP"],"America/Santiago":["Chile","CLP"],"America/Guayaquil":["Ecuador","USD"],"America/Asuncion":["Paraguay","PYG"],"America/Montevideo":["Uruguay","UYU"],"America/Caracas":["Venezuela","USD"],"America/Panama":["Panamá","USD"],"America/Costa_Rica":["Costa Rica","CRC"],"America/Guatemala":["Guatemala","GTQ"],"America/El_Salvador":["El Salvador","USD"],"America/Tegucigalpa":["Honduras","HNL"],"America/Managua":["Nicaragua","NIO"],"America/Santo_Domingo":["República Dominicana","DOP"],"America/Puerto_Rico":["Puerto Rico","USD"],"Europe/Madrid":["España","EUR"],"Atlantic/Canary":["España","EUR"],"Asia/Dubai":["Emiratos","AED"]};
+const TIPO_FIJO={BOB:11}; // Bolivia: tipo de cambio real que usa Ana
+function paisLocal(){
+  try{ const tz=Intl.DateTimeFormat().resolvedOptions().timeZone||"";
+    if(TZ_PAIS[tz]) return TZ_PAIS[tz];
+    if(tz.startsWith("America/Argentina")||tz==="America/Buenos_Aires") return ["Argentina","ARS"];
+    if(tz==="America/Mexico_City"||tz.startsWith("America/Monterrey")||tz.startsWith("America/Cancun")||tz.startsWith("America/Merida")||tz.startsWith("America/Chihuahua")||tz.startsWith("America/Tijuana")||tz.startsWith("America/Mazatlan")||tz.startsWith("America/Hermosillo")) return ["México","MXN"];
+  }catch(e){}
+  return null;
+}
+function fmtMoneda(n,cur){
+  if(cur==="BOB") return "Bs "+Math.round(n).toLocaleString("es-BO");
+  try{ return new Intl.NumberFormat("es",{style:"currency",currency:cur,maximumFractionDigits:0}).format(n); }catch(e){ return cur+" "+Math.round(n); }
+}
+async function tipoCambio(cur){
+  if(TIPO_FIJO[cur]) return TIPO_FIJO[cur];
+  try{ const c=JSON.parse(sessionStorage.getItem("qb-fx")||"null"); if(c&&c.rates&&Date.now()-c.t<864e5&&c.rates[cur]) return c.rates[cur]; }catch(e){}
+  try{ const r=await fetch("https://open.er-api.com/v6/latest/USD"); const j=await r.json(); if(j&&j.rates){ try{sessionStorage.setItem("qb-fx",JSON.stringify({t:Date.now(),rates:j.rates}));}catch(e){} return j.rates[cur]||null; } }catch(e){}
+  return null;
+}
+async function precioLocal(el,usd){
+  const pl=paisLocal(); if(!el||!pl) return;
+  const [pais,cur]=pl;
+  let html="";
+  if(cur!=="USD"){ const fx=await tipoCambio(cur); if(fx) html=`≈ <b>${fmtMoneda(usd*fx,cur)}</b> en ${pais}${cur==="BOB"?" (tipo de cambio 11)":" · tu banco hace la conversión"}`; }
+  if(cur==="BOB"){
+    const wa="https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent("Hola Ana, quiero el Diagnóstico de Identidad y quiero pagar con QR o transferencia en Bolivia.");
+    html+=(html?"<br>":"")+`¿Tu tarjeta no pasa en dólares? <a href="${esc(wa)}" target="_blank" rel="noopener">Te paso QR o transferencia por WhatsApp</a>`;
+  }
+  if(html){ el.innerHTML=html; el.hidden=false; }
+}
 </script>
 
 </body></html>
