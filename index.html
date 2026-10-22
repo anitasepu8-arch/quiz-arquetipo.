@@ -388,6 +388,7 @@ select:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 .cm-monto small{font-size:16px;color:var(--crema-2);font-weight:600}
 .cm-nota{font-size:12px;line-height:1.5;color:var(--crema-2);margin-top:2px}
 .cm-nota a{color:var(--oro)}
+.pago-costo{margin:-8px 0 0;font-size:14px;line-height:1.5;color:var(--oro-claro);font-style:italic}
 .pago-precio{display:flex;align-items:baseline;gap:10px}
 .pago-precio s{color:var(--crema-2);font-size:15px}
 .pago-precio strong{font-family:var(--display);font-weight:800;font-size:28px;color:var(--oro)}
@@ -1366,6 +1367,7 @@ function abrirPago(url){
       </div></div>
       ${CONFIG.testimonios.length?`<div><div class="rot">Lo que dicen</div>${carruselTestis()}</div>`:""}
       <div class="pago-precio"><s>USD 297</s><strong>USD 152</strong><span>pago único</span></div>
+      <p class="pago-costo">Sí, tiene un costo. Pero no saber cómo funcionas te cuesta más: en decisiones, en tiempo y en dinero.</p>
       <div class="pago-local" id="pagoLocal" hidden></div>
     </div>
     <div class="pago-acc" id="pagoAcc">
