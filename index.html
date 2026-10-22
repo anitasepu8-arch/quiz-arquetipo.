@@ -467,12 +467,15 @@ const BANCO = {
 "Autoridad+Precisión":["La Autoridad Exacta","Tu palabra pesa porque es precisa. No hablas mucho; cuando hablas, se anota.","vendes criterio — tu opinión técnica vale porque es precisa y escasa.","vender criterio"],
 "Autoridad+Cuidado":["La Guía Firme","Lideras cuidando el rumbo. Tu gente avanza segura porque tú no improvisas la dirección.","acompañas procesos largos — tus clientes avanzan porque tú sostienes el rumbo.","sostener el rumbo de procesos largos"],
 "Autoridad+Estrategia":["La Estratega Mayor","Ves el tablero entero. Mientras otros juegan su casilla, tú diriges el juego.","diriges la visión — tu rol es pensar el juego completo, no jugar una casilla.","dirigir la visión"],
-"Precisión+Cuidado":["La Orfebre (artesana del detalle)","El detalle es tu firma. Lo que produces tiene un acabado que nadie más logra.","vendes acabado premium — detalle, estética y calidad que justifican precio alto.","vender acabado premium"],
+"Precisión+Cuidado":["La Artesana","El detalle es tu firma. Lo que produces tiene un acabado que nadie más logra.","vendes acabado premium — detalle, estética y calidad que justifican precio alto.","vender acabado premium"],
 "Precisión+Estrategia":["La Mente Quirúrgica","Cortas exacto donde duele y sana. Precisión que resuelve, no que adorna.","resuelves con precisión — intervenciones exactas en el problema justo, resultados medibles.","resolver con precisión"],
 "Cuidado+Estrategia":["La Guardiana Estratégica","Proteges con inteligencia, no con miedo. Cuidas lo valioso con plan, no con ansiedad.","proteges con plan — gestión de riesgos y cuidado inteligente, no ansiedad.","proteger con plan"]
 };
 
-const NUM_EJES = {1:["Autoridad","Visibilidad"],2:["Alianzas","Cuidado"],3:["Visibilidad","Expansión"],4:["Estructura","Precisión"],5:["Expansión","Estrategia"],6:["Cuidado","Alianzas"],7:["Precisión","Estrategia"],8:["Autoridad","Estructura"],9:["Expansión","Cuidado"],11:["Visibilidad","Alianzas"],22:["Estructura","Expansión"],33:["Cuidado","Autoridad"]};
+/* Fórmula final de Ana (22 oct 2026) · el primer eje de cada número es el dominante */
+const NUM_EJES = {1:["Autoridad","Visibilidad"],2:["Alianzas","Cuidado"],3:["Visibilidad","Expansión"],4:["Estructura","Precisión"],5:["Expansión","Visibilidad"],6:["Cuidado","Alianzas"],7:["Estrategia","Precisión"],8:["Autoridad","Estructura"],9:["Expansión","Cuidado"],11:["Alianzas","Visibilidad"],22:["Estructura","Expansión"],33:["Cuidado","Autoridad"]};
+/* Días especiales: no se reducen */
+const DIAS_ESPECIALES = {20:["Visibilidad","Alianzas"],28:["Autoridad","Alianzas"],29:["Alianzas","Visibilidad"]};
 const ANIMALES = ["Rata","Buey","Tigre","Conejo","Dragón","Serpiente","Caballo","Cabra","Mono","Gallo","Perro","Cerdo"];
 const ANI_EJES = {"Rata":["Estrategia","Expansión"],"Buey":["Estructura","Precisión"],"Tigre":["Autoridad","Visibilidad"],"Conejo":["Alianzas","Cuidado"],"Dragón":["Visibilidad","Autoridad"],"Serpiente":["Estrategia","Precisión"],"Caballo":["Expansión","Visibilidad"],"Cabra":["Cuidado","Precisión"],"Mono":["Estrategia","Expansión"],"Gallo":["Precisión","Estructura"],"Perro":["Cuidado","Alianzas"],"Cerdo":["Alianzas","Cuidado"]};
 
@@ -492,7 +495,8 @@ const ANL = {1920:[2,20],1921:[2,8],1922:[1,28],1923:[2,16],1924:[2,5],1925:[1,2
 
 /* ===== CÁLCULO ===== */
 function reducir(n){ while(n>9 && n!==11 && n!==22 && n!==33){ n=String(n).split("").reduce((a,d)=>a+Number(d),0);} return n; }
-function caminoDeVida(d,m,a){ const s=(String(d)+String(m)+String(a)).split("").reduce((x,c)=>x+Number(c),0); return reducir(s); }
+function caminoDeVida(d,m,a){ const s=(String(d).padStart(2,"0")+String(m).padStart(2,"0")+String(a)).split("").reduce((x,c)=>x+Number(c),0); const r=reducir(s); return r===2?11:r; } /* GG33: no existe el Camino de Vida 2 */
+function ejesDelDia(d){ if(DIAS_ESPECIALES[d]) return DIAS_ESPECIALES[d]; return NUM_EJES[reducir(d)]; }
 function animalChino(d,m,a){
   let anio=a;
   if(m<=2){
@@ -515,12 +519,15 @@ function animalCompleto(d,m,a){
   return {animal: ANIMALES[((y-4)%12+12)%12], elemento: ELEMENTOS[((y-4)%10+10)%10], anio:y, inicio: ANL[y]};
 }
 function arquetipoReal(d,m,a){
-  const p=Object.fromEntries(ORDEN.map(e=>[e,0]));
-  const cv=caminoDeVida(d,m,a), dia=reducir(d), ani=animalChino(d,m,a);
-  NUM_EJES[cv].forEach(e=>p[e]+=2);
-  NUM_EJES[dia].forEach(e=>p[e]+=1);
-  ANI_EJES[ani].forEach(e=>p[e]+=1);
-  return claveTop2(p);
+  /* 1º eje = primer eje del Camino de Vida. 2º eje = donde coinciden día y animal (1 punto cada cualidad), sin repetir el 1º.
+     Desempate: primer eje del animal, luego su segundo, luego el orden del día. */
+  const principal=NUM_EJES[caminoDeVida(d,m,a)][0];
+  const dia=ejesDelDia(d), ani=ANI_EJES[animalChino(d,m,a)];
+  const p=Object.fromEntries(ORDEN.map(e=>[e,0])); dia.forEach(e=>p[e]++); ani.forEach(e=>p[e]++);
+  const clave=e=>[p[e], e===ani[0]?2:(ani.includes(e)?1:0), e===dia[0]?2:(dia.includes(e)?1:0)];
+  let mejor=null;
+  for(const e of ORDEN){ if(e===principal) continue; if(!mejor){mejor=e;continue;} const a1=clave(e), b1=clave(mejor); for(let k=0;k<3;k++){ if(a1[k]!==b1[k]){ if(a1[k]>b1[k]) mejor=e; break; } } }
+  return [principal,mejor].sort((x,y)=>ORDEN.indexOf(x)-ORDEN.indexOf(y)).join("+");
 }
 function arquetipoPercibido(ejes){
   const p=Object.fromEntries(ORDEN.map(e=>[e,0]));
@@ -716,7 +723,7 @@ function esc(t){ return String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",
 function puntos(ejes){ const p=Object.fromEntries(ORDEN.map(e=>[e,0])); ejes.forEach(e=>p[e]+=1); return p; }
 function puntosReal(d,m,a){
   const p=Object.fromEntries(ORDEN.map(e=>[e,0]));
-  NUM_EJES[caminoDeVida(d,m,a)].forEach(e=>p[e]+=2); NUM_EJES[reducir(d)].forEach(e=>p[e]+=1); ANI_EJES[animalChino(d,m,a)].forEach(e=>p[e]+=1);
+  const cvE=NUM_EJES[caminoDeVida(d,m,a)]; p[cvE[0]]+=2; p[cvE[1]]+=1; ejesDelDia(d).forEach(e=>p[e]+=1); ANI_EJES[animalChino(d,m,a)].forEach(e=>p[e]+=1);
   return p;
 }
 function semilla(str){ let h=2166136261; for(const c of str){ h^=c.charCodeAt(0); h=Math.imul(h,16777619);} return h>>>0; }
@@ -1218,7 +1225,7 @@ function render(){
   }
   if(location.hash==="#verificar" && S.real && S.d){
     const d=+S.d,m=+S.m,a=+S.a;
-    h+=`<div class="verif"><b>Verificación (solo con #verificar)</b><br>Camino de Vida: ${caminoDeVida(d,m,a)} (×2) · Día: ${reducir(d)} · Animal: ${animalChino(d,m,a)}${ANL[a]?` (Año Nuevo Lunar ${a}: ${ANL[a][1]}/${ANL[a][0]})`:""}<br>Puntos: ${ORDEN.map(e=>`${e} ${S.pReal[e]}`).join(" · ")}<br>Resultado: ${BANCO[S.real][0]} (${S.real})</div>`;
+    h+=`<div class="verif"><b>Verificación (solo con #verificar)</b><br>Camino de Vida: ${caminoDeVida(d,m,a)} → 1º eje ${NUM_EJES[caminoDeVida(d,m,a)][0]} · Día ${d}: ${ejesDelDia(d).join(" + ")} · Animal: ${animalChino(d,m,a)}${ANL[a]?` (Año Nuevo Lunar ${a}: ${ANL[a][1]}/${ANL[a][0]})`:""}<br>Puntos: ${ORDEN.map(e=>`${e} ${S.pReal[e]}`).join(" · ")}<br>Resultado: ${BANCO[S.real][0]} (${S.real})</div>`;
   }
   app.innerHTML=h; bind(); window.scrollTo(0,0); guardarAvance();
 }
