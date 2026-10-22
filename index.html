@@ -352,6 +352,10 @@ select:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 .pago-pasos b{display:block;font-family:var(--display);color:var(--oro);font-size:12px}
 .pago-tuyo{background:linear-gradient(135deg,var(--borgona),var(--borgona-2));border:1px solid var(--linea);border-radius:14px;padding:14px 16px;font-size:14px;line-height:1.5;color:var(--crema)}
 .pago-tuyo b{color:var(--oro-claro)}
+.pago-testis{display:flex;flex-direction:column;gap:10px}
+.pago-testis figure{margin:0;padding:12px 14px;border-left:2px solid var(--oro);background:rgba(212,175,120,.06);border-radius:0 12px 12px 0}
+.pago-testis q{display:block;font-size:13.5px;line-height:1.5;color:var(--crema);font-style:italic}
+.pago-testis cite{display:block;margin-top:6px;font-size:11.5px;font-style:normal;letter-spacing:.06em;color:var(--oro)}
 .pago-precio{display:flex;align-items:baseline;gap:10px}
 .pago-precio s{color:var(--crema-2);font-size:15px}
 .pago-precio strong{font-family:var(--display);font-weight:800;font-size:28px;color:var(--oro)}
@@ -390,7 +394,9 @@ const CONFIG = {
   whatsapp: "17865188044",
   entregaMini: "",     // Ej.: "en tu correo en menos de 24 horas" (falta)
   testimonios: [
-    // { texto: "Frase corta de la clienta", nombre: "Nombre, profesión" },
+    { texto: "Me sorprendió muchísimo la precisión con la que pudiste identificar aspectos de mi vida. Fue increíble ver cuánto coincidía con mi realidad.", nombre: "Jacky · Diagnóstico de Identidad" },
+    { texto: "Describiste pensamientos y sentimientos que ya estaban dentro de mí. Sentí que muchas piezas comenzaron a encajar.", nombre: "Adyam · Lectura de identidad" },
+    { texto: "Me está haciendo ordenar todo mi negocio, pensar en metas y darme la vitalidad que necesitaba para arrancar con todo.", nombre: "Clienta · Quantum Branding" },
   ]
 };
 
@@ -1283,6 +1289,7 @@ function abrirPago(url){
       <div><div class="rot">Cómo funciona</div><div class="pago-pasos">
         <div><b>01</b>Reservas</div><div><b>02</b>Llenas tu formulario</div><div><b>03</b>Cruzo tus datos</div><div><b>04</b>Recibes documento + audio</div>
       </div></div>
+      ${CONFIG.testimonios.length?`<div><div class="rot">Lo que dicen</div><div class="pago-testis">${CONFIG.testimonios.map(t=>`<figure><q>${esc(t.texto)}</q><cite>${esc(t.nombre)}</cite></figure>`).join("")}</div></div>`:""}
       <div class="pago-precio"><s>USD 297</s><strong>USD 152</strong><span>pago único</span></div>
     </div>
     <div class="pago-acc" id="pagoAcc">
