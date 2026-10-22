@@ -356,6 +356,18 @@ select:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 .pago-testis figure{margin:0;padding:12px 14px;border-left:2px solid var(--oro);background:rgba(212,175,120,.06);border-radius:0 12px 12px 0}
 .pago-testis q{display:block;font-size:13.5px;line-height:1.5;color:var(--crema);font-style:italic}
 .pago-testis cite{display:block;margin-top:6px;font-size:11.5px;font-style:normal;letter-spacing:.06em;color:var(--oro)}
+.carr{position:relative}
+.carr-pista{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+.carr-pista::-webkit-scrollbar{display:none}
+.carr-item{flex:0 0 86%;scroll-snap-align:start;margin:0;padding:16px 18px;border-left:2px solid var(--oro);background:rgba(212,175,120,.07);border-radius:0 14px 14px 0;display:flex;flex-direction:column;justify-content:space-between;gap:10px}
+.carr-item q{display:block;font-size:14px;line-height:1.55;color:var(--crema);font-style:italic;quotes:"“" "”"}
+.carr-item cite{font-size:11.5px;font-style:normal;letter-spacing:.06em;color:var(--oro)}
+.carr-item.carr-img{padding:0;border:0;background:#111;border-radius:14px;overflow:hidden;align-items:center;justify-content:center;max-height:340px}
+.carr-item.carr-img img{display:block;width:100%;height:auto;max-height:340px;object-fit:contain}
+.carr-puntos{display:flex;justify-content:center;gap:6px;margin-top:10px}
+.carr-puntos i{width:6px;height:6px;border-radius:50%;background:rgba(212,175,120,.3);transition:all .2s}
+.carr-puntos i.on{background:var(--oro);width:18px;border-radius:3px}
+.carr-hint{position:absolute;right:0;top:-24px;font-size:11px;letter-spacing:.12em;color:var(--crema-2)}
 .pago-precio{display:flex;align-items:baseline;gap:10px}
 .pago-precio s{color:var(--crema-2);font-size:15px}
 .pago-precio strong{font-family:var(--display);font-weight:800;font-size:28px;color:var(--oro)}
@@ -393,10 +405,15 @@ const CONFIG = {
   instagram: "@anitasepum",
   whatsapp: "17865188044",
   entregaMini: "",     // Ej.: "en tu correo en menos de 24 horas" (falta)
-  testimonios: [
-    { texto: "Me sorprendió muchísimo la precisión con la que pudiste identificar aspectos de mi vida. Fue increíble ver cuánto coincidía con mi realidad.", nombre: "Jacky · Diagnóstico de Identidad" },
-    { texto: "Describiste pensamientos y sentimientos que ya estaban dentro de mí. Sentí que muchas piezas comenzaron a encajar.", nombre: "Adyam · Lectura de identidad" },
-    { texto: "Me está haciendo ordenar todo mi negocio, pensar en metas y darme la vitalidad que necesitaba para arrancar con todo.", nombre: "Clienta · Quantum Branding" },
+  testimonios: [ // capturas reales en /testimonios (img) + texto alternativo
+    { img:"/testimonios/t3.jpg", texto:"Todo lo que me dijiste en mi diagnóstico personal fue totalmente cierto. Me sorprendió muchísimo la precisión.", nombre:"Jacky" },
+    { img:"/testimonios/t7.jpg", texto:"Hablar contigo y el diagnóstico de identidad me trajo mucha paz. Me ayudó a ver quién soy y quién quiero ser.", nombre:"Clienta" },
+    { img:"/testimonios/t2.jpg", texto:"Me sorprendió muchísimo la precisión con la que describiste aspectos que ya estaban dentro de mí.", nombre:"adyam777" },
+    { img:"/testimonios/t8.jpg", texto:"Cada que vuelvo a leer el diagnóstico se siente como un abrazo.", nombre:"Clienta" },
+    { img:"/testimonios/t6.jpg", texto:"Te agradezco por confirmarme en voz alta mis potencialidades.", nombre:"Clienta" },
+    { img:"/testimonios/t4.jpg", texto:"Me está haciendo ordenar todo mi negocio, pensar en metas.", nombre:"Clienta" },
+    { img:"/testimonios/t5.jpg", texto:"Ahora mismo estoy imprimiendo todo.", nombre:"Clienta" },
+    { img:"/testimonios/t1.jpg", texto:"Gracias por tu entrega y acompañamiento en las sesiones de coaching 1-1 Quantum Branding.", nombre:"Clienta" },
   ]
 };
 
@@ -655,6 +672,10 @@ function datosLead(estado){
     alineacion_vida: al?al.vida:"", alineacion_negocio: al?al.neg:"",
     telefono: S.telefono||"", acepta_mensajes: S.okmsg?"si":"",
     paso: S.paso, ...S.utm };
+}
+function carruselTestis(){
+  const T=CONFIG.testimonios; if(!T.length) return "";
+  return `<div class="carr" data-carr><div class="carr-pista">${T.map(t=>t.img?`<figure class="carr-item carr-img"><img src="${esc(t.img)}" alt="${esc(t.texto)}" loading="lazy" decoding="async"></figure>`:`<figure class="carr-item"><q>${esc(t.texto)}</q><cite>${esc(t.nombre)}</cite></figure>`).join("")}</div><div class="carr-puntos">${T.map((_,k)=>`<i${k?"":' class="on"'}></i>`).join("")}</div><div class="carr-hint">Desliza →</div></div>`;
 }
 function enviarLead(estado){
   if(!S.email) return;
@@ -999,7 +1020,7 @@ function render(){
       (r && ["cobrar","noavanza","escalar"].includes(S.busca)) ? (r[1] ? `Con lo que generas hoy, cobrar solo un 10 % por debajo de lo que vales son entre USD ${fmt(r[0])} y ${fmt(r[1])} al mes: entre USD ${fmt(r[0]*12)} y ${fmt(r[1]*12)} al año.` : `Con lo que generas hoy, cobrar solo un 10 % por debajo de lo que vales son más de USD ${fmt(r[0])} al mes: más de USD ${fmt(r[0]*12)} al año.`) : null,
       `En 12 meses, si nada cambia: ${PROYECCION[S.busca]}`
     ].filter(Boolean);
-    const testis = CONFIG.testimonios.length ? `<div class="testis">${CONFIG.testimonios.map(t=>`<figure class="testi"><q>${esc(t.texto)}</q><cite>${esc(t.nombre)}</cite></figure>`).join("")}</div>` : "";
+    const testis = CONFIG.testimonios.length ? carruselTestis() : "";
     h=`<section class="pantalla">
       <span class="kicker">Dijiste: «${esc(D[0])}»</span>
       <p class="cierre">${esc(D[1])}</p>
@@ -1098,7 +1119,7 @@ function render(){
   if(P==="mini"){
     const B=bloqueos(), al=alineacion(), area=B.length?AREA[B[0]]:null;
     const D=DOLORES[S.busca][S.dolor];
-    const testis = CONFIG.testimonios.length ? `<div class="testis">${CONFIG.testimonios.map(t=>`<figure class="testi"><q>${esc(t.texto)}</q><cite>${esc(t.nombre)}</cite></figure>`).join("")}</div>` : "";
+    const testis = CONFIG.testimonios.length ? carruselTestis() : "";
     const faq = [
       ["¿Necesito mi hora de nacimiento?","No. Se hace con tu fecha. Si sabes tu hora, mejor; si no, en el Diagnóstico se rectifica."],
       CONFIG.entregaMini ? ["¿Cuándo lo recibo?",`Lo recibes ${CONFIG.entregaMini}.`] : null,
@@ -1289,7 +1310,7 @@ function abrirPago(url){
       <div><div class="rot">Cómo funciona</div><div class="pago-pasos">
         <div><b>01</b>Reservas</div><div><b>02</b>Llenas tu formulario</div><div><b>03</b>Cruzo tus datos</div><div><b>04</b>Recibes documento + audio</div>
       </div></div>
-      ${CONFIG.testimonios.length?`<div><div class="rot">Lo que dicen</div><div class="pago-testis">${CONFIG.testimonios.map(t=>`<figure><q>${esc(t.texto)}</q><cite>${esc(t.nombre)}</cite></figure>`).join("")}</div></div>`:""}
+      ${CONFIG.testimonios.length?`<div><div class="rot">Lo que dicen</div>${carruselTestis()}</div>`:""}
       <div class="pago-precio"><s>USD 297</s><strong>USD 152</strong><span>pago único</span></div>
     </div>
     <div class="pago-acc" id="pagoAcc">
@@ -1317,6 +1338,14 @@ document.addEventListener("click",e=>{
   e.preventDefault(); abrirPago(a.href);
 });
 document.addEventListener("keydown",e=>{ if(e.key==="Escape") cerrarPago(); });
+
+document.addEventListener("scroll",e=>{
+  const p=e.target; if(!(p instanceof Element) || !p.classList.contains("carr-pista")) return;
+  const items=p.children; let k=0, best=1e9;
+  for(let j=0;j<items.length;j++){ const d=Math.abs(items[j].offsetLeft-p.offsetLeft-p.scrollLeft); if(d<best){best=d;k=j;} }
+  if(p.scrollLeft+p.clientWidth>=p.scrollWidth-4) k=items.length-1;
+  p.parentElement.querySelectorAll(".carr-puntos i").forEach((d,j)=>d.classList.toggle("on",j===k));
+},true);
 </script>
 
 </body></html>
