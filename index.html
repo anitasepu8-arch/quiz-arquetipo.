@@ -362,8 +362,12 @@ select:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 .carr-item{flex:0 0 86%;scroll-snap-align:start;margin:0;padding:16px 18px;border-left:2px solid var(--oro);background:rgba(212,175,120,.07);border-radius:0 14px 14px 0;display:flex;flex-direction:column;justify-content:space-between;gap:10px}
 .carr-item q{display:block;font-size:14px;line-height:1.55;color:var(--crema);font-style:italic;quotes:"“" "”"}
 .carr-item cite{font-size:11.5px;font-style:normal;letter-spacing:.06em;color:var(--oro)}
-.carr-item.carr-img{padding:0;border:0;background:#111;border-radius:14px;overflow:hidden;align-items:center;justify-content:center;max-height:340px}
-.carr-item.carr-img img{display:block;width:100%;height:auto;max-height:340px;object-fit:contain}
+.carr-item.carr-img{padding:0;border:1px solid var(--linea);background:rgba(212,175,120,.06);border-radius:14px;overflow:hidden;justify-content:flex-start;gap:0}
+.carr-foto{background:#111;height:250px;display:flex;align-items:center;justify-content:center}
+.carr-foto img{display:block;max-width:100%;max-height:250px;object-fit:contain}
+.carr-img figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;border-top:2px solid var(--oro)}
+.carr-img figcaption q{font-family:var(--display);font-weight:700;font-style:normal;font-size:15px;line-height:1.35;color:var(--oro-claro);quotes:"“" "”"}
+.carr-img figcaption cite{font-size:11.5px;font-style:normal;letter-spacing:.06em;color:var(--crema-2)}
 .carr-puntos{display:flex;justify-content:center;gap:6px;margin-top:10px}
 .carr-puntos i{width:6px;height:6px;border-radius:50%;background:rgba(212,175,120,.3);transition:all .2s}
 .carr-puntos i.on{background:var(--oro);width:18px;border-radius:3px}
@@ -405,15 +409,15 @@ const CONFIG = {
   instagram: "@anitasepum",
   whatsapp: "17865188044",
   entregaMini: "",     // Ej.: "en tu correo en menos de 24 horas" (falta)
-  testimonios: [ // capturas reales en /testimonios (img) + texto alternativo
-    { img:"/testimonios/t3.jpg", texto:"Todo lo que me dijiste en mi diagnóstico personal fue totalmente cierto. Me sorprendió muchísimo la precisión.", nombre:"Jacky" },
-    { img:"/testimonios/t7.jpg", texto:"Hablar contigo y el diagnóstico de identidad me trajo mucha paz. Me ayudó a ver quién soy y quién quiero ser.", nombre:"Clienta" },
-    { img:"/testimonios/t2.jpg", texto:"Me sorprendió muchísimo la precisión con la que describiste aspectos que ya estaban dentro de mí.", nombre:"adyam777" },
-    { img:"/testimonios/t8.jpg", texto:"Cada que vuelvo a leer el diagnóstico se siente como un abrazo.", nombre:"Clienta" },
-    { img:"/testimonios/t6.jpg", texto:"Te agradezco por confirmarme en voz alta mis potencialidades.", nombre:"Clienta" },
-    { img:"/testimonios/t4.jpg", texto:"Me está haciendo ordenar todo mi negocio, pensar en metas.", nombre:"Clienta" },
-    { img:"/testimonios/t5.jpg", texto:"Ahora mismo estoy imprimiendo todo.", nombre:"Clienta" },
-    { img:"/testimonios/t1.jpg", texto:"Gracias por tu entrega y acompañamiento en las sesiones de coaching 1-1 Quantum Branding.", nombre:"Clienta" },
+  testimonios: [ // capturas reales en /testimonios · frase = pie de foto resaltado
+    { img:"/testimonios/t3.jpg", frase:"Todo lo que me dijiste fue totalmente cierto.", nombre:"Jacky", de:"Diagnóstico de Identidad" },
+    { img:"/testimonios/t7.jpg", frase:"Me ayudó a ver quién soy y quién quiero ser.", nombre:"Clienta", de:"Diagnóstico de Identidad" },
+    { img:"/testimonios/t2.jpg", frase:"Sentí que muchas piezas comenzaron a encajar.", nombre:"adyam777", de:"Lectura de identidad" },
+    { img:"/testimonios/t8.jpg", frase:"Cada que vuelvo a leerlo se siente como un abrazo al alma.", nombre:"Clienta", de:"Diagnóstico de Identidad" },
+    { img:"/testimonios/t6.jpg", frase:"Me motiva a tomar determinaciones sin miedo.", nombre:"Clienta", de:"Quantum Branding" },
+    { img:"/testimonios/t4.jpg", frase:"Me está haciendo ordenar todo mi negocio.", nombre:"Clienta", de:"Quantum Branding" },
+    { img:"/testimonios/t5.jpg", frase:"Ahora mismo estoy imprimiendo todo.", nombre:"Clienta", de:"Quantum Branding" },
+    { img:"/testimonios/t1.jpg", frase:"No solo ayudas con los negocios.", nombre:"Clienta", de:"Coaching 1-1" },
   ]
 };
 
@@ -675,7 +679,7 @@ function datosLead(estado){
 }
 function carruselTestis(){
   const T=CONFIG.testimonios; if(!T.length) return "";
-  return `<div class="carr" data-carr><div class="carr-pista">${T.map(t=>t.img?`<figure class="carr-item carr-img"><img src="${esc(t.img)}" alt="${esc(t.texto)}" loading="lazy" decoding="async"></figure>`:`<figure class="carr-item"><q>${esc(t.texto)}</q><cite>${esc(t.nombre)}</cite></figure>`).join("")}</div><div class="carr-puntos">${T.map((_,k)=>`<i${k?"":' class="on"'}></i>`).join("")}</div><div class="carr-hint">Desliza →</div></div>`;
+  return `<div class="carr" data-carr><div class="carr-pista">${T.map(t=>t.img?`<figure class="carr-item carr-img"><div class="carr-foto"><img src="${esc(t.img)}" alt="${esc(t.frase)}" loading="lazy" decoding="async"></div><figcaption><q>${esc(t.frase)}</q><cite>${esc(t.nombre)} · ${esc(t.de)}</cite></figcaption></figure>`:`<figure class="carr-item"><q>${esc(t.texto)}</q><cite>${esc(t.nombre)}</cite></figure>`).join("")}</div><div class="carr-puntos">${T.map((_,k)=>`<i${k?"":' class="on"'}></i>`).join("")}</div><div class="carr-hint">Desliza →</div></div>`;
 }
 function enviarLead(estado){
   if(!S.email) return;
