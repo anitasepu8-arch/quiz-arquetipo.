@@ -58,14 +58,24 @@ export default async function handler(req, res) {
     console.error("Mini sin referencia del quiz", s.id, email);
   }
 
-  const groups = process.env.ML_GROUP_MINI ? [process.env.ML_GROUP_MINI] : [];
+  const grupo = process.env.ML_GROUP_MINI || "";
+  const ml = (ruta, metodo, cuerpo) => fetch(`https://connect.mailerlite.com/api${ruta}`, {
+    method: metodo,
+    headers: { "Content-Type": "application/json", Accept: "application/json", Authorization: `Bearer ${process.env.MAILERLITE_API_KEY}` },
+    ...(cuerpo ? { body: JSON.stringify(cuerpo) } : {}),
+  });
   try {
-    const r = await fetch("https://connect.mailerlite.com/api/subscribers", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json", Authorization: `Bearer ${process.env.MAILERLITE_API_KEY}` },
-      body: JSON.stringify({ email, fields, ...(groups.length ? { groups } : {}) }),
-    });
+    // 1) Guardar datos y enlace (sin grupo todavía)
+    const r = await ml("/subscribers", "POST", { email, fields });
     if (!r.ok) { console.error("MailerLite", r.status, (await r.text()).slice(0, 400)); return res.status(500).json({ ok: false }); }
+    const id = (await r.json())?.data?.id;
+    // 2) Sacar y volver a meter en el grupo: la automatización se dispara al ENTRAR al grupo,
+    //    así que quien ya estaba (segunda compra, pruebas) no recibía el correo.
+    if (grupo && id) {
+      await ml(`/subscribers/${id}/groups/${grupo}`, "DELETE").catch(() => {});
+      const g = await ml(`/subscribers/${id}/groups/${grupo}`, "POST");
+      if (!g.ok) { console.error("MailerLite grupo", g.status, (await g.text()).slice(0, 400)); return res.status(500).json({ ok: false }); }
+    }
   } catch (e) { console.error("MailerLite error", e); return res.status(500).json({ ok: false }); }
 
   return res.status(200).json({ ok: true });
