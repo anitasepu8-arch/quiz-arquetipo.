@@ -752,6 +752,16 @@ function enviarLead(estado){
 const CLAVE="qb-quiz-avance-v1";
 function guardarAvance(){ try{ if(S.paso==="inicio") return; localStorage.setItem(CLAVE, JSON.stringify({t:Date.now(), S})); }catch(e){} }
 function leerAvance(){ try{ const o=JSON.parse(localStorage.getItem(CLAVE)||"null"); if(o && o.S && o.S.paso && o.S.paso!=="inicio" && Date.now()-o.t < 30*864e5) return o.S; }catch(e){} return null; }
+/* Al retomar, el arquetipo se recalcula desde la fecha: así nadie ve un resultado de una fórmula anterior. */
+function recalcularGuardado(){
+  if(!S.d||!S.m||!S.a) return;
+  const d=+S.d, m=+S.m, a=+S.a, nueva=arquetipoReal(d,m,a);
+  S.pReal=puntosReal(d,m,a);
+  if(nueva!==S.real){
+    S.real=nueva; S.opcApuesta=null; S.apuesta=null;
+    if(FLUJO.indexOf(S.paso)>FLUJO.indexOf("apuesta")) S.paso="apuesta";
+  }
+}
 function borrarAvance(){ try{ localStorage.removeItem(CLAVE); }catch(e){} }
 function flujo(){ return FLUJO.filter(p=>(p!=="ingreso"||!sinIngreso()) && ((p!=="giro"&&p!=="modelo")||tieneNegocio())); }
 function ir(p){ S.paso=p; render(); }
@@ -1261,7 +1271,7 @@ function bind(){
   q("#aMini")?.addEventListener("click",()=>ir("mini"));
   q("#aEmail")?.addEventListener("click",()=>ir("email"));
   q("#repetir")?.addEventListener("click",()=>{ borrarAvance(); S=NUEVO(); render(); });
-  q("#continuar")?.addEventListener("click",()=>{ const p=leerAvance(); if(!p) return; S=Object.assign(NUEVO(),p); if(S.paso==="calc") S.paso="r1"; render(); });
+  q("#continuar")?.addEventListener("click",()=>{ const p=leerAvance(); if(!p) return; S=Object.assign(NUEVO(),p); recalcularGuardado(); if(S.paso==="calc") S.paso="r1"; render(); });
   q("#nuevo")?.addEventListener("click",()=>{ borrarAvance(); S=NUEVO(); S.paso="datos"; render(); });
   app.querySelectorAll("[data-dedica]").forEach(b=>b.onclick=()=>{ S.dedica=DEDICA[+b.dataset.dedica][0]; if(sinIngreso()) S.ingreso=null; if(!tieneNegocio()){ S.giro=""; S.modelo=null; } siguiente(); });
   app.querySelectorAll("[data-modelo]").forEach(b=>b.onclick=()=>{ S.modelo=MODELOS[+b.dataset.modelo][0];
@@ -1327,7 +1337,7 @@ function bind(){
     const d=+S.d, m=+S.m, a=+S.a, f=new Date(a,m-1,d);
     if(f.getMonth()!==m-1) return mal(`El ${d} de ${MESES[m-1]} no existe en ${a}. Revisa el día.`);
     const nueva=arquetipoReal(d,m,a);
-    if(nueva!==S.real){ S.real=nueva; if(!S.pReal) S.pReal=puntosReal(d,m,a); S.opcApuesta=null; S.apuesta=null; }
+    if(nueva!==S.real){ S.real=nueva; S.pReal=puntosReal(d,m,a); S.opcApuesta=null; S.apuesta=null; }
     enviarLead("iniciado");
     siguiente();
   });
