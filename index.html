@@ -1327,7 +1327,7 @@ function bind(){
     const d=+S.d, m=+S.m, a=+S.a, f=new Date(a,m-1,d);
     if(f.getMonth()!==m-1) return mal(`El ${d} de ${MESES[m-1]} no existe en ${a}. Revisa el día.`);
     const nueva=arquetipoReal(d,m,a);
-    if(nueva!==S.real){ S.real=nueva; S.pReal=puntosReal(d,m,a); S.opcApuesta=null; S.apuesta=null; }
+    if(nueva!==S.real){ S.real=nueva; if(!S.pReal) S.pReal=puntosReal(d,m,a); S.opcApuesta=null; S.apuesta=null; }
     enviarLead("iniciado");
     siguiente();
   });

@@ -1,0 +1,1552 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Hay 28 arquetipos. Solo uno es el tuyo. Descúbrelo gratis con tu fecha de nacimiento.">
+<meta property="og:title" content="Tu Arquetipo de Marca · Quantum Branding">
+<meta property="og:description" content="Hay 28 arquetipos. Solo uno es el tuyo. Y probablemente no es el que crees.">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head><body>
+<title>Tu Arquetipo de Marca</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@300;400;500;600&display=swap">
+<style>
+/* Layout: app de una columna, cabecera fija con progreso segmentado; cada paso es una pantalla; el resultado cierra con el mapa de 8 ejes (diseño vs. respuestas) */
+:root{
+  --tinto:#0E0506;
+  --tinto-2:#170809;
+  --borgona:#4E0000;
+  --borgona-2:#7A1A1A;
+  --oro:#D4AF78;
+  --oro-claro:#E9D3A8;
+  --crema:#F5F1E8;
+  --crema-2:#BFB3A6;
+  --turquesa:#35C9C1;
+  --linea:rgba(212,175,120,.22);
+  --display:"Montserrat", "Helvetica Neue", Arial, sans-serif;
+  --body:"Poppins", "Helvetica Neue", Arial, sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{
+  margin:0;background:var(--tinto);color:var(--crema);font-family:var(--body);font-size:16px;line-height:1.6;font-weight:300;
+  padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));
+  -webkit-font-smoothing:antialiased;
+}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background:radial-gradient(90% 55% at 100% 0%, rgba(122,26,26,.55), transparent 70%), radial-gradient(70% 45% at 0% 100%, rgba(78,0,0,.6), transparent 70%);}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--tinto)}
+
+.cab{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(14,5,6,.88);backdrop-filter:blur(10px);
+  margin-left:calc(-1 * max(16px, env(safe-area-inset-left,0px)));margin-right:calc(-1 * max(16px, env(safe-area-inset-right,0px)));
+  padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));border-bottom:1px solid var(--linea)}
+.cab-in{max-width:560px;margin:0 auto;padding-block:14px;display:flex;flex-direction:column;gap:10px}
+.cab-fila{display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:var(--display);font-weight:800;font-size:12px;letter-spacing:.28em;color:var(--crema)}
+.logo span{color:var(--oro)}
+.cuenta{font-family:var(--display);font-weight:600;font-size:12px;letter-spacing:.12em;color:var(--oro);font-variant-numeric:tabular-nums}
+.segs{display:flex;gap:4px}
+.segs i{flex:1;height:3px;border-radius:2px;background:rgba(245,241,232,.12);transition:background .35s}
+.segs i.on{background:var(--oro)}
+.segs i.now{background:linear-gradient(90deg,var(--oro),var(--turquesa))}
+
+main{max-width:560px;margin:0 auto;padding-block:36px 64px}
+.pantalla{display:flex;flex-direction:column;gap:24px;animation:entra .5s cubic-bezier(.2,.7,.2,1)}
+@keyframes entra{from{opacity:.0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+.kicker{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--turquesa)}
+h1,h2,h3{font-family:var(--display);font-weight:800;margin:0;text-wrap:balance;letter-spacing:-.01em;line-height:1.05}
+h1{font-size:clamp(32px,8.6vw,50px);text-transform:uppercase}
+h1 em,h2 em{font-style:normal;color:var(--oro)}
+h2{font-size:clamp(26px,6.6vw,34px)}
+.lead{margin:0;color:var(--crema-2);font-size:16px;max-width:52ch}
+.lead strong{color:var(--crema);font-weight:500}
+
+/* Bienvenida */
+.hero{display:grid;gap:26px}
+.sello{width:100%;max-width:180px;justify-self:center;aspect-ratio:1}
+.sello svg{width:100%;height:100%;display:block}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:12px;font-weight:500;letter-spacing:.04em;padding:6px 12px;border-radius:999px;border:1px solid var(--linea);color:var(--crema-2)}
+
+/* Opciones */
+.opciones{display:grid;gap:10px}
+.opciones.doble{grid-template-columns:1fr 1fr}
+@media (max-width:440px){.opciones.doble{grid-template-columns:1fr}}
+.op{font:inherit;font-size:16px;font-weight:400;color:var(--crema);text-align:left;cursor:pointer;
+  display:flex;align-items:center;gap:16px;padding:16px 18px;border-radius:14px;
+  background:linear-gradient(180deg,rgba(245,241,232,.05),rgba(245,241,232,.02));border:1px solid var(--linea);
+  transition:border-color .2s, background .2s, transform .15s}
+.op .letra{flex:none;width:34px;height:34px;border-radius:9px;display:grid;place-items:center;
+  font-family:var(--display);font-weight:800;font-size:14px;color:var(--oro);border:1px solid var(--linea);transition:all .2s}
+.op:hover{border-color:var(--oro);background:rgba(212,175,120,.07)}
+.op:hover .letra{background:var(--oro);color:var(--tinto);border-color:var(--oro)}
+.op:active{transform:scale(.985)}
+.op[aria-pressed="true"]{background:linear-gradient(135deg,var(--borgona),var(--borgona-2));border-color:var(--oro)}
+.op[aria-pressed="true"] .letra{background:var(--oro);color:var(--tinto)}
+.op.frase{font-family:var(--display);font-weight:600;font-size:15px;min-height:72px}
+
+/* Botones */
+.acciones{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.btn{font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;
+  border:0;border-radius:999px;padding:18px 30px;background:var(--oro);color:var(--tinto);text-decoration:none;text-align:center;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;transition:background .2s, transform .15s;box-shadow:0 10px 30px -12px rgba(212,175,120,.6)}
+.btn:hover{background:var(--oro-claro)}
+.btn:active{transform:scale(.98)}
+.btn.full{width:100%}
+.btn.sec{background:transparent;color:var(--crema-2);box-shadow:none;border:1px solid var(--linea);font-weight:600}
+.btn.sec:hover{color:var(--crema);border-color:var(--oro)}
+.volver{font:inherit;font-size:13px;color:var(--crema-2);background:none;border:0;cursor:pointer;padding:4px 0;align-self:flex-start;letter-spacing:.04em}
+.volver:hover{color:var(--oro)}
+.op:focus-visible,.btn:focus-visible,.volver:focus-visible,input:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
+
+/* Formularios */
+.campos{display:flex;flex-direction:column;gap:18px}
+label{display:flex;flex-direction:column;gap:8px;font-family:var(--display);font-weight:600;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
+label small{font-family:var(--body);font-weight:300;font-size:13px;letter-spacing:0;text-transform:none;color:var(--crema-2)}
+input{font:inherit;font-size:17px;font-weight:400;color:var(--crema);background:rgba(245,241,232,.05);border:1px solid var(--linea);border-radius:12px;padding:14px 16px;width:100%;min-width:0}
+input::placeholder{color:rgba(191,179,166,.55)}
+input::-webkit-calendar-picker-indicator{filter:invert(.8) sepia(.4)}
+.fila{display:grid;grid-template-columns:1fr 1.4fr;gap:12px}
+@media (max-width:440px){.fila{grid-template-columns:1fr}}
+.opcional{border-top:1px dashed var(--linea);padding-top:18px;display:flex;flex-direction:column;gap:12px}
+.error{margin:0;font-size:14px;color:#F3A7A7}
+
+/* Cálculo */
+.calc{min-height:58vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;text-align:center}
+.calc .sello{max-width:200px}
+
+/* Resultado */
+.ficha{position:relative;overflow:hidden;border-radius:20px;padding:30px 24px 28px;display:flex;flex-direction:column;gap:14px;
+  background:linear-gradient(150deg,var(--borgona-2) 0%,var(--borgona) 45%,#2A0204 100%);border:1px solid rgba(212,175,120,.45)}
+.ficha::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;border:1px solid rgba(212,175,120,.25);box-shadow:0 0 0 30px rgba(212,175,120,.05)}
+.ficha .rot{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--oro-claro)}
+.ficha .nombre{font-family:var(--display);font-weight:800;font-size:clamp(34px,9vw,48px);line-height:1;text-transform:uppercase;color:var(--crema);text-wrap:balance;letter-spacing:-.01em}
+.ficha .ejes{font-family:var(--display);font-weight:600;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--oro)}
+.ficha p{margin:0;color:var(--crema);max-width:44ch;position:relative;z-index:1}
+.revelar{animation:revela 1s cubic-bezier(.2,.7,.2,1)}
+@keyframes revela{from{opacity:.0;letter-spacing:.2em;filter:blur(6px)}to{opacity:1}}
+
+.comparar{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lado{padding:16px;border-radius:14px;border:1px solid var(--linea);display:flex;flex-direction:column;gap:6px;min-width:0}
+.lado .r{font-family:var(--display);font-weight:700;font-size:10px;letter-spacing:.22em;text-transform:uppercase}
+.lado .n{font-family:var(--display);font-weight:800;font-size:17px;line-height:1.15}
+.lado.real .r{color:var(--oro)} .lado.real{background:rgba(212,175,120,.06)}
+.lado.perc .r{color:var(--turquesa)}
+
+.mapa{border:1px solid var(--linea);border-radius:18px;padding:20px 12px 14px;display:flex;flex-direction:column;gap:6px;background:rgba(245,241,232,.02)}
+.mapa h3{font-size:13px;letter-spacing:.2em;text-transform:uppercase;text-align:center;color:var(--crema)}
+.mapa svg{width:100%;height:auto;display:block}
+.leyenda{display:flex;justify-content:center;gap:18px;font-size:12px;color:var(--crema-2);flex-wrap:wrap}
+.leyenda span{display:inline-flex;align-items:center;gap:6px}
+.leyenda i{width:14px;height:3px;border-radius:2px;display:inline-block}
+
+.brecha{display:flex;flex-direction:column;gap:12px}
+.brecha p{margin:0}
+.brecha b{font-weight:600;color:var(--oro)}
+.alerta{padding:18px;border-radius:14px;background:rgba(53,201,193,.07);border:1px solid rgba(53,201,193,.35);color:var(--crema)}
+.alerta b{color:var(--turquesa)}
+.cierre{font-family:var(--display);font-weight:700;font-size:19px;line-height:1.3;margin:0;color:var(--crema);text-wrap:balance}
+.nota{margin:0;font-size:13px;color:var(--crema-2)}
+.cta{display:flex;flex-direction:column;gap:10px;padding-top:6px}
+.ok{font-family:var(--display);font-weight:800;font-size:clamp(30px,8vw,40px);text-transform:uppercase;line-height:1.05}
+.ok em{font-style:normal;color:var(--oro)}
+
+@keyframes gira{to{transform:rotate(360deg)}}
+
+/* ===== v3: curiosidad, revelación por capas, ofertas, tarjeta ===== */
+.candado{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--crema-2)}
+.candado .lbl{font-family:var(--display);font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-size:10px;color:var(--oro);white-space:nowrap}
+.borroso{filter:blur(7px);user-select:none;-webkit-user-select:none;pointer-events:none;font-family:var(--display);font-weight:800;text-transform:uppercase;color:var(--crema);letter-spacing:.02em}
+.candado .borroso{filter:blur(5px);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:clip;min-width:0}
+.ico{flex:none;width:14px;height:14px}
+
+.teaser{display:flex;flex-direction:column;gap:22px}
+.caja-oculta{position:relative;border-radius:20px;padding:34px 22px;text-align:center;overflow:hidden;
+  background:linear-gradient(150deg,var(--borgona-2),var(--borgona) 55%,#2A0204);border:1px solid rgba(212,175,120,.45);display:flex;flex-direction:column;gap:14px;align-items:center}
+.caja-oculta .borroso{font-size:clamp(30px,8vw,42px);line-height:1.05}
+.caja-oculta .rot{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--oro-claro)}
+.caja-oculta .sello-mini{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--tinto);border:1px solid var(--oro)}
+
+.capa{min-height:62vh;justify-content:center}
+.gran-nombre{font-family:var(--display);font-weight:800;font-size:clamp(44px,13vw,72px);line-height:.95;text-transform:uppercase;color:var(--crema);text-wrap:balance;letter-spacing:-.02em}
+.gran-nombre em{font-style:normal;color:var(--oro)}
+.veredicto{display:inline-flex;align-self:flex-start;gap:8px;align-items:center;padding:8px 14px;border-radius:999px;font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.veredicto.si{background:rgba(212,175,120,.15);color:var(--oro);border:1px solid var(--oro)}
+.veredicto.no{background:rgba(53,201,193,.1);color:var(--turquesa);border:1px solid var(--turquesa)}
+.esencia{font-family:var(--display);font-weight:600;font-size:clamp(22px,5.6vw,28px);line-height:1.3;color:var(--crema);margin:0;text-wrap:balance}
+.gancho{font-family:var(--display);font-weight:800;font-size:clamp(24px,6.4vw,32px);line-height:1.15;margin:0;text-wrap:balance}
+.gancho em{font-style:normal;color:var(--oro)}
+
+.ofertas{display:flex;flex-direction:column;gap:14px}
+.oferta{position:relative;border-radius:18px;padding:22px 20px;display:flex;flex-direction:column;gap:12px;border:1px solid var(--linea);background:rgba(245,241,232,.03)}
+.oferta.reco{border:1.5px solid var(--oro);background:linear-gradient(160deg,rgba(122,26,26,.55),rgba(78,0,0,.35))}
+.oferta .badge{position:absolute;top:-11px;left:18px;background:var(--oro);color:var(--tinto);font-family:var(--display);font-weight:800;font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:5px 10px;border-radius:999px}
+.oferta .cab-of{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.oferta h3{font-size:19px;line-height:1.15}
+.precio{font-family:var(--display);font-weight:800;font-size:26px;color:var(--oro);font-variant-numeric:tabular-nums;white-space:nowrap}
+.precio small{font-size:12px;font-weight:600;color:var(--crema-2);letter-spacing:.1em;margin-right:4px}
+.oferta p{margin:0;color:var(--crema-2);font-size:15px}
+.oferta ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.oferta li{display:flex;gap:10px;align-items:baseline}
+.oferta li::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--oro);transform:translateY(-2px)}
+.oferta li.fuera{color:rgba(191,179,166,.6)}
+.oferta li.fuera::before{background:transparent;border:1px solid rgba(191,179,166,.5)}
+.alineacion,.bloqueos,.costo{border:1px solid var(--linea);border-radius:18px;padding:20px 18px;display:flex;flex-direction:column;gap:16px;background:rgba(245,241,232,.02)}
+.alineacion h3,.bloqueos h3,.costo h3{font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--crema)}
+.nivel{display:flex;flex-direction:column;gap:8px}
+.nivel-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:15px}
+.nivel-top>span:first-child{min-width:0;overflow-wrap:anywhere}
+.pct{font-family:var(--display);font-weight:800;font-size:22px;font-variant-numeric:tabular-nums}
+.seg10{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
+.seg10 i{height:8px;border-radius:2px;background:rgba(245,241,232,.1)}
+.seg10 i.on{background:var(--oro)}
+.niv{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+.al{color:var(--turquesa)} .par{color:var(--oro)} .des{color:#F08A8A}
+.nivel:has(.des) .seg10 i.on{background:#C94A4A}
+.nivel:has(.al) .seg10 i.on{background:var(--turquesa)}
+.bloq{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:12px;background:rgba(122,26,26,.35);border:1px solid rgba(212,175,120,.25)}
+.bloq>div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.bloq .b-t{font-family:var(--display);font-weight:700;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
+.bloq b{color:var(--crema);font-weight:600}
+.bloq .borroso{font-size:15px}
+.costo{border-color:rgba(240,138,138,.45);background:rgba(122,26,26,.22)}
+.costo h3{color:#F3B0B0}
+.costo ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px}
+.costo li{display:flex;gap:12px;align-items:baseline;font-size:15px;line-height:1.5}
+.costo li::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:#F08A8A;transform:translateY(-2px)}
+.incluye{color:var(--crema)!important;font-size:14px!important}
+.incluye-mini{display:flex;flex-direction:column;gap:14px;border:1px solid var(--linea);border-radius:18px;padding:20px 18px;background:rgba(245,241,232,.02)}
+.incluye-mini h3{font-size:13px;letter-spacing:.2em;text-transform:uppercase}
+.incluye-mini .item{display:flex;gap:14px;align-items:flex-start}
+.incluye-mini .num{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--oro);color:var(--tinto);font-family:var(--display);font-weight:800;font-size:13px}
+.incluye-mini .item>div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.incluye-mini b{font-family:var(--display);font-weight:700;font-size:16px}
+.incluye-mini .item>div span{color:var(--crema-2);font-size:14px}
+.precio-mini{display:flex;flex-direction:column;gap:12px;border:1.5px solid var(--oro);border-radius:18px;padding:22px 20px;background:linear-gradient(160deg,rgba(122,26,26,.55),rgba(78,0,0,.35))}
+.precio-mini .ancla{display:flex;justify-content:space-between;gap:12px;color:var(--crema-2);font-size:14px}
+.precio-mini .p152{font-family:var(--display);font-weight:700}
+.precio-mini .hoy{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.precio-mini .hoy b{font-family:var(--display);font-weight:800;font-size:34px;color:var(--oro)}
+.faq{display:flex;flex-direction:column;gap:8px}
+.faq details{border:1px solid var(--linea);border-radius:12px;padding:14px 16px}
+.faq summary{cursor:pointer;font-family:var(--display);font-weight:600;font-size:15px;list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";float:right;color:var(--oro)}
+.faq details[open] summary::after{content:"–"}
+.faq p{margin:10px 0 0;color:var(--crema-2);font-size:14px}
+.presentacion{border:1px solid var(--linea);border-radius:18px;padding:20px 18px;display:flex;flex-direction:column;gap:12px;background:rgba(245,241,232,.02)}
+.presentacion h3{font-size:13px;letter-spacing:.2em;text-transform:uppercase}
+.presentacion p{margin:0;font-size:15px}
+.presentacion b{color:var(--oro);font-weight:600}
+.presentacion .cita{font-family:var(--display);font-weight:700;font-size:20px;color:var(--crema);overflow-wrap:anywhere}
+.analisis{border:1.5px solid var(--turquesa);border-radius:18px;padding:22px 20px;display:flex;flex-direction:column;gap:14px;background:rgba(53,201,193,.06)}
+.analisis h3{font-size:20px;line-height:1.2}
+.analisis>p{margin:0;color:var(--crema-2)}
+.analisis .salto{border-top:1px dashed var(--linea);padding-top:16px;display:flex;flex-direction:column;gap:10px}
+.analisis .salto p{margin:0;font-size:15px}
+.analisis .salto b{color:var(--oro)}
+.modelo{border:1px solid var(--linea);border-radius:18px;padding:20px 18px;display:flex;flex-direction:column;gap:12px;background:rgba(245,241,232,.02)}
+.modelo h3{font-size:13px;letter-spacing:.2em;text-transform:uppercase}
+.modelo p{margin:0;font-size:15px}
+.modelo-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-family:var(--display);font-weight:700;font-size:16px}
+.modelo-top>span:first-child{min-width:0;flex:1 1 180px}
+.cita-m{font-style:italic;color:var(--crema-2)!important;overflow-wrap:anywhere}
+textarea{font:inherit;font-size:16px;font-weight:400;letter-spacing:0;text-transform:none;color:var(--crema);background:rgba(245,241,232,.05);border:1px solid var(--linea);border-radius:12px;padding:14px 16px;width:100%;min-width:0;resize:vertical;line-height:1.5}
+textarea::placeholder{color:rgba(191,179,166,.55)}
+textarea:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
+.veredicto-m{flex:none;padding:6px 12px;border-radius:999px;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.veredicto-m.si{background:rgba(53,201,193,.15);color:var(--turquesa);border:1px solid var(--turquesa)}
+.veredicto-m.medio{background:rgba(212,175,120,.15);color:var(--oro);border:1px solid var(--oro)}
+.veredicto-m.no{background:rgba(240,138,138,.12);color:#F08A8A;border:1px solid #F08A8A}
+.verif{margin-top:24px;padding:14px;border:1px dashed var(--turquesa);border-radius:10px;font-size:13px;color:var(--crema-2);font-variant-numeric:tabular-nums}
+.ligero{margin:0;font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--oro)}
+.uno-a-uno{display:flex;flex-direction:column;gap:10px;padding:18px 20px;border-radius:18px;border:1px dashed var(--linea);text-align:center}
+.uno-a-uno p{margin:0;font-family:var(--display);font-weight:700;font-size:16px}
+.fecha-ok{margin:0;font-size:14px;color:var(--crema-2)}
+.fecha-ok b{color:var(--crema);font-weight:600}
+.fecha-ok .volver{color:var(--oro);text-decoration:underline}
+.zodiaco{margin:0;font-size:15px;color:var(--crema-2)}
+.zodiaco b{font-family:var(--display);font-weight:700;color:var(--oro)}
+.zodiaco span{font-size:13px}
+.titulo-llamada{font-size:21px;line-height:1.15;padding-top:4px}
+.oferta.llamada{border:1.5px solid var(--turquesa);background:rgba(53,201,193,.07);text-align:center}
+.llamada-t{margin:0;font-family:var(--display);font-weight:800;font-size:19px;line-height:1.25}
+.tel{display:grid;grid-template-columns:auto 1fr;gap:8px}
+.tel select{width:auto;padding-right:30px}
+.check{flex-direction:row;align-items:flex-start;gap:10px;font-family:var(--body);font-weight:300;font-size:13px;letter-spacing:0;text-transform:none;color:var(--crema-2);cursor:pointer}
+.check input{width:20px;height:20px;flex:none;margin-top:1px;accent-color:var(--oro)}
+.pitch{display:flex;flex-direction:column;gap:10px;padding:20px 18px;border-left:3px solid var(--oro);background:rgba(212,175,120,.06);border-radius:0 16px 16px 0}
+.pitch p{margin:0;font-size:16px;line-height:1.5;color:var(--crema)}
+.pitch b{color:var(--oro);font-weight:600}
+.pitch p:last-child{font-family:var(--display);font-weight:700;font-size:17px}
+.espejo{margin:0;padding:6px 4px 0;font-size:15px;line-height:1.6;color:var(--crema-2);font-style:italic;text-align:center}
+.retomar{display:flex;flex-direction:column;gap:12px;padding:18px;border:1px solid var(--oro);border-radius:16px;background:rgba(212,175,120,.07)}
+.retomar p{margin:0;font-family:var(--display);font-weight:700;font-size:17px}
+.porque{margin:0;padding:12px 14px;border-radius:10px;background:rgba(212,175,120,.12);color:var(--oro-claro)!important;font-size:14px!important;font-weight:500}
+.para-ti{color:var(--oro-claro)!important;font-weight:500}
+.garantia{font-size:13px;color:var(--turquesa);margin:0}
+.otra{font-size:14px;color:var(--crema-2);margin:0;text-align:center}
+.otra a{color:var(--oro)}
+
+.testis{display:flex;flex-direction:column;gap:10px}
+.testi{margin:0;padding:16px 18px;border-left:2px solid var(--oro);background:rgba(245,241,232,.03);border-radius:0 12px 12px 0;display:flex;flex-direction:column;gap:6px}
+.testi q{font-style:normal;quotes:"“" "”"}
+.testi cite{font-style:normal;font-size:13px;color:var(--oro)}
+
+.tarjeta{width:100%;max-width:320px;align-self:center;aspect-ratio:9/16;border-radius:22px;overflow:hidden;position:relative;
+  background:linear-gradient(165deg,var(--borgona-2) 0%,var(--borgona) 45%,var(--tinto) 100%);border:1px solid rgba(212,175,120,.5);
+  display:flex;flex-direction:column;justify-content:space-between;padding:28px 22px}
+.tarjeta .t-top{font-family:var(--display);font-weight:800;font-size:10px;letter-spacing:.3em;color:var(--crema)}
+.tarjeta .t-top span{color:var(--oro)}
+.tarjeta .t-mid{display:flex;flex-direction:column;gap:12px}
+.tarjeta .t-lbl{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--oro-claro)}
+.tarjeta .t-nom{font-family:var(--display);font-weight:800;font-size:36px;line-height:.98;text-transform:uppercase;text-wrap:balance}
+.tarjeta .t-ese{font-size:14px;line-height:1.5;color:var(--crema)}
+.tarjeta .t-pie{display:flex;flex-direction:column;gap:4px;border-top:1px solid rgba(212,175,120,.35);padding-top:14px}
+.tarjeta .t-pie b{font-family:var(--display);font-weight:800;font-size:15px;color:var(--oro)}
+.tarjeta .t-pie span{font-size:12px;color:var(--crema-2)}
+.tarjeta .t-oct{position:absolute;right:-70px;top:70px;width:210px;opacity:.35}
+
+.hora-campo{display:flex;flex-direction:column;gap:8px;min-width:0}
+.hora-op{display:flex;flex-wrap:wrap;gap:6px}
+.mini{font:inherit;font-size:12px;font-weight:500;color:var(--crema-2);background:transparent;border:1px solid var(--linea);border-radius:999px;padding:6px 11px;cursor:pointer}
+.mini.on{color:var(--tinto);background:var(--oro);border-color:var(--oro)}
+.mini:focus-visible{outline:2px solid var(--turquesa);outline-offset:2px}
+input:disabled{opacity:.4}
+.fecha3{display:grid;grid-template-columns:.8fr 1.4fr 1fr;gap:8px}
+select{font:inherit;font-family:var(--body);font-size:16px;font-weight:400;letter-spacing:0;text-transform:none;color:var(--crema);background:rgba(245,241,232,.05);border:1px solid var(--linea);border-radius:12px;padding:14px 10px;width:100%;min-width:0;appearance:none;-webkit-appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,var(--oro) 50%),linear-gradient(135deg,var(--oro) 50%,transparent 50%);background-position:calc(100% - 16px) 50%,calc(100% - 11px) 50%;background-size:5px 5px;background-repeat:no-repeat}
+select option{background:#170809;color:var(--crema)}
+select:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* Ventana de pago (Systeme) */
+.genero{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.genero .glbl{font-family:var(--display);font-weight:600;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
+.genero-op{display:flex;gap:8px}
+.cp-tit{font-family:var(--display);font-weight:800;font-size:18px;margin:8px 0 0}
+.cp-dolor{border-left:2px solid var(--oro);padding:4px 0 4px 14px;margin:10px 0 12px}
+.cp-dolor span{display:block;font-family:var(--display);font-weight:700;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--oro)}
+.cp-dolor b{display:block;font-family:var(--display);font-size:17px;line-height:1.3;color:var(--crema);margin:4px 0}
+.cp-dolor p{margin:0;font-size:13px;color:var(--crema-2)}
+.cp-tu{background:linear-gradient(90deg,rgba(122,26,26,.55),rgba(122,26,26,.15))}
+.cp-tu .cp-t{font-weight:600}
+.cp-tag{display:table;font-style:normal;font-family:var(--display);font-weight:700;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--tinto);background:var(--oro);border-radius:999px;padding:2px 7px;margin:0 0 4px}
+.cp-tu .cp-lock{color:#E9A0A0;background:rgba(233,160,160,.12)}
+.compara{border:1px solid var(--linea);border-radius:18px;overflow:hidden;background:rgba(245,241,232,.02);margin:6px 0 18px}
+.cp-fila{display:grid;grid-template-columns:1fr 78px 92px;align-items:center;border-top:1px solid rgba(212,175,120,.12)}
+.cp-fila>span{padding:10px 8px}
+.cp-fila>span:nth-child(3){background:linear-gradient(180deg,rgba(212,175,120,.12),rgba(212,175,120,.06));height:100%;display:flex;align-items:center;justify-content:center}
+.cp-fila>span:nth-child(2){display:flex;align-items:center;justify-content:center;height:100%}
+.cp-cab{border-top:0}
+.cp-h{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;padding:12px 4px!important}
+.cp-h i{font-style:normal;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--tinto);background:var(--oro);border-radius:999px;padding:2px 6px}
+.cp-h.cp-hm i{background:rgba(245,241,232,.15);color:var(--crema)}
+.cp-h b{font-family:var(--display);font-size:12.5px;font-weight:800;color:var(--crema)}
+.cp-h em{font-style:normal;font-family:var(--display);font-weight:800;font-size:15px;color:var(--crema-2)}
+.cp-h.cp-hd em{color:var(--oro)}
+.cp-t{font-size:13px;line-height:1.35;color:var(--crema)}
+.cp-bloq .cp-t{color:var(--crema)}
+.cp-c{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
+.cp-c small{font-size:10.5px;line-height:1.2;color:var(--crema-2)}
+.cp-c.cp-ok.cp-mini{color:var(--crema-2)}
+.cp-c.cp-ok.cp-diag{color:var(--oro)}
+.cp-c.cp-ok.cp-diag svg{filter:drop-shadow(0 0 6px rgba(212,175,120,.6))}
+.cp-c.cp-ok.cp-diag small{color:var(--oro-claro);font-weight:600}
+.cp-c.cp-lock{color:rgba(245,241,232,.28);width:30px;height:30px;border-radius:50%;background:rgba(245,241,232,.05);justify-content:center}
+.cp-bloq>span:nth-child(2){background:repeating-linear-gradient(135deg,rgba(245,241,232,.025) 0 6px,transparent 6px 12px)}
+.cp-nota{border-top:1px solid rgba(212,175,120,.12);padding:12px 14px;font-size:12px;text-align:center;color:var(--crema-2)}
+.cp-btn{padding:10px 6px!important;font-size:10.5px!important;letter-spacing:.06em!important;width:100%}
+.pago-capa{position:fixed;inset:0;z-index:100;background:rgba(8,3,4,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;animation:pagoIn .25s ease}
+@keyframes pagoIn{from{opacity:0}to{opacity:1}}
+.pago-caja{width:min(520px,100%);height:min(88vh,860px);background:var(--tinto-2);border:1px solid var(--linea);border-radius:20px 20px 0 0;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 -20px 60px rgba(0,0,0,.6)}
+@media(min-width:600px){.pago-capa{align-items:center}.pago-caja{border-radius:20px}}
+.pago-top{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--linea)}
+.pago-top b{font-family:var(--display);font-weight:800;font-size:14px;letter-spacing:.04em;color:var(--crema)}
+.pago-top small{display:block;font-size:12px;color:var(--oro)}
+.pago-x{margin-left:auto;width:36px;height:36px;border-radius:50%;border:1px solid var(--linea);background:transparent;color:var(--crema);font-size:20px;line-height:1;cursor:pointer}
+.pago-x:hover{border-color:var(--oro)}
+.pago-marco{flex:1;position:relative;background:#fff}
+.pago-marco iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.pago-cargando{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#666;font-size:14px}
+.pago-info{flex:1;overflow-y:auto;padding:22px 20px 8px;display:flex;flex-direction:column;gap:18px}
+.pago-info>*{flex-shrink:0}
+.pago-info h3{font-family:var(--display);font-weight:800;font-size:22px;line-height:1.15;margin:0;color:var(--crema)}
+.pago-info h3 em{font-style:normal;color:var(--oro)}
+.pago-info p{margin:0;font-size:14px;line-height:1.55;color:var(--crema-2)}
+.pago-info .rot{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--oro);margin-bottom:8px}
+.pago-chips{display:flex;flex-wrap:wrap;gap:6px}
+.pago-chips span{font-size:12px;padding:6px 10px;border:1px solid var(--linea);border-radius:999px;color:var(--crema)}
+.pago-lista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.pago-lista li{font-size:14px;line-height:1.45;color:var(--crema);padding-left:22px;position:relative}
+.pago-lista li::before{content:"✓";position:absolute;left:0;color:var(--oro);font-weight:700}
+.pago-lista li small{display:block;color:var(--crema-2);font-size:12.5px}
+.pago-pasos{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;counter-reset:p}
+.pago-pasos div{font-size:11.5px;line-height:1.35;color:var(--crema-2);border-top:2px solid var(--oro);padding-top:8px}
+.pago-pasos b{display:block;font-family:var(--display);color:var(--oro);font-size:12px}
+.pago-tuyo{background:linear-gradient(135deg,var(--borgona),var(--borgona-2));border:1px solid var(--linea);border-radius:14px;padding:14px 16px;font-size:14px;line-height:1.5;color:var(--crema)}
+.pago-tuyo b{color:var(--oro-claro)}
+.pago-testis{display:flex;flex-direction:column;gap:10px}
+.pago-testis figure{margin:0;padding:12px 14px;border-left:2px solid var(--oro);background:rgba(212,175,120,.06);border-radius:0 12px 12px 0}
+.pago-testis q{display:block;font-size:13.5px;line-height:1.5;color:var(--crema);font-style:italic}
+.pago-testis cite{display:block;margin-top:6px;font-size:11.5px;font-style:normal;letter-spacing:.06em;color:var(--oro)}
+.carr{position:relative}
+.carr-pista{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+.carr-pista::-webkit-scrollbar{display:none}
+.carr-item{flex:0 0 86%;scroll-snap-align:start;margin:0;padding:16px 18px;border-left:2px solid var(--oro);background:rgba(212,175,120,.07);border-radius:0 14px 14px 0;display:flex;flex-direction:column;justify-content:space-between;gap:10px}
+.carr-item q{display:block;font-size:14px;line-height:1.55;color:var(--crema);font-style:italic;quotes:"“" "”"}
+.carr-item cite{font-size:11.5px;font-style:normal;letter-spacing:.06em;color:var(--oro)}
+.carr-item.carr-img{padding:0;border:1px solid var(--linea);background:rgba(212,175,120,.06);border-radius:14px;overflow:hidden;justify-content:flex-start;gap:0}
+.carr-foto{background:#111;height:250px;display:flex;align-items:center;justify-content:center}
+.carr-foto img{display:block;max-width:100%;max-height:250px;object-fit:contain}
+.carr-img figcaption{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;border-top:2px solid var(--oro)}
+.carr-img figcaption q{font-family:var(--display);font-weight:700;font-style:normal;font-size:15px;line-height:1.35;color:var(--oro-claro);quotes:"“" "”"}
+.carr-img figcaption cite{font-size:11.5px;font-style:normal;letter-spacing:.06em;color:var(--crema-2)}
+.carr-puntos{display:flex;justify-content:center;gap:6px;margin-top:10px}
+.carr-puntos i{width:6px;height:6px;border-radius:50%;background:rgba(212,175,120,.3);transition:all .2s}
+.carr-puntos i.on{background:var(--oro);width:18px;border-radius:3px}
+.carr-hint{position:absolute;right:0;top:-24px;font-size:11px;letter-spacing:.12em;color:var(--crema-2)}
+.pago-local{margin-top:-6px}
+.oferta .cuotas{margin:-4px 0 0;font-size:14px;color:var(--crema-2)}
+.oferta .cuotas b{color:var(--oro-claro);font-weight:600}
+.oferta .pago-local{margin:4px 0 8px}
+.cm-cuotas{display:block;font-family:var(--body);font-weight:500;font-size:13px;color:var(--oro-claro);margin-top:2px}
+.cm{border:1px solid var(--linea);border-radius:14px;padding:12px 14px;background:rgba(245,241,232,.03)}
+.cm-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.cm-top span{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
+.cm-top select{background:var(--tinto);color:var(--crema);border:1px solid var(--linea);border-radius:999px;padding:7px 12px;font-family:var(--body);font-size:13px;max-width:55%}
+.cm-monto{font-family:var(--display);font-weight:800;font-size:24px;color:var(--crema);margin-top:8px}
+.cm-monto small{font-size:16px;color:var(--crema-2);font-weight:600}
+.cm-nota{font-size:12px;line-height:1.5;color:var(--crema-2);margin-top:2px}
+.cm-nota a{color:var(--oro)}
+.pago-costo{margin:-8px 0 0;font-size:14px;line-height:1.5;color:var(--oro-claro);font-style:italic}
+.pago-gancho{margin:0 0 4px;font-family:var(--display);font-weight:700;font-size:15px;line-height:1.35;text-align:center;color:var(--crema)}
+.pago-precio{display:flex;align-items:baseline;gap:10px}
+.pago-precio s{color:var(--crema-2);font-size:15px}
+.pago-precio strong{font-family:var(--display);font-weight:800;font-size:28px;color:var(--oro)}
+.pago-precio span{font-size:12px;color:var(--crema-2)}
+.pago-acc{padding:14px 20px 16px;border-top:1px solid var(--linea);display:flex;flex-direction:column;gap:8px;background:var(--tinto-2)}
+.pago-acc .btn{width:100%}
+.pago-acc .nota{font-size:12px;color:var(--crema-2);text-align:center}
+.pago-acc .nota a{color:var(--oro)}
+.pago-volver{background:none;border:0;color:var(--oro);font-size:13px;cursor:pointer;padding:0;font-family:var(--body)}
+.pago-pie{padding:10px 18px;font-size:12px;color:var(--crema-2);text-align:center;border-top:1px solid var(--linea)}
+.pago-pie a{color:var(--oro)}
+</style>
+
+<header class="cab">
+  <div class="cab-in">
+    <div class="cab-fila"><div class="logo">QUANTUM <span>BRANDING</span></div><div class="cuenta" id="cuenta"></div></div>
+    <div class="segs" id="segs" aria-hidden="true"></div>
+    <div class="candado" id="lock" hidden></div>
+  </div>
+</header>
+<main id="app" aria-live="polite"></main>
+
+<script>
+/* ===== CONFIGURACIÓN (Ana: aquí pegas tus enlaces y testimonios) ===== */
+const CONFIG = {
+  mailerliteUrl: "",   // No se usa en la versión web: los datos van por /api/lead
+  links: {
+    diagnostico: "https://www.iprosper28.com/diagnosticoidentidadqb",
+    pagoDiagnostico: "https://www.iprosper28.com/75e08623",   // Formulario de pago de Systeme (se abre en ventana dentro del quiz)
+    mini: "https://buy.stripe.com/eVq14nbQocwq5kl9f24F20c",          // Enlace de pago de Stripe del Mini $27
+    auditoria: "https://www.iprosper28.com/quantubranding-audit",
+    pagoAuditoria: "",  // Formulario de pago de Systeme con plan de 2 cuotas (falta)
+    llamada: "",        // Enlace para agendar llamada (Calendly u otro). Mientras esté vacío, abre WhatsApp.
+    aplicacion1a1: ""   // Enlace de aplicación al trabajo 1:1 (falta). Mientras esté vacío, el botón abre WhatsApp.
+  },
+  instagram: "@anitasepum",
+  whatsapp: "17865188044",
+  auditoriaCuotas: { n: 2, monto: 289 },  // Solo la Auditoría tiene cuotas. Diagnóstico y Mini: pago único.
+  entregaMini: "",     // Ej.: "en tu correo en menos de 24 horas" (falta)
+  testimonios: [ // capturas reales en /testimonios · frase = pie de foto resaltado
+    { img:"/testimonios/t3.jpg", frase:"Todo lo que me dijiste fue totalmente cierto.", nombre:"Jacky", de:"Diagnóstico de Identidad" },
+    { img:"/testimonios/t10.jpg", frase:"¡Atinaste absolutamente a todo! Me quedé impresionada con la precisión.", nombre:"Clienta", de:"Diagnóstico de patrones" },
+    { img:"/testimonios/t7.jpg", frase:"Me ayudó a ver quién soy y quién quiero ser.", nombre:"Clienta", de:"Diagnóstico de Identidad" },
+    { img:"/testimonios/t9.jpg", frase:"Me resonó bastante con mi vida personal. Necesitaba escuchar eso.", nombre:"Cliente", de:"Diagnóstico personal" },
+    { img:"/testimonios/t2.jpg", frase:"Sentí que muchas piezas comenzaron a encajar.", nombre:"adyam777", de:"Lectura de identidad" },
+    { img:"/testimonios/t11.jpg", frase:"Gracias por ser tan detallista. Me dio dirección.", nombre:"Clienta", de:"Quantum Branding" },
+    { img:"/testimonios/t8.jpg", frase:"Cada que vuelvo a leerlo se siente como un abrazo al alma.", nombre:"Clienta", de:"Diagnóstico de Identidad" },
+    { img:"/testimonios/t6.jpg", frase:"Me motiva a tomar determinaciones sin miedo.", nombre:"Clienta", de:"Quantum Branding" },
+    { img:"/testimonios/t4.jpg", frase:"Me está haciendo ordenar todo mi negocio.", nombre:"Clienta", de:"Quantum Branding" },
+    { img:"/testimonios/t5.jpg", frase:"Ahora mismo estoy imprimiendo todo.", nombre:"Clienta", de:"Quantum Branding" },
+    { img:"/testimonios/t1.jpg", frase:"No solo ayudas con los negocios.", nombre:"Clienta", de:"Coaching 1-1" },
+  ]
+};
+
+/* ===== BANCO (sección 4, textual) ===== */
+const ORDEN = ["Visibilidad","Estructura","Alianzas","Expansión","Autoridad","Precisión","Cuidado","Estrategia"];
+const BANCO = {
+"Visibilidad+Estructura":["La Arquitecta Visible","Construyes en grande y el mundo lo ve. No haces cosas pequeñas ni las escondes: tu obra tiene cimientos y tiene escenario.","levantas empresas que se ven desde lejos — marcas grandes, equipos, estructuras que otros admiran.","levantar estructuras que se vean desde lejos"],
+"Visibilidad+Alianzas":["La Voz que Convoca","Cuando hablas, la gente se reúne. Tu palabra organiza, dirige y mueve a otros a la acción.","vendes desde el escenario y el contenido — tu palabra llena salas y cierra clientes.","vender desde el escenario y el contenido"],
+"Visibilidad+Expansión":["La Luz al Frente","Iluminas el camino y otros te siguen. Vas adelante no por ambición, sino porque ves lo que viene.","eres la cara de tu marca — la gente compra porque te ve a ti primero.","ser la cara de tu marca"],
+"Visibilidad+Autoridad":["La Referente","Eres el estándar contra el que se miden. En tu sector, tu nombre ya significa un nivel.","cobras premium porque tu nombre ya es el estándar — no compites, te comparan contigo.","cobrar como el estándar de tu sector"],
+"Visibilidad+Precisión":["La Mirada Exacta","Ves con precisión lo que otros pasan por alto. Donde hay ruido, tú encuentras el dato que importa.","detectas lo que otros no ven — auditorías, diagnósticos y revisiones que ahorran dinero.","detectar lo que otros no ven"],
+"Visibilidad+Cuidado":["La Anfitriona","Creas espacios donde todos quieren estar. Tu presencia convierte lugares en experiencias.","vendes experiencia — eventos, espacios, comunidad. La gente paga por estar donde tú estás.","vender experiencia"],
+"Visibilidad+Estrategia":["La Estratega Visible","Piensas en grande y lo muestras sin miedo. Tu estrategia no vive en un cajón: vive al frente.","tu pensamiento es tu marketing — posicionas tu estrategia al frente y eso atrae clientes.","poner tu estrategia al frente"],
+"Estructura+Alianzas":["La Tejedora","Unes piezas y personas en algo mayor. Lo que estaba suelto, contigo se vuelve red.","creces por alianzas — unes socios, clientes y oportunidades en una red que vende sola.","crecer por alianzas"],
+"Estructura+Expansión":["La Arquitecta de Expansión","Escalas con cimientos que no se caen. Creces rápido, pero nada de lo que construyes se derrumba.","escalas sin romper nada — pasas de emprendimiento a empresa con sistemas que sostienen.","escalar con sistemas que sostienen"],
+"Estructura+Autoridad":["La Institución","Tu nombre ya es una garantía. No vendes promesas: vendes trayectoria que respalda.","vendes confianza — trayectoria, respaldo y un nombre que firma sin explicar.","vender confianza y trayectoria"],
+"Estructura+Precisión":["Arquitecta de Método","Conviertes caos en sistema. Lo que para otros es desorden, para ti es un proceso esperando nacer.","productizas tu saber — cursos, metodologías y sistemas que se venden sin ti presente.","productizar tu saber"],
+"Estructura+Cuidado":["La Guardiana","Proteges lo que importa. Tu lealtad no se negocia y tu cuidado tiene peso.","tu marca promete protección — tus clientes duermen tranquilos porque tú cuidas.","prometer protección"],
+"Estructura+Estrategia":["La Arquitecta Estratega","Diseñas la jugada completa. Ves el tablero, las piezas y los próximos tres movimientos.","vendes el plan completo — consultoría estratégica de alto nivel, no horas sueltas.","vender el plan completo"],
+"Alianzas+Expansión":["La que Cruza Fronteras","Ningún mapa te contiene. Países, mercados, idiomas: donde otros ven límite, tú ves puerta.","operas en varios países y mercados — tu negocio no cabe en un solo mapa.","operar en varios mercados"],
+"Alianzas+Autoridad":["La Convocante","Reúnes a los indicados para cada misión. Sabes quién falta en la mesa antes de sentarte.","armas equipos y comunidades — juntas a las personas correctas para cada proyecto.","armar equipos y comunidades"],
+"Alianzas+Precisión":["La Negociadora","Cierras tratos donde otros ven muros. Lees a las personas y encuentras el sí escondido.","cierras tratos grandes — tu talento es convertir conversaciones en contratos.","cerrar tratos grandes"],
+"Alianzas+Cuidado":["La Aliada","La lealtad es tu moneda. Quien te tiene de su lado, tiene a alguien que no falla.","vendes lealtad y acompañamiento largo — tus clientes se quedan años, no meses.","acompañar a tus clientes por años"],
+"Alianzas+Estrategia":["La Diplomática","Abres puertas sin romper nada. Consigues lo imposible con tacto, no con fuerza.","abres mercados difíciles — entras con relaciones donde otros no pueden entrar.","abrir mercados difíciles con relaciones"],
+"Expansión+Autoridad":["La Pionera","Llegas primero y marcas el camino. Lo que hoy es obvio, tú lo viste antes que nadie.","lanzas lo nuevo — tu marca es sinónimo de vanguardia en tu sector.","lanzar lo nuevo"],
+"Expansión+Precisión":["La Exploradora Exacta","Exploras sin perder el norte. Te adentras en lo nuevo con brújula propia.","validas antes de lanzar — tu expansión se apoya en datos, no en corazonadas.","validar antes de lanzar"],
+"Expansión+Cuidado":["La Cultivadora","Haces crecer personas y proyectos. Lo que tocas con paciencia, florece.","haces crecer personas — formación, mentoría y equipos que florecen contigo.","hacer crecer personas"],
+"Expansión+Estrategia":["La Navegante","Cruzas mares que otros ni miran. Tu visión es amplia, tu movimiento es libre y tu rumbo es propio.","vives de abrir rutas — mercados nuevos, formatos nuevos, movimiento constante.","abrir rutas nuevas"],
+"Autoridad+Precisión":["La Autoridad Exacta","Tu palabra pesa porque es precisa. No hablas mucho; cuando hablas, se anota.","vendes criterio — tu opinión técnica vale porque es precisa y escasa.","vender criterio"],
+"Autoridad+Cuidado":["La Guía Firme","Lideras cuidando el rumbo. Tu gente avanza segura porque tú no improvisas la dirección.","acompañas procesos largos — tus clientes avanzan porque tú sostienes el rumbo.","sostener el rumbo de procesos largos"],
+"Autoridad+Estrategia":["La Estratega Mayor","Ves el tablero entero. Mientras otros juegan su casilla, tú diriges el juego.","diriges la visión — tu rol es pensar el juego completo, no jugar una casilla.","dirigir la visión"],
+"Precisión+Cuidado":["La Artesana","El detalle es tu firma. Lo que produces tiene un acabado que nadie más logra.","vendes acabado premium — detalle, estética y calidad que justifican precio alto.","vender acabado premium"],
+"Precisión+Estrategia":["La Mente Quirúrgica","Cortas exacto donde duele y sana. Precisión que resuelve, no que adorna.","resuelves con precisión — intervenciones exactas en el problema justo, resultados medibles.","resolver con precisión"],
+"Cuidado+Estrategia":["La Guardiana Estratégica","Proteges con inteligencia, no con miedo. Cuidas lo valioso con plan, no con ansiedad.","proteges con plan — gestión de riesgos y cuidado inteligente, no ansiedad.","proteger con plan"]
+};
+
+/* Fórmula final de Ana (22 oct 2026) · el primer eje de cada número es el dominante */
+const NUM_EJES = {1:["Autoridad","Visibilidad"],2:["Alianzas","Cuidado"],3:["Visibilidad","Expansión"],4:["Estructura","Precisión"],5:["Expansión","Visibilidad"],6:["Cuidado","Alianzas"],7:["Estrategia","Precisión"],8:["Autoridad","Estructura"],9:["Expansión","Cuidado"],11:["Alianzas","Visibilidad"],22:["Estructura","Expansión"],33:["Cuidado","Autoridad"]};
+/* Días especiales: no se reducen */
+const DIAS_ESPECIALES = {20:["Visibilidad","Alianzas"],28:["Autoridad","Alianzas"],29:["Alianzas","Visibilidad"]};
+const ANIMALES = ["Rata","Buey","Tigre","Conejo","Dragón","Serpiente","Caballo","Cabra","Mono","Gallo","Perro","Cerdo"];
+const ANI_EJES = {"Rata":["Estrategia","Expansión"],"Buey":["Estructura","Precisión"],"Tigre":["Autoridad","Visibilidad"],"Conejo":["Alianzas","Cuidado"],"Dragón":["Visibilidad","Autoridad"],"Serpiente":["Estrategia","Precisión"],"Caballo":["Expansión","Visibilidad"],"Cabra":["Cuidado","Precisión"],"Mono":["Estrategia","Expansión"],"Gallo":["Precisión","Estructura"],"Perro":["Cuidado","Alianzas"],"Cerdo":["Alianzas","Cuidado"]};
+
+/* Año Nuevo Chino: fecha real de cada año (mes, día), 1920–2030.
+   Verificada con el cálculo astronómico (2.ª luna nueva después del solsticio de invierno, hora de China). */
+const ANL = {1920:[2,20],1921:[2,8],1922:[1,28],1923:[2,16],1924:[2,5],1925:[1,24],1926:[2,13],1927:[2,2],1928:[1,23],1929:[2,10],
+1930:[1,30],1931:[2,17],1932:[2,6],1933:[1,26],1934:[2,14],1935:[2,4],1936:[1,24],1937:[2,11],1938:[1,31],1939:[2,19],
+1940:[2,8],1941:[1,27],1942:[2,15],1943:[2,5],1944:[1,25],1945:[2,13],1946:[2,2],1947:[1,22],1948:[2,10],1949:[1,29],
+1950:[2,17],1951:[2,6],1952:[1,27],1953:[2,14],1954:[2,3],1955:[1,24],1956:[2,12],1957:[1,31],1958:[2,18],1959:[2,8],
+1960:[1,28],1961:[2,15],1962:[2,5],1963:[1,25],1964:[2,13],1965:[2,2],1966:[1,21],1967:[2,9],1968:[1,30],1969:[2,17],
+1970:[2,6],1971:[1,27],1972:[2,15],1973:[2,3],1974:[1,23],1975:[2,11],1976:[1,31],1977:[2,18],1978:[2,7],1979:[1,28],
+1980:[2,16],1981:[2,5],1982:[1,25],1983:[2,13],1984:[2,2],1985:[2,20],1986:[2,9],1987:[1,29],1988:[2,17],1989:[2,6],
+1990:[1,27],1991:[2,15],1992:[2,4],1993:[1,23],1994:[2,10],1995:[1,31],1996:[2,19],1997:[2,7],1998:[1,28],1999:[2,16],
+2000:[2,5],2001:[1,24],2002:[2,12],2003:[2,1],2004:[1,22],2005:[2,9],2006:[1,29],2007:[2,18],2008:[2,7],2009:[1,26],
+2010:[2,14],2011:[2,3],2012:[1,23],2013:[2,10],2014:[1,31],2015:[2,19],2016:[2,8],2017:[1,28],2018:[2,16],2019:[2,5],
+2020:[1,25],2021:[2,12],2022:[2,1],2023:[1,22],2024:[2,10],2025:[1,29],2026:[2,17],2027:[2,6],2028:[1,26],2029:[2,13],2030:[2,3]};
+
+/* ===== CÁLCULO ===== */
+function reducir(n){ while(n>9 && n!==11 && n!==22 && n!==33){ n=String(n).split("").reduce((a,d)=>a+Number(d),0);} return n; }
+function caminoDeVida(d,m,a){ const s=(String(d).padStart(2,"0")+String(m).padStart(2,"0")+String(a)).split("").reduce((x,c)=>x+Number(c),0); const r=reducir(s); return r===2?11:r; } /* GG33: no existe el Camino de Vida 2 */
+function ejesDelDia(d){ if(DIAS_ESPECIALES[d]) return DIAS_ESPECIALES[d]; return NUM_EJES[reducir(d)]; }
+function animalChino(d,m,a){
+  let anio=a;
+  if(m<=2){
+    const anl = ANL[a];
+    if(anl){ if(m<anl[0] || (m===anl[0] && d<anl[1])) anio=a-1; }
+    else if(m===1 || (m===2 && d<4)) anio=a-1; /* fuera de tabla: regla general */
+  }
+  return ANIMALES[((anio-4)%12+12)%12];
+}
+function claveTop2(puntos){
+  const orden=[...ORDEN].sort((x,y)=> (puntos[y]-puntos[x]) || (ORDEN.indexOf(x)-ORDEN.indexOf(y)));
+  const top=[orden[0],orden[1]].sort((x,y)=>ORDEN.indexOf(x)-ORDEN.indexOf(y));
+  return top.join("+");
+}
+/* Año chino (empieza en su Año Nuevo real), animal y elemento */
+function anioChino(d,m,a){ const anl=ANL[a]; if(anl && (m<anl[0] || (m===anl[0] && d<anl[1]))) return a-1; return a; }
+const ELEMENTOS=["Madera","Madera","Fuego","Fuego","Tierra","Tierra","Metal","Metal","Agua","Agua"];
+function animalCompleto(d,m,a){
+  const y=anioChino(d,m,a);
+  return {animal: ANIMALES[((y-4)%12+12)%12], elemento: ELEMENTOS[((y-4)%10+10)%10], anio:y, inicio: ANL[y]};
+}
+function arquetipoReal(d,m,a){
+  /* 1º eje = primer eje del Camino de Vida. 2º eje = donde coinciden día y animal (1 punto cada cualidad), sin repetir el 1º.
+     Desempate: primer eje del animal, luego su segundo, luego el orden del día. */
+  const principal=NUM_EJES[caminoDeVida(d,m,a)][0];
+  const dia=ejesDelDia(d), ani=ANI_EJES[animalChino(d,m,a)];
+  const p=Object.fromEntries(ORDEN.map(e=>[e,0])); dia.forEach(e=>p[e]++); ani.forEach(e=>p[e]++);
+  const clave=e=>[p[e], e===ani[0]?2:(ani.includes(e)?1:0), e===dia[0]?2:(dia.includes(e)?1:0)];
+  let mejor=null;
+  for(const e of ORDEN){ if(e===principal) continue; if(!mejor){mejor=e;continue;} const a1=clave(e), b1=clave(mejor); for(let k=0;k<3;k++){ if(a1[k]!==b1[k]){ if(a1[k]>b1[k]) mejor=e; break; } } }
+  return [principal,mejor].sort((x,y)=>ORDEN.indexOf(x)-ORDEN.indexOf(y)).join("+");
+}
+function arquetipoPercibido(ejes){
+  const p=Object.fromEntries(ORDEN.map(e=>[e,0]));
+  ejes.forEach(e=>p[e]+=1);
+  return claveTop2(p);
+}
+
+/* ===== PREGUNTAS ===== */
+const P1 = [
+  ["A","Estudio o trabajo para otros, sin negocio propio"],
+  ["B","Tengo negocio, pero sin marca clara"],
+  ["C","Tengo marca, pero no me pagan lo que valgo"],
+  ["D","Mi marca es sólida, quiero escalar"]];
+const ESC = [
+  {t:"En un grupo de trabajo, tú eres la que…", o:[["La gente me escucha cuando hablo","Visibilidad"],["Ordeno las ideas y armo el plan","Estructura"],["Conecto a las personas indicadas","Alianzas"],["Veo la oportunidad que nadie vio","Expansión"]]},
+  {t:"Tu fortaleza natural es…", o:[["Decido rápido y asumo el mando","Autoridad"],["Detecto el detalle que cambia todo","Precisión"],["Cuido que nadie se quede atrás","Cuidado"],["Leo la jugada antes de que pase","Estrategia"]]},
+  {t:"Elige la frase que más te representa", o:[["Donde llego, lidero","Autoridad"],["Tienes una luz especial","Visibilidad"],["Nada se me escapa","Precisión"],["Eres la más organizada","Estructura"],["Mi gente es mi prioridad","Cuidado"],["Unes a la gente","Alianzas"],["Juego ajedrez, no damas","Estrategia"],["Siempre vas un paso adelante","Expansión"]]}
+];
+const DOLOR = [
+  ["No sé qué me diferencia","Lo que te diferencia ya está en tu diseño. Falta nombrarlo y ponerlo al frente."],
+  ["Me comparan por precio","Cuando tu marca dice lo que tu diseño dice, dejan de compararte por precio."],
+  ["Nadie ve mi valor","Tu valor existe. Lo que falta es que tu marca lo muestre con claridad."],
+  ["No sé qué hacer con mi vida","Tu diseño te da una dirección concreta. Empieza por ahí."]];
+
+
+
+/* Escenario 3 unificado en primera persona */
+ESC[2] = {t:"¿Qué frase te representa más?", o:[["Donde llego, lidero","Autoridad"],["Tengo una luz que se nota","Visibilidad"],["Nada se me escapa","Precisión"],["Soy la más organizada","Estructura"],["Mi gente es mi prioridad","Cuidado"],["Uno a la gente","Alianzas"],["Juego ajedrez, no damas","Estrategia"],["Siempre voy un paso adelante","Expansión"]]};
+ESC[0] = {t:"En tu trabajo o negocio, lo que más haces es…", o:[["Doy la cara: me muestro y hablo","Visibilidad"],["Ordeno, armo procesos y planes","Estructura"],["Conecto personas y hago alianzas","Alianzas"],["Busco oportunidades nuevas","Expansión"],["Decido y dirijo","Autoridad"],["Cuido cada detalle","Precisión"],["Atiendo y acompaño a cada persona","Cuidado"],["Pienso los siguientes pasos","Estrategia"]]};
+ESC[1] = {t:"En tu vida personal, tú eres la que…", o:[["Anima y se hace notar","Visibilidad"],["Organiza todo","Estructura"],["Une a la familia y los amigos","Alianzas"],["Propone planes y cosas nuevas","Expansión"],["Toma las decisiones","Autoridad"],["Se fija en cada detalle","Precisión"],["Cuida de todos","Cuidado"],["Ve venir los problemas","Estrategia"]]};
+function tituloEsc(k){
+  if(k===0) return sinIngreso() ? (S.dedica==="estudio"?"En tus estudios o tu trabajo, lo que más haces es…":"En tu día a día, lo que más haces es…") : ESC[0].t;
+  return ESC[k].t;
+}
+/* Pista del área de cada bloqueo (el nombre y la explicación son pagos) */
+const AREA = {Visibilidad:"cómo te muestras",Estructura:"cómo te organizas",Alianzas:"cómo te relacionas",Expansión:"cómo te mueves hacia lo nuevo",Autoridad:"cómo decides",Precisión:"dónde pones tu foco",Cuidado:"cómo acompañas a otros",Estrategia:"cómo planeas"};
+function alineacion(){
+  const max=Math.max(...Object.values(S.pReal))||1, sc=e=>S.pReal[e]/max;
+  const neg=Math.round(12+83*(0.7*sc(S.esc[0])+0.3*sc(S.esc[2])));
+  const vida=Math.round(12+83*(0.7*sc(S.esc[1])+0.3*sc(S.esc[2])));
+  return {neg, vida};
+}
+function nivel(p){ return p>=75?["Alineada","al"]:(p>=45?["Parcialmente desalineada","par"]:["Desalineada","des"]); }
+function bloqueos(){
+  return ORDEN.filter(e=>S.pReal[e]>0 && !S.esc.includes(e)).sort((x,y)=>(S.pReal[y]-S.pReal[x])||(ORDEN.indexOf(x)-ORDEN.indexOf(y))).slice(0,3);
+}
+function barra(p){ const n=Math.round(p/10); return `<span class="seg10" aria-hidden="true">${Array.from({length:10},(_,i)=>`<i class="${i<n?'on':''}"></i>`).join("")}</span>`; }
+const RANGO = {"500":[50,150],"1500":[150,300],"3000":[300,1000],"10000":[1000,5000],"50000":[5000,null]};
+const fmt = n=>n.toLocaleString("es-BO");
+const PROYECCION = {
+  vocacion:"otro año probando caminos que no son el tuyo.",
+  decision:"la misma decisión pendiente, y menos opciones que hoy.",
+  noavanza:"el mismo esfuerzo, con el mismo resultado.",
+  cobrar:"un año más cobrando menos de lo que vales.",
+  escalar:"un negocio más grande que sigue dependiendo de ti."};
+const TIEMPO_TXT = {poco:"Hace unos meses que vives con", anio:"Llevas entre 6 meses y 2 años con", mucho:"Llevas más de 2 años con"};
+/* ===== CONTEXTO Y DOLOR ===== */
+const DEDICA = [
+  ["estudio","Estudio"],
+  ["empleada","Trabajo para otros (empleada)"],
+  ["hogar","Me dedico a mi hogar y mi familia"],
+  ["independiente","Soy profesional independiente (consulta, servicios)"],
+  ["negocio","Tengo un negocio o emprendimiento"],
+  ["transicion","Estoy en transición, buscando qué hacer"]];
+const INGRESO = [
+  ["0","Menos de USD 500 al mes"],
+  ["500","Entre USD 500 y 1.500"],
+  ["1500","Entre USD 1.500 y 3.000"],
+  ["3000","Entre USD 3.000 y 10.000"],
+  ["10000","Entre USD 10.000 y 50.000"],
+  ["50000","Más de USD 50.000"]];
+const BUSCA = [
+  ["vocacion","Saber para qué soy buena y a qué dedicarme"],
+  ["decision","Tomar una decisión importante que tengo pendiente"],
+  ["noavanza","Entender por qué mi trabajo o negocio no avanza"],
+  ["cobrar","Cobrar lo que valgo por lo que ya hago"],
+  ["escalar","Hacer crecer una marca que ya funciona"]];
+const CODIGOS = [["591","🇧🇴 +591"],["1","🇺🇸 +1"],["52","🇲🇽 +52"],["57","🇨🇴 +57"],["54","🇦🇷 +54"],["56","🇨🇱 +56"],["51","🇵🇪 +51"],["593","🇪🇨 +593"],["595","🇵🇾 +595"],["598","🇺🇾 +598"],["58","🇻🇪 +58"],["506","🇨🇷 +506"],["507","🇵🇦 +507"],["502","🇬🇹 +502"],["503","🇸🇻 +503"],["504","🇭🇳 +504"],["505","🇳🇮 +505"],["1809","🇩🇴 +1 809"],["34","🇪🇸 +34"],["971","🇦🇪 +971"],["44","🇬🇧 +44"],["49","🇩🇪 +49"],["33","🇫🇷 +33"],["39","🇮🇹 +39"]];
+function codigoPorUbic(){ return {usa:"1",europa:"34",dubai:"971"}[S.ubic] || "591"; }
+const UBIC = [
+  ["latam","Latinoamérica"],
+  ["usa","Estados Unidos o Canadá"],
+  ["europa","Europa"],
+  ["dubai","Dubái o Medio Oriente"],
+  ["otro","Otro"]];
+/* Dolor según lo que busca: [lo que dice ella, respuesta que le devolvemos] */
+const DOLORES = {
+  vocacion:[
+    ["Siento que tengo talento, pero no sé para qué","Ese talento tiene forma. Tu diseño dice para qué está hecho; lo que falta es dirigirlo."],
+    ["Empiezo cosas y no las termino","Lo que no terminas suele ser lo que no encaja con tu diseño. Cuando eliges lo que sí encaja, se sostiene."],
+    ["Veo a otras avanzar y yo sigo igual","No vas más lento. Estás corriendo una carrera que no es la tuya."]],
+  decision:[
+    ["Tengo miedo de equivocarme","Decidir da menos miedo cuando sabes cómo estás hecha. Tu diseño es el criterio que te falta."],
+    ["Le doy vueltas y no decido","Le das vueltas porque comparas opciones sin un criterio propio. Tu diseño es ese criterio."],
+    ["Todos opinan y ya no sé qué quiero","Cada opinión viene del diseño de otra persona. El tuyo es el único que importa para esta decisión."]],
+  noavanza:[
+    ["Trabajo mucho y no se refleja en dinero","Cuando el esfuerzo no se convierte en dinero, casi siempre estás vendiendo desde un lugar que no es el tuyo."],
+    ["Los clientes no llegan o no se quedan","Los clientes llegan cuando tu marca dice lo mismo que tu diseño. Hoy dicen cosas distintas."],
+    ["No sé qué estoy haciendo mal","No es lo que haces mal. Es lo que haces bien pero desde el lugar equivocado."]],
+  cobrar:[
+    ["Me comparan por precio","Te comparan por precio cuando tu marca se parece a la de otros. Tu diseño es lo que no se puede comparar."],
+    ["Nadie ve mi valor","Tu valor existe. Lo que falta es que tu marca lo muestre con la misma claridad que tu diseño."],
+    ["Me cuesta cobrar más","Cobrar más se vuelve natural cuando sabes con precisión qué tienes que nadie más tiene."]],
+  escalar:[
+    ["Todo depende de mí","Para crecer sin sostenerlo todo, tu marca tiene que funcionar según tu diseño, no según tu esfuerzo."],
+    ["No sé qué me diferencia de la competencia","Lo que te diferencia ya está en tu diseño. Falta nombrarlo y ponerlo al frente."],
+    ["Crecí, pero mi marca se quedó atrás","Tu negocio creció y tu marca habla de quien eras antes. Toca alinearla con tu diseño."]]};
+/* Modelo de negocio → ejes que lo sostienen (Ana: revisar) */
+const MODELOS = [
+  ["1a1","Sesiones o servicios 1 a 1 (consulta, asesoría)",["Cuidado","Precisión","Alianzas"]],
+  ["grupal","Programas o mentorías en grupo",["Autoridad","Visibilidad","Cuidado"]],
+  ["digital","Cursos o productos digitales",["Estructura","Precisión","Expansión"]],
+  ["fisico","Productos físicos o tienda",["Estructura","Estrategia","Visibilidad"]],
+  ["equipo","Agencia o servicios con equipo",["Estructura","Alianzas","Estrategia"]],
+  ["eventos","Eventos, talleres o comunidad",["Visibilidad","Alianzas","Cuidado"]],
+  ["contenido","Contenido y marca personal (colaboraciones, publicidad)",["Visibilidad","Expansión","Autoridad"]],
+  ["otro","Otro (lo describo abajo)",[]]];
+function encajeModelo(){
+  const m=MODELOS.find(x=>x[0]===S.modelo); if(!m||!m[2].length) return null;
+  const n=S.real.split("+").filter(e=>m[2].includes(e)).length;
+  return n===2?["si","Sí es para ti","Tu modelo de negocio actual sí va con tu diseño. El freno no está en qué vendes: está en cómo te posicionas."]
+    : n===1?["medio","Encaja a medias","Tu modelo de negocio actual encaja a medias con tu diseño. Una parte te rinde y otra te desgasta."]
+    : ["no","No es para ti","Tu modelo de negocio actual no va con tu diseño. Por eso cada venta tiende a costarte más de lo que debería."];
+}
+const TIEMPO = [
+  ["poco","Menos de 6 meses"],
+  ["anio","Entre 6 meses y 2 años"],
+  ["mucho","Más de 2 años"]];
+/* Lo que el Diagnóstico le da a cada búsqueda */
+const PARA_TI = {
+  vocacion:"Para ti: a qué dedicar tu talento para que rinda, y qué dejar de intentar.",
+  decision:"Para ti: cómo decides mejor según tu diseño, aplicado a la decisión que tienes pendiente.",
+  noavanza:"Para ti: qué está frenando tu trabajo o negocio y qué cambiar primero.",
+  cobrar:"Para ti: qué te hace única y cómo ponerlo en tu precio.",
+  escalar:"Para ti: qué tiene que cambiar en tu marca para crecer sin que todo dependa de ti."};
+const GANCHO = {
+  vocacion:"Tu diseño tiene <em>3 superpoderes</em>. Ahí está la respuesta a qué dedicarte: no en lo que te gusta, en lo que te sale natural.",
+  decision:"Tu diseño tiene <em>3 superpoderes</em>. Cuando los conoces, la decisión que tienes pendiente deja de ser un salto al vacío.",
+  noavanza:"Tu diseño tiene <em>3 superpoderes</em> de negocio. Lo más probable es que hoy uses uno. Los otros dos son los que harían que tu trabajo rinda.",
+  cobrar:"Tu diseño tiene <em>3 superpoderes</em> de negocio. Lo más probable es que hoy uses uno. Los otros dos son los que te harían cobrar lo que vales.",
+  escalar:"Tu diseño tiene <em>3 superpoderes</em> de negocio. Escalar es construir sobre los tres, no seguir empujando con uno."};
+const sinIngreso = ()=> S.dedica==="estudio" || S.dedica==="hogar";
+
+const MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+
+/* ===== ESTADO ===== */
+const NUEVO = ()=>({utm:leerUTM(), paso:"inicio", nombre:"", genero:"", d:"", m:"", a:"", hora:"", horaEstado:"", lugar:"", dedica:null, giro:"", modelo:null, modeloTxt:"", ubic:null, ingreso:null, busca:null, tiempo:null, esc:[null,null,null], escTxt:[null,null,null], apuesta:null, opcApuesta:null, dolor:null, real:null, perc:null, pReal:null, pPerc:null, email:""});
+let S = NUEVO();
+const FLUJO = ["inicio","datos","teaser","dedica","giro","modelo","ingreso","ubicacion","busca","dolor","tiempo","e0","e1","e2","apuesta","calc","r1","r2","r3","r4","tarjeta","email","listo","mini"];
+const CONTABLES = ["datos","dedica","giro","modelo","ingreso","ubicacion","busca","dolor","tiempo","e0","e1","e2","apuesta"];
+const PREGUNTAS = ["dedica","giro","modelo","ingreso","ubicacion","busca","dolor","tiempo","e0","e1","e2","apuesta"];
+const app=document.getElementById("app");
+
+const tieneNegocio = ()=> S.dedica==="negocio" || S.dedica==="independiente";
+/* Origen del tráfico (anuncios): utm_* y fbclid de la URL */
+function leerUTM(){ try{ const p=new URLSearchParams(location.search), o={};
+  ["utm_source","utm_medium","utm_campaign","utm_content","utm_term","fbclid"].forEach(k=>{ if(p.get(k)) o[k]=p.get(k).slice(0,200); });
+  return o; }catch(e){ return {}; } }
+/* Envío del lead a /api/lead (MailerLite del lado del servidor) */
+function datosLead(estado){
+  const al = S.pReal && S.esc.every(Boolean) ? alineacion() : null;
+  return {
+    email:S.email, nombre:S.nombre, estado,
+    fecha_nac: S.a&&S.m&&S.d ? `${S.a}-${String(S.m).padStart(2,"0")}-${String(S.d).padStart(2,"0")}` : "",
+    hora_nac: S.hora||"", lugar_nac: S.lugar||"",
+    genero: S.genero==="m"?"hombre":(S.genero==="f"?"mujer":""), arquetipo: S.real?BANCO[S.real][0]:"", arquetipo_percibido: S.perc&&estado!=="iniciado"?BANCO[S.perc][0]:"",
+    dedica: S.dedica||"", negocio: S.giro||"", modelo: S.modelo||"", modelo_detalle: S.modeloTxt||"",
+    modelo_encaje: encajeModelo()?encajeModelo()[1]:"",
+    ingreso: S.ingreso||"", ubicacion: S.ubic?UBIC.find(x=>x[0]===S.ubic)[1]:"",
+    busca: S.busca||"", dolor: S.busca&&S.dolor!==null?DOLORES[S.busca][S.dolor][0]:"", tiempo: S.tiempo||"",
+    alineacion_vida: al?al.vida:"", alineacion_negocio: al?al.neg:"",
+    telefono: S.telefono||"", acepta_mensajes: S.okmsg?"si":"",
+    paso: S.paso, ...S.utm };
+}
+function carruselTestis(){
+  const T=CONFIG.testimonios; if(!T.length) return "";
+  return `<div class="carr" data-carr><div class="carr-pista">${T.map(t=>t.img?`<figure class="carr-item carr-img"><div class="carr-foto"><img src="${esc(t.img)}" alt="${esc(t.frase)}" loading="lazy" decoding="async"></div><figcaption><q>${esc(t.frase)}</q><cite>${esc(t.nombre)} · ${esc(t.de)}</cite></figcaption></figure>`:`<figure class="carr-item"><q>${esc(t.texto)}</q><cite>${esc(t.nombre)}</cite></figure>`).join("")}</div><div class="carr-puntos">${T.map((_,k)=>`<i${k?"":' class="on"'}></i>`).join("")}</div><div class="carr-hint">Desliza →</div></div>`;
+}
+function enviarLead(estado){
+  if(!S.email) return;
+  try{ fetch("/api/lead",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(datosLead(estado)),keepalive:true}).catch(()=>{}); }catch(e){}
+}
+/* Guardar avance en este navegador para continuar después */
+const CLAVE="qb-quiz-avance-v1";
+function guardarAvance(){ try{ if(S.paso==="inicio") return; localStorage.setItem(CLAVE, JSON.stringify({t:Date.now(), S})); }catch(e){} }
+function leerAvance(){ try{ const o=JSON.parse(localStorage.getItem(CLAVE)||"null"); if(o && o.S && o.S.paso && o.S.paso!=="inicio" && Date.now()-o.t < 30*864e5) return o.S; }catch(e){} return null; }
+function borrarAvance(){ try{ localStorage.removeItem(CLAVE); }catch(e){} }
+function flujo(){ return FLUJO.filter(p=>(p!=="ingreso"||!sinIngreso()) && ((p!=="giro"&&p!=="modelo")||tieneNegocio())); }
+function ir(p){ S.paso=p; render(); }
+function siguiente(){ const f=flujo(); ir(f[f.indexOf(S.paso)+1]); }
+function atras(){ const f=flujo(); const i=f.indexOf(S.paso); if(i>0) ir(f[i-1]); }
+function esc(t){ return String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function puntos(ejes){ const p=Object.fromEntries(ORDEN.map(e=>[e,0])); ejes.forEach(e=>p[e]+=1); return p; }
+function puntosReal(d,m,a){
+  const p=Object.fromEntries(ORDEN.map(e=>[e,0]));
+  const cvE=NUM_EJES[caminoDeVida(d,m,a)]; p[cvE[0]]+=2; p[cvE[1]]+=1; ejesDelDia(d).forEach(e=>p[e]+=1); ANI_EJES[animalChino(d,m,a)].forEach(e=>p[e]+=1);
+  return p;
+}
+function semilla(str){ let h=2166136261; for(const c of str){ h^=c.charCodeAt(0); h=Math.imul(h,16777619);} return h>>>0; }
+
+const ICO_CANDADO = `<svg class="ico" viewBox="0 0 16 16" fill="none" stroke="#D4AF78" stroke-width="1.5"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg>`;
+
+/* Sello: octógono de los 8 ejes */
+function selloSVG(){
+  const c=150, r=112, pts=[];
+  for(let i=0;i<8;i++){ const a=-Math.PI/2+i*Math.PI/4; pts.push([c+r*Math.cos(a), c+r*Math.sin(a)]); }
+  const f=n=>n.toFixed(1);
+  const poly=pts.map(p=>f(p[0])+","+f(p[1])).join(" ");
+  const ln=(p,q,o)=>`<line x1="${f(p[0])}" y1="${f(p[1])}" x2="${f(q[0])}" y2="${f(q[1])}" stroke="rgba(212,175,120,${o})" stroke-width="1"/>`;
+  return `<svg viewBox="0 0 300 300" role="img" aria-label="Los 8 ejes de marca">
+    <g style="transform-origin:150px 150px;animation:gira 60s linear infinite"><circle cx="150" cy="150" r="138" fill="none" stroke="rgba(212,175,120,.18)" stroke-dasharray="2 6"/></g>
+    <polygon points="${poly}" fill="rgba(122,26,26,.35)" stroke="#D4AF78" stroke-width="1.2"/>
+    ${pts.map((p,i)=>ln(p,pts[(i+3)%8],.16)).join("")}${[0,1,2,3].map(k=>ln(pts[k],pts[k+4],.35)).join("")}${pts.map(p=>ln([c,c],p,.22)).join("")}
+    <circle cx="150" cy="150" r="26" fill="#0E0506" stroke="#D4AF78"/><circle cx="150" cy="150" r="6" fill="#D4AF78"/>
+    ${pts.map((p,i)=>`<circle cx="${f(p[0])}" cy="${f(p[1])}" r="${i%2?3:4.5}" fill="${i%2?'#35C9C1':'#D4AF78'}"/>`).join("")}
+  </svg>`;
+}
+
+/* Mapa de 8 ejes: diseño (oro) vs. respuestas (turquesa) */
+function mapaSVG(pR,pP){
+  const c=180, r=110, n=8;
+  const mR=Math.max(...Object.values(pR))||1, mP=Math.max(...Object.values(pP))||1;
+  const ang=i=>-Math.PI/2+i*2*Math.PI/n;
+  const xy=(i,v)=>[c+r*v*Math.cos(ang(i)), c+r*v*Math.sin(ang(i))];
+  const pol=(p,m)=>ORDEN.map((e,i)=>xy(i,0.12+0.88*p[e]/m).map(x=>x.toFixed(1)).join(",")).join(" ");
+  let g="";
+  [0.25,0.5,0.75,1].forEach(k=>{ g+=`<polygon points="${ORDEN.map((_,i)=>xy(i,k).map(x=>x.toFixed(1)).join(",")).join(" ")}" fill="none" stroke="rgba(245,241,232,.1)"/>`; });
+  ORDEN.forEach((_,i)=>{ const [x,y]=xy(i,1); g+=`<line x1="${c}" y1="${c}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="rgba(245,241,232,.08)"/>`; });
+  const top=S.real.split("+");
+  const et=ORDEN.map((e,i)=>{ const [x,y]=xy(i,1.2); const cs=Math.cos(ang(i)), sn=Math.sin(ang(i));
+    const an=Math.abs(cs)<.2?"middle":(cs>0?"start":"end"); const dy=sn>.5?12:(sn<-.5?-4:4); const on=top.includes(e);
+    return `<text x="${x.toFixed(1)}" y="${(y+dy).toFixed(1)}" text-anchor="${an}" font-family="Montserrat, Arial, sans-serif" font-size="12" font-weight="${on?800:500}" fill="${on?'#D4AF78':'#BFB3A6'}">${e.toUpperCase()}</text>`; }).join("");
+  return `<svg viewBox="-40 0 440 370" role="img" aria-label="Tus 8 ejes: diseño frente a respuestas">${g}
+    <polygon points="${pol(pR,mR)}" fill="rgba(212,175,120,.28)" stroke="#D4AF78" stroke-width="2" stroke-linejoin="round"/>
+    <polygon points="${pol(pP,mP)}" fill="none" stroke="#35C9C1" stroke-width="2" stroke-dasharray="5 4" stroke-linejoin="round"/>${et}</svg>`;
+}
+
+function opciones(lista, sel, attr, extra){
+  return `<div class="opciones ${extra||""}">${lista.map((o,i)=>`<button class="op ${extra==="doble"?"frase":""}" ${attr}="${i}" aria-pressed="${sel===i}"><span class="letra">${String.fromCharCode(65+i)}</span><span>${esc(o)}</span></button>`).join("")}</div>`;
+}
+const volver = `<button class="volver" id="atras">← Atrás</button>`;
+function bloquesOcultos(nombre){ return esc(nombre); }
+
+function cabecera(){
+  const f=FLUJO.filter(p=>CONTABLES.includes(p)); /* siempre 12 pasos; los que no aplican se marcan como hechos al pasar */
+  const i=f.indexOf(S.paso);
+  const fin = !["inicio","datos","teaser"].includes(S.paso) && i<0;
+  const hechos = S.paso==="inicio"?0:(fin?f.length:(i>=0?i:(S.paso==="teaser"?1:0)));
+  document.getElementById("segs").innerHTML=f.map((_,k)=>`<i class="${k<hechos?'on':(k===i?'now':'')}"></i>`).join("");
+  document.getElementById("cuenta").textContent = i>=0 ? `${String(i+1).padStart(2,"0")} / ${String(f.length).padStart(2,"0")}` : (S.paso==="inicio"?"QUIZ":(fin?"TU RESULTADO":""));
+  const lock=document.getElementById("lock");
+  if(S.real && PREGUNTAS.includes(S.paso)){
+    lock.hidden=false;
+    lock.innerHTML=`${ICO_CANDADO}<span class="lbl">Tu arquetipo</span><span class="borroso" aria-hidden="true">${bloquesOcultos(BANCO[S.real][0])}</span>`;
+  } else lock.hidden=true;
+}
+
+function selectFecha(){
+  const dias=Array.from({length:31},(_,k)=>k+1), hoy=new Date().getFullYear(), anios=[];
+  for(let y=hoy-15;y>=1930;y--) anios.push(y);
+  const opt=(v,t,sel)=>`<option value="${v}" ${String(sel)===String(v)?"selected":""}>${t}</option>`;
+  return `<div class="fecha3">
+    <input id="fd" aria-label="Día" inputmode="numeric" maxlength="2" placeholder="Día" value="${esc(S.d)}" autocomplete="bday-day">
+    <select id="fm" aria-label="Mes">${opt("","Mes",S.m)}${MESES.map((x,k)=>opt(k+1,x[0].toUpperCase()+x.slice(1),S.m)).join("")}</select>
+    <input id="fa" aria-label="Año" inputmode="numeric" maxlength="4" placeholder="Año" value="${esc(S.a)}" autocomplete="bday-year">
+  </div>`;
+}
+
+function waLink(texto){ return `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(texto)}`; }
+function resumenQuiz(){
+  const al=alineacion();
+  return `Mi arquetipo: ${BANCO[S.real][0]}\nVivo en: ${S.ubic?UBIC.find(x=>x[0]===S.ubic)[1]:"-"}\nMi negocio está ${al.neg}% alineado con mi diseño.${S.giro?`\nMe presento como: "${S.giro}"`:""}${S.modelo?`\nMi modelo de negocio: ${MODELOS.find(x=>x[0]===S.modelo)[1]}${encajeModelo()?` (${encajeModelo()[1]})`:""}`:""}${S.modeloTxt?`\nCómo funciona: ${S.modeloTxt}`:""}`;
+}
+function opcionesApuesta(){
+  if(S.opcApuesta) return S.opcApuesta;
+  const set=[S.real]; if(S.perc!==S.real) set.push(S.perc);
+  const claves=Object.keys(BANCO).filter(k=>!set.includes(k));
+  let h=semilla(S.nombre+S.d+S.m+S.a);
+  while(set.length<3){ const k=claves[h%claves.length]; if(!set.includes(k)) set.push(k); h=Math.imul(h^0x9e3779b9,2654435761)>>>0; }
+  const s=semilla(S.a+S.nombre);
+  S.opcApuesta=[...set].sort((x,y)=>(semilla(x+s)-semilla(y+s)));
+  return S.opcApuesta;
+}
+
+function render(){
+  cabecera();
+  const P=S.paso; let h="";
+  const X=S.real?BANCO[S.real]:null, Y=S.perc?BANCO[S.perc]:null;
+
+  if(P==="inicio"){
+    h=`<section class="pantalla hero">
+      <div class="sello">${selloSVG()}</div>
+      <span class="kicker">Gratis · 3 minutos</span>
+      <h1>Hay 28 arquetipos. <em>Solo uno es el tuyo.</em></h1>
+      <p class="lead"><strong>Y probablemente no es el que crees.</strong> Se calcula con tu fecha de nacimiento y muestra para qué naciste. Tus respuestas revelan la distancia entre cómo te ves y quién eres.</p>
+      <div class="chips"><span class="chip">Tu talento natural</span><span class="chip">Cómo decides</span><span class="chip">Dónde rindes más</span></div>
+      ${(()=>{ const p=leerAvance(); if(!p) return `<button class="btn full" id="go">Descubrir el mío</button>`;
+        const terminado=["r1","r2","r3","r4","tarjeta","email","listo","mini"].includes(p.paso);
+        return `<div class="retomar"><p>${esc(p.nombre||"Hola")}, ${terminado?"tu resultado está guardado.":"dejaste tu quiz a medias."}</p>
+          <button class="btn full" id="continuar">${terminado?"Ver mi resultado":"Continuar donde quedé"}</button>
+          <button class="volver" id="nuevo" style="align-self:center">Empezar de nuevo</button></div>`; })()}
+    </section>`;
+  }
+  if(P==="datos"){
+    h=`<section class="pantalla">${volver}
+      <span class="kicker">Paso 1</span>
+      <h2>Con esto se <em>calcula</em> tu arquetipo.</h2>
+      <form class="campos" id="fdatos" novalidate>
+        <label for="nombre">Tu nombre<input id="nombre" autocomplete="given-name" value="${esc(S.nombre)}" placeholder="Cómo te llamas"></label>
+        <div class="genero"><span class="glbl">Soy</span><div class="genero-op" role="group" aria-label="Soy">
+          <button type="button" class="mini ${S.genero==="f"?"on":""}" data-genero="f" aria-pressed="${S.genero==="f"}">Mujer</button>
+          <button type="button" class="mini ${S.genero==="m"?"on":""}" data-genero="m" aria-pressed="${S.genero==="m"}">Hombre</button>
+        </div></div>
+        <label for="correo0">Tu correo <small>Para guardar tu avance y enviarte tu resultado.</small><input id="correo0" type="email" autocomplete="email" value="${esc(S.email)}" placeholder="tu@correo.com"></label>
+        <label for="fd">Fecha de nacimiento${selectFecha()}</label>
+        <div class="opcional">
+          <label>Hora y lugar <small>Opcionales. Si los das, tu resultado es más preciso.</small></label>
+          <div class="fila">
+            <div class="hora-campo"><label for="hora"><small>Hora</small><input id="hora" type="time" value="${esc(S.hora)}" ${S.horaEstado==="nose"?"disabled":""}></label>
+              <div class="hora-op" role="group" aria-label="Qué tan segura estás de tu hora">
+                <button type="button" class="mini ${S.horaEstado==="aprox"?"on":""}" data-hora="aprox" aria-pressed="${S.horaEstado==="aprox"}">No estoy segura</button>
+                <button type="button" class="mini ${S.horaEstado==="nose"?"on":""}" data-hora="nose" aria-pressed="${S.horaEstado==="nose"}">No sé la hora</button>
+              </div></div>
+            <label for="lugar"><small>Ciudad y país</small><input id="lugar" value="${esc(S.lugar)}"></label>
+          </div>
+        </div>
+        <p class="error" id="err" hidden></p>
+        <button class="btn full" type="submit">Calcular mi arquetipo</button>
+      </form></section>`;
+  }
+  if(P==="teaser"){
+    h=`<section class="pantalla teaser">
+      <span class="kicker">${esc(S.nombre)}, ya está calculado</span>
+      <p class="fecha-ok">Con tu fecha: <b>${+S.d} de ${MESES[S.m-1]} de ${S.a}</b> · <button class="volver" id="atras" style="display:inline;padding:0">Corregir</button></p>
+      <div class="caja-oculta">
+        <div class="sello-mini">${ICO_CANDADO}</div>
+        <span class="rot">Tu diseño dice</span>
+        <div class="borroso" aria-hidden="true">${esc(X[0])}</div>
+      </div>
+      <h2>Antes de mostrártelo, <em>veamos cómo operas hoy.</em></h2>
+      <p class="lead">Son unas preguntas rápidas sobre tu momento. Cuando lo veas, vas a entender por qué importan.</p>
+      <button class="btn full" id="go">Seguir</button>
+    </section>`;
+  }
+  if(P==="dedica"){
+    h=`<section class="pantalla">${volver}<span class="kicker">Tu momento</span><h2>¿A qué te dedicas hoy?</h2>
+      ${opciones(DEDICA.map(x=>x[1]), DEDICA.findIndex(x=>x[0]===S.dedica), "data-dedica")}</section>`;
+  }
+  if(P==="giro"){
+    h=`<section class="pantalla">${volver}<span class="kicker">Tu negocio</span>
+      <h2>Cuando te preguntan qué haces, <em>¿cómo te presentas?</em></h2>
+      <p class="lead">Escríbelo tal como lo dices.</p>
+      <form class="campos" id="fgiro" novalidate>
+        <label for="giro"><small>Por ejemplo: "Soy nutricionista", "Vendo ropa online", "Soy coach de emprendedoras"</small>
+          <input id="giro" maxlength="120" value="${esc(S.giro)}" placeholder="Soy… / Me dedico a…"></label>
+        <p class="error" id="err" hidden></p>
+        <button class="btn full" type="submit">Continuar</button>
+      </form></section>`;
+  }
+  if(P==="modelo"){
+    h=`<section class="pantalla">${volver}<span class="kicker">Tu negocio</span><h2>¿Cuál es tu <em>modelo de negocio</em> hoy?</h2>
+      <p class="lead">Elige el que más ingresos te da y cuéntame cómo funciona.</p>
+      ${opciones(MODELOS.map(x=>x[1]), MODELOS.findIndex(x=>x[0]===S.modelo), "data-modelo")}
+      <form class="campos" id="fmodelo" novalidate>
+        <label for="modeloTxt">Descríbelo con tus palabras <small>Qué vendes, cómo lo vendes y cuánto cobras. Mientras más específica, más preciso tu resultado.</small>
+          <textarea id="modeloTxt" rows="4" maxlength="400" placeholder="Ej.: Doy consultas de nutrición 1 a 1 por USD 40, la mayoría llegan por recomendación y algunas por Instagram.">${esc(S.modeloTxt)}</textarea></label>
+        <p class="error" id="err" hidden></p>
+        <button class="btn full" type="submit">Continuar</button>
+      </form></section>`;
+  }
+  if(P==="ingreso"){
+    h=`<section class="pantalla">${volver}<span class="kicker">Tu momento</span><h2>¿Cuánto generas al mes con tu trabajo o negocio?</h2>
+      <p class="lead">Es para recomendarte lo que te sirve. No se comparte con nadie.</p>
+      ${opciones(INGRESO.map(x=>x[1]), INGRESO.findIndex(x=>x[0]===S.ingreso), "data-ingreso")}</section>`;
+  }
+  if(P==="ubicacion"){
+    h=`<section class="pantalla">${volver}<span class="kicker">Tu momento</span><h2>¿Dónde vives?</h2>
+      ${opciones(UBIC.map(x=>x[1]), UBIC.findIndex(x=>x[0]===S.ubic), "data-ubic")}</section>`;
+  }
+  if(P==="busca"){
+    h=`<section class="pantalla">${volver}<span class="kicker">Lo que buscas</span><h2>¿Qué te gustaría <em>resolver</em> ahora?</h2>
+      ${opciones(BUSCA.map(x=>x[1]), BUSCA.findIndex(x=>x[0]===S.busca), "data-busca")}</section>`;
+  }
+  if(P==="dolor"){
+    const L=DOLORES[S.busca];
+    h=`<section class="pantalla">${volver}<span class="kicker">Lo que buscas</span><h2>¿Qué es lo que más te <em>pesa</em> hoy?</h2>
+      ${opciones(L.map(x=>x[0]), S.dolor===null?-1:S.dolor, "data-dolor")}</section>`;
+  }
+  if(P==="tiempo"){
+    h=`<section class="pantalla">${volver}<span class="kicker">Lo que buscas</span><h2>¿Hace cuánto te pasa?</h2>
+      ${opciones(TIEMPO.map(x=>x[1]), TIEMPO.findIndex(x=>x[0]===S.tiempo), "data-tiempo")}</section>`;
+  }
+  if(P==="e0"||P==="e1"||P==="e2"){
+    const k=Number(P[1]), e=ESC[k];
+    h=`<section class="pantalla">${volver}<span class="kicker">Cómo operas hoy · ${k+1} de 3</span><h2>${esc(tituloEsc(k))}</h2>
+      ${opciones(e.o.map(x=>x[0]), e.o.findIndex(o=>o[0]===S.escTxt[k]), "data-esc", "doble")}</section>`;
+  }
+  if(P==="apuesta"){
+    const ops=opcionesApuesta();
+    h=`<section class="pantalla">${volver}<span class="kicker">Tu apuesta</span>
+      <h2>Uno de estos es tu arquetipo. <em>¿Cuál crees que es?</em></h2>
+      <p class="lead">Confía en tu primera impresión.</p>
+      ${opciones(ops.map(k=>BANCO[k][0]), ops.indexOf(S.apuesta), "data-ap")}</section>`;
+  }
+  if(P==="calc"){
+    h=`<section class="pantalla calc"><div class="sello">${selloSVG()}</div><h2>Leyendo tu ${S.d} de ${MESES[S.m-1]} de ${S.a}…</h2><p class="lead" id="calcTxt">Cruzando tu diseño con tus respuestas.</p></section>`;
+    setTimeout(()=>{ const t=document.getElementById("calcTxt"); if(t) t.textContent="Midiendo la distancia entre los dos."; },1300);
+    setTimeout(()=>{ if(S.paso==="calc") ir("r1"); }, 2800);
+  }
+  if(P==="r1"){
+    if(!S.enviadoFin){ S.enviadoFin=true; enviarLead("completado"); }
+    const acerto=S.apuesta===S.real;
+    h=`<section class="pantalla capa">
+      <span class="kicker">${esc(S.nombre)}, tu diseño dice</span>
+      <div class="gran-nombre revelar">${esc(X[0])}</div>
+      <span class="veredicto ${acerto?'si':'no'}">${acerto?"Acertaste":"No es el que elegiste"}</span>
+      ${acerto?"":`<p class="lead">Elegiste <strong>${esc(BANCO[S.apuesta][0])}</strong>. Esa diferencia dice mucho de cómo estás vendiendo hoy.</p>`}
+      <button class="btn full" id="go">Qué significa</button>
+    </section>`;
+  }
+  if(P==="r2"){
+    h=`<section class="pantalla capa">
+      <span class="kicker">${esc(S.real.replace("+"," · "))}</span>
+      ${(()=>{ const z=animalCompleto(+S.d,+S.m,+S.a); return `<p class="zodiaco">Tu animal: <b>${z.animal} de ${z.elemento}</b>${z.inicio?` <span>· tu año chino empezó el ${z.inicio[1]} de ${MESES[z.inicio[0]-1]} de ${z.anio}</span>`:""}</p>`; })()}
+      <h2>${esc(X[0])}</h2>
+      <p class="esencia">${esc(X[1])}</p>
+      <div class="alerta">Ser <b>${esc(X[0])}</b> no es una etiqueta. Cuando vives y trabajas alineada a tu diseño, eso define cuánto puedes generar. Cuando no, cada resultado te cuesta más.</div>
+      ${S.horaEstado==="nose"||S.horaEstado==="aprox"
+        ? `<p class="nota">Resultado con tu fecha de nacimiento. Si no sabes tu hora exacta, en el Diagnóstico de Identidad se rectifica.</p>`
+        : ((S.hora||S.lugar) ? `<p class="nota">Resultado con fecha de nacimiento. Con hora y lugar exactos, tu lectura es más precisa.</p>` : "")}
+      <button class="btn full" id="go">Cómo estás operando hoy</button>
+    </section>`;
+  }
+  if(P==="r3"){
+    const coincide=S.real===S.perc, al=alineacion(), B=bloqueos();
+    const fila=(t,p)=>{ const [n,c]=nivel(p); return `<div class="nivel"><div class="nivel-top"><span>${t}</span><span class="pct ${c}">${p} %</span></div>${barra(p)}<span class="niv ${c}">${n}</span></div>`; };
+    h=`<section class="pantalla">
+      <span class="kicker">Tus respuestas</span>
+      <h2>${coincide?"Respondiste como":"Pero respondiste como"} <em>${esc(Y[0])}</em>.</h2>
+      <div class="alineacion"><h3>Tu nivel de alineación</h3>${fila("Tu vida",al.vida)}${fila(sinIngreso()?"Tu trabajo o tus estudios":"Tu trabajo o negocio",al.neg)}</div>
+      ${coincide?"":`<div class="alerta">Estás invirtiendo tu energía en <b>${esc(Y[3])}</b> cuando tu diseño te pide <b>${esc(X[3])}</b>.</div>`}
+      ${S.giro?`<div class="presentacion">
+        <h3>Cómo te presentas</h3>
+        <p class="cita">«${esc(S.giro)}»</p>
+        <p>Así se presenta casi cualquiera en tu rubro. Dice qué haces, pero no por qué elegirte a ti: es un <b>posicionamiento genérico</b>, y lo genérico se compara por precio.</p>
+        <p>Tu diseño de <b>${esc(X[0])}</b> pide otra cosa: <b>${esc(X[3])}</b>. Ahí está lo que solo tú tienes.</p>
+      </div>`:""}
+      ${(()=>{ if(!S.modelo) return ""; const em=encajeModelo(); const m=MODELOS.find(x=>x[0]===S.modelo);
+        if(!em) return `<div class="modelo"><h3>Tu modelo de negocio</h3>${S.modeloTxt?`<p class="cita-m">«${esc(S.modeloTxt)}»</p>`:""}<p>Si tu modelo va o no con tu diseño se revela en tu Diagnóstico de Identidad.</p></div>`;
+        return `<div class="modelo"><h3>Tu modelo de negocio</h3>
+          <div class="modelo-top"><span>${esc(m[1])}</span><span class="veredicto-m ${em[0]}">${em[1]}</span></div>
+          ${S.modeloTxt?`<p class="cita-m">«${esc(S.modeloTxt)}»</p>`:""}
+          <p>${esc(em[2])}</p>
+          <p class="nota">${em[0]==="si"?"Cómo posicionarte dentro de tu modelo":"Qué modelo sí va con tu diseño"} se revela en tu Diagnóstico de Identidad.</p></div>`; })()}
+      <div class="mapa"><h3>Tus 8 ejes</h3>${mapaSVG(S.pReal,S.pPerc)}
+        <div class="leyenda"><span><i style="background:var(--oro)"></i>Tu diseño</span><span><i style="background:var(--turquesa)"></i>Cómo operas</span></div></div>
+      ${B.length?`<div class="bloqueos">
+        <h3>Tienes ${B.length===1?"1 bloqueo activo":B.length+" bloqueos activos"}</h3>
+        ${B.map((e,k)=>`<div class="bloq">${ICO_CANDADO}<div><span class="b-t">${k===0?"Bloqueo principal":"Bloqueo "+(k+1)}</span>${k===0?`<span>Está en <b>${esc(AREA[e])}</b></span>`:`<span class="borroso">Bloqueo oculto</span>`}</div></div>`).join("")}
+        <p class="nota">Tu bloqueo principal se revela en el Mini Diagnóstico Exprés. ${B.length>1?"Todos tus bloqueos, y cómo destrabarlos,":"Cómo destrabarlo"} en tu Diagnóstico de Identidad.</p>
+      </div>`:`<div class="alerta">No aparecen bloqueos activos: usas lo que tu diseño pide. El siguiente paso es que tu trabajo lo cobre.</div>`}
+      <button class="btn full" id="go">Qué te cuesta no actuar</button>
+    </section>`;
+  }
+  if(P==="r4"){
+    const ing = S.ingreso;
+    const recoMini = sinIngreso() || S.dedica==="transicion" || ing==="0" || (ing==="nd" && S.busca==="vocacion");
+    const alto = ing==="10000"||ing==="50000";
+    const tramoD = ing==="3000";
+    const lejos = ["usa","europa","dubai"].includes(S.ubic);
+    const llamada = CONFIG.links.llamada || waLink(`Hola Ana, hice el quiz y quiero agendar una llamada.\n${resumenQuiz()}`);
+    const cardAuditoriaUpgrade = `<div class="oferta">
+          <p class="ligero">¿Quieres el plan completo?</p>
+          <div class="cab-of"><h3>Auditoría de Marca™</h3><span class="precio"><small>USD</small>555</span></div>
+          <p class="cuotas">o <b>${CONFIG.auditoriaCuotas.n} cuotas de USD ${CONFIG.auditoriaCuotas.monto}</b></p>
+          <div class="pago-local" data-calc="555" data-prod="la Auditoría de Marca" data-cuotas="${CONFIG.auditoriaCuotas.n}x${CONFIG.auditoriaCuotas.monto}"></div>
+          <p>Incluye tu Diagnóstico completo, la auditoría de tu negocio y tu marca, tus pilares de contenido y la estrategia lista para implementar.</p>
+          <a class="btn sec full" href="${esc(CONFIG.links.auditoria)}" target="_blank" rel="noopener">Ver la Auditoría</a>
+        </div>`;
+    const cardLlamadaVisible = `<div class="oferta llamada">
+          <p class="llamada-t">A tu nivel, una llamada puede ahorrarte meses.</p>
+          <a class="btn full" href="${esc(llamada)}" target="_blank" rel="noopener">Agenda aquí</a>
+        </div>`;
+    const lineaLlamadaSuave = `<p class="otra">¿Quieres que lo veamos en llamada? <a href="${esc(llamada)}" target="_blank" rel="noopener">Agenda aquí</a></p>`;
+    const auditoria = alto || ((ing==="3000") && (S.busca==="cobrar"||S.busca==="escalar"||S.busca==="noavanza"));
+    const D = DOLORES[S.busca][S.dolor];
+    const rg = RANGO[ing];
+    const POR_DIAG = {
+      cobrar: rg ? `Porque estás dejando dinero en la mesa. Con lo que generas, cobrar solo un 10 % por debajo de lo que vales son al menos USD ${fmt(rg[0]*12)} al año: más de lo que cuesta el Diagnóstico.` : "Porque estás dejando dinero en la mesa: cada mes que cobras por debajo de tu diseño es dinero que no vuelve.",
+      noavanza: rg ? `Porque trabajas con el freno puesto. Un 10 % de lo que generas son al menos USD ${fmt(rg[0]*12)} al año: más de lo que cuesta el Diagnóstico.` : "Porque trabajas con el freno puesto: el esfuerzo ya lo pones, falta que rinda.",
+      escalar: "Porque a tu nivel, cada decisión de marca mueve miles de dólares. Una decisión mal tomada cuesta más que el Diagnóstico.",
+      vocacion: "Porque cada año en un camino que no es el tuyo es un año que no vuelve.",
+      decision: "Porque la decisión que tienes pendiente puede abrir o cerrar oportunidades que no se repiten."};
+    const POR_MINI = {
+      vocacion: "Porque antes de invertir en otro curso o en otro camino, necesitas saber cuál es el tuyo. Es el primer paso más claro.",
+      decision: "Porque decidir sin conocer tu diseño es apostar a ciegas. Con USD 27 decides con información.",
+      noavanza: "Porque es el primer paso más claro: ves hoy qué te frena y decides con información.",
+      cobrar: "Porque es el primer paso más claro: ves hoy qué te frena y decides con información.",
+      escalar: "Porque es el primer paso más claro: ves hoy qué te frena y decides con información."};
+    const porque = recoMini ? POR_MINI[S.busca] : POR_DIAG[S.busca];
+    /* Copy personalizado de la sección de ofertas */
+    const ejeTop = [...ORDEN].sort((x,y)=>(S.pReal[y]-S.pReal[x])||(ORDEN.indexOf(x)-ORDEN.indexOf(y)))[0];
+    const TRAMO_TXT = {"0":"menos de USD 500 al mes","500":"entre USD 500 y 1.500 al mes","1500":"entre USD 1.500 y 3.000 al mes","3000":"entre USD 3.000 y 10.000 al mes","10000":"entre USD 10.000 y 50.000 al mes","50000":"más de USD 50.000 al mes"};
+    const OBJETIVO = {vocacion:"saber para qué eres buena y a qué dedicarte",decision:"tomar la decisión importante que tienes pendiente",noavanza:"entender por qué tu trabajo o negocio no avanza",cobrar:"cobrar lo que vales por lo que ya haces",escalar:"hacer crecer una marca que ya funciona"};
+    const precioLinea = alto ? `La Auditoría cuesta USD 555 o ${CONFIG.auditoriaCuotas.n} cuotas de USD ${CONFIG.auditoriaCuotas.monto}.` : (recoMini ? "El Mini Diagnóstico cuesta USD 27." : "El Diagnóstico cuesta USD 152.");
+    const lineaTramo = !ing ? "" : (["0","500"].includes(ing)
+      ? `A tu nivel (${TRAMO_TXT[ing]}), una decisión de marca bien tomada cambia lo que cobras todo el año. ${precioLinea}`
+      : `A tu nivel (${TRAMO_TXT[ing]}), una sola decisión de marca mueve miles. ${precioLinea}`);
+    const PENDIENTE = {vocacion:"la pregunta de a qué dedicarte todavía sin responder",decision:"esa decisión todavía pendiente",noavanza:"tu trabajo todavía sin avanzar como quieres",cobrar:"cobrar lo que vales todavía pendiente",escalar:"el crecimiento de tu marca todavía pendiente"};
+    const dolorMin = DOLORES[S.busca][S.dolor][0].charAt(0).toLowerCase()+DOLORES[S.busca][S.dolor][0].slice(1);
+    const espejo = `Si hoy decides no hacerlo, no pasa nada grave: sigues donde estás. La pregunta es si donde estás te alcanza, con «${dolorMin}» y ${PENDIENTE[S.busca]}.`;
+    const pitch = [
+      `Como <b>${esc(BANCO[S.real][0])}</b>, tu <b>${ejeTop.toLowerCase()}</b> es tu mayor activo en el mercado.`,
+      S.real!==S.perc ? `Hoy estás operando como <b>${esc(BANCO[S.perc][0])}</b>. Esa distancia entre tu diseño y tu operación es lo que te está costando.` : `Hoy operas alineada con tu diseño. Lo que falta es que tu marca lo cobre.`,
+      `«${esc(DOLORES[S.busca][S.dolor][0])}». Ese es el problema exacto que resuelve tu siguiente paso.`,
+      lineaTramo ? esc(lineaTramo) : "",
+      `Dijiste que quieres ${esc(OBJETIVO[S.busca])}. Este es el primer paso.`
+    ].filter(Boolean);
+    const al=alineacion(), B=bloqueos(), r=RANGO[ing];
+    const peor = al.neg<=al.vida ? [sinIngreso()?"tu trabajo o tus estudios":"tu trabajo o negocio", al.neg] : ["tu vida", al.vida];
+    const costos = [
+      `${TIEMPO_TXT[S.tiempo]} «${D[0].charAt(0).toLowerCase()+D[0].slice(1)}».`,
+      `${peor[0].charAt(0).toUpperCase()+peor[0].slice(1)} está ${peor[1]} % alinead${peor[0]==="tu vida"?"a":"o"} con tu diseño. Lo que no está alineado tiende a pedirte más esfuerzo por cada resultado.`,
+      B.length ? `Tienes ${B.length===1?"1 bloqueo activo":B.length+" bloqueos activos"}. Mientras sigan ahí, tienden a repetir el mismo patrón en cada cosa que empiezas.` : null,
+      (r && ["cobrar","noavanza","escalar"].includes(S.busca)) ? (r[1] ? `Con lo que generas hoy, cobrar solo un 10 % por debajo de lo que vales son entre USD ${fmt(r[0])} y ${fmt(r[1])} al mes: entre USD ${fmt(r[0]*12)} y ${fmt(r[1]*12)} al año.` : `Con lo que generas hoy, cobrar solo un 10 % por debajo de lo que vales son más de USD ${fmt(r[0])} al mes: más de USD ${fmt(r[0]*12)} al año.`) : null,
+      `En 12 meses, si nada cambia: ${PROYECCION[S.busca]}`
+    ].filter(Boolean);
+    const testis = CONFIG.testimonios.length ? carruselTestis() : "";
+    h=`<section class="pantalla">
+      <span class="kicker">Dijiste: «${esc(D[0])}»</span>
+      <p class="cierre">${esc(D[1])}</p>
+      <div class="costo"><h3>Lo que te cuesta no actuar</h3><ul>${costos.map(c=>`<li>${esc(c)}</li>`).join("")}</ul></div>
+      <p class="gancho">${GANCHO[S.busca]}</p>
+      <p class="lead">Esto fue tu nombre y tu esencia. Tu decodificación completa revela tus superpoderes, tus bloqueos y cómo usar tu diseño a tu favor.</p>
+      ${testis}
+      <div class="pitch">${pitch.map(p=>`<p>${p}</p>`).join("")}</div>
+      ${alto?`<span class="kicker">Tus opciones</span>
+      <div class="ofertas">
+        <div class="oferta reco">
+          <span class="badge">Recomendado para ti</span>
+          <h3 class="titulo-llamada">¿Auditoría o trabajo 1:1? Agenda tu llamada</h3>
+          <p class="porque">A tu nivel, cada decisión de marca mueve miles de dólares. La Auditoría incluye tu Diagnóstico completo más la auditoría de tu negocio, tus pilares de contenido y la estrategia lista para implementar. Sin vueltas: qué falla y el plan para corregirlo.</p>
+          <a class="btn full" href="${esc(llamada)}" target="_blank" rel="noopener">Agendar mi llamada</a>
+          <a class="btn sec full" href="${esc(CONFIG.links.auditoria)}" target="_blank" rel="noopener">Ver la Auditoría (USD 555 o ${CONFIG.auditoriaCuotas.n} cuotas de ${CONFIG.auditoriaCuotas.monto})</a>
+          <div class="pago-local" data-calc="555" data-prod="la Auditoría de Marca" data-cuotas="${CONFIG.auditoriaCuotas.n}x${CONFIG.auditoriaCuotas.monto}"></div>
+        </div>
+        <div class="oferta">
+          <p class="ligero">¿Prefieres empezar más ligero?</p>
+          <div class="cab-of"><h3>Diagnóstico de Identidad™</h3><span class="precio"><small>USD</small>152</span></div>
+          <p>Es exclusivamente para ti. Vemos cómo funcionas, tus dones, patrones, dinero, decisiones y aquello que te hace única.</p>
+          <a class="btn sec full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Quiero mi Diagnóstico</a>
+        </div>
+      </div>`:tramoD?`<span class="kicker">Tus opciones</span>
+      <div class="ofertas">
+        <div class="oferta reco">
+          <span class="badge">Recomendado para ti</span>
+          <div class="cab-of"><h3>Diagnóstico de Identidad™</h3><span class="precio"><small>USD</small>152</span></div>
+          <p class="porque">${esc(porque)}</p>
+          <p>Es exclusivamente para ti. Vemos cómo funcionas, tus dones, patrones, dinero, decisiones y aquello que te hace única.</p>
+          <p class="para-ti">${esc(PARA_TI[S.busca])}</p>
+          <ul>
+            <li>Todos tus bloqueos y cómo destrabarlos</li>
+            <li>Acceso a un cuestionario para que preguntes lo que quieras</li>
+            <li>El WhatsApp de Ana, para hacerle preguntas de aclaración cuando recibes tu entrega</li>
+          </ul>
+          <a class="btn full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Quiero mi Diagnóstico</a>
+        </div>
+        ${lejos ? cardLlamadaVisible + cardAuditoriaUpgrade : cardAuditoriaUpgrade}
+      </div>
+      ${lejos ? "" : lineaLlamadaSuave}`:`      <span class="kicker">Tienes dos formas de seguir</span>
+      <p class="porque">${esc(porque)}</p>
+      <p class="para-ti">${esc(PARA_TI[S.busca])}</p>
+      ${comparativa(recoMini)}
+      <button class="btn ${recoMini?'':'sec'} full" id="aMini">${recoMini?"Empezar por el Mini · USD 27":"Ver el Mini Exprés · USD 27"}</button>
+      <a class="btn ${recoMini?'sec':''} full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Quiero mi Diagnóstico · USD 152</a>
+`}
+      <p class="espejo">${esc(espejo)}</p>
+      ${auditoria?`<div class="analisis">
+        <span class="kicker">Para ti, que ya facturas</span>
+        <h3>Tu negocio ya factura. Lo que te frena para escalar suele verse en tu contenido.</h3>
+        <p>Déjame tu Instagram, TikTok o link y te digo qué está frenando tu crecimiento.</p>
+        <form class="campos" id="fanalisis" novalidate>
+          <label for="cuenta"><small>Tu cuenta o link</small><input id="cuenta" value="${esc(S.cuenta||"")}" placeholder="@tuusuario" autocomplete="off"></label>
+          <p class="error" id="errA" hidden></p>
+          <button class="btn full" type="submit">Quiero mi análisis de contenido</button>
+          <p class="nota" id="notaA" hidden></p>
+        </form>
+        ${(alto||tramoD)?"":`        <div class="salto">
+          <p>¿Quieres saltar directo a la solución? La <b>Auditoría de Marca™ (USD 555 o ${CONFIG.auditoriaCuotas.n} cuotas de USD ${CONFIG.auditoriaCuotas.monto})</b> incluye tu Diagnóstico de Identidad completo, la auditoría de tu negocio y tu marca, tus pilares de contenido y toda la estrategia lista para implementar.</p>
+          <p>El análisis te dice qué falla; la Auditoría te da el plan para corregirlo en tu negocio.</p>
+          <a class="btn full" href="${esc(waLink(`Hola Ana, hice el quiz y quiero la Auditoría de Marca.\n${resumenQuiz()}`))}" target="_blank" rel="noopener">Quiero la Auditoría: hablar con Ana</a>
+          <a class="btn sec full" href="${esc(CONFIG.links.auditoria)}" target="_blank" rel="noopener">Ver qué incluye la Auditoría</a>
+        </div>`}
+      </div>`:""}
+      <div class="acciones" style="flex-direction:column;align-items:stretch">
+        <a class="btn sec full" href="${esc(waLink(`Hola Ana, hice el quiz y quiero hablar contigo antes de decidir.\n${resumenQuiz()}`))}" target="_blank" rel="noopener">¿Tienes dudas? Habla con Ana por WhatsApp</a>
+        <button class="btn sec full" id="aTarjeta">Ver mi tarjeta para historias</button>
+        <button class="btn sec full" id="aEmail">Recibir mi resultado por correo y WhatsApp</button>
+        <button class="volver" id="repetir" style="align-self:center">Hacer el quiz de nuevo</button>
+      </div>
+    </section>`;
+  }
+  if(P==="mini"){
+    const B=bloqueos(), al=alineacion(), area=B.length?AREA[B[0]]:null;
+    const D=DOLORES[S.busca][S.dolor];
+    const testis = CONFIG.testimonios.length ? carruselTestis() : "";
+    const faq = [
+      ["¿Necesito mi hora de nacimiento?","No. Se hace con tu fecha. Si sabes tu hora, mejor; si no, en el Diagnóstico se rectifica."],
+      CONFIG.entregaMini ? ["¿Cuándo lo recibo?",`Lo recibes ${CONFIG.entregaMini}.`] : null,
+      ["¿Y si después quiero el Diagnóstico completo?","Si lo tomas en los 7 días siguientes, los USD 27 se descuentan. No pagas dos veces."],
+      ["¿Es un test de personalidad?","No. No depende de cómo te ves: se calcula con tu fecha de nacimiento. Por eso muestra lo que tú sola no ves."]
+    ].filter(Boolean);
+    h=`<section class="pantalla">
+      <button class="volver" id="aR4">← Volver a mis opciones</button>
+      <span class="kicker">Mini Diagnóstico Exprés</span>
+      <h2>${esc(S.nombre)}, ${area?`tu bloqueo principal está en <em>${esc(area)}</em>.`:`tu diseño está activo.`} Esto es lo que te falta ver.</h2>
+      <p class="lead">Dijiste: <strong>«${esc(D[0])}»</strong>. El Mini te muestra por qué pasa y qué lo destraba, a partir de tu fecha de nacimiento.</p>
+      <div class="incluye-mini">
+        <h3>Lo que vas a recibir</h3>
+        <div class="item"><span class="num">1</span><div><b>El nombre completo de tu perfil</b><span>Más allá del arquetipo: la combinación exacta que te hace distinta.</span></div></div>
+        <div class="item"><span class="num">2</span><div><b>Tu primer superpoder</b><span>El talento que hoy usas a medias y cómo ponerlo a trabajar ${sinIngreso()?"en lo que elijas":"en tu negocio"}.</span></div></div>
+        <div class="item"><span class="num">3</span><div><b>Tu bloqueo principal${area?`, el de ${esc(area)}`:""}</b><span>Cómo se llama, por qué aparece y cómo se ve en tu día a día.</span></div></div>
+      </div>
+      <div class="costo"><h3>Si no lo ves ahora</h3><ul>
+        <li>Tu ${sinIngreso()?"trabajo o tus estudios":"trabajo o negocio"} sigue ${al.neg} % alineado con tu diseño.</li>
+        <li>En 12 meses, si nada cambia: ${esc(PROYECCION[S.busca])}</li></ul></div>
+      <h3 class="cp-tit">Mini vs Diagnóstico completo</h3>
+      ${comparativa(true)}
+      ${testis}
+      <div class="precio-mini">
+        <div class="ancla"><span>Diagnóstico de Identidad completo</span><span class="p152">USD 152</span></div>
+        <div class="hoy"><span>Mini Diagnóstico Exprés, hoy</span><b>USD 27</b></div>
+        <p class="garantia">Si tomas el Diagnóstico en los 7 días siguientes, estos USD 27 se descuentan.</p>
+        <a class="btn full" href="${esc(linkMini())}" rel="noopener">Quiero mi Mini Diagnóstico</a>
+        <p class="nota" style="text-align:center">Pago único y seguro. Sin suscripción.</p>
+      </div>
+      <div class="faq">${faq.map(f=>`<details><summary>${esc(f[0])}</summary><p>${esc(f[1])}</p></details>`).join("")}</div>
+      <p class="otra">¿Prefieres ver todo de una vez, con cuestionario y WhatsApp de Ana? <a href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Diagnóstico de Identidad™ (USD 152)</a></p>
+    </section>`;
+  }
+  if(P==="tarjeta"){
+    h=`<section class="pantalla">
+      <button class="volver" id="aR4">← Volver</button>
+      <div class="tarjeta">
+        <div class="t-oct" aria-hidden="true">${selloSVG()}</div>
+        <div class="t-top">QUANTUM <span>BRANDING</span></div>
+        <div class="t-mid">
+          <span class="t-lbl">Mi arquetipo de marca</span>
+          <div class="t-nom">${esc(X[0])}</div>
+          <div class="t-ese">${esc(X[1])}</div>
+        </div>
+        <div class="t-pie"><b>¿Cuál es el tuyo?</b><span>Descúbrelo con ${esc(CONFIG.instagram)}</span></div>
+      </div>
+      <p class="lead" style="text-align:center">Haz captura de pantalla y súbela a tus historias etiquetando <strong>${esc(CONFIG.instagram)}</strong>.</p>
+    </section>`;
+  }
+  if(P==="email"){
+    h=`<section class="pantalla"><button class="volver" id="aR4">← Volver</button>
+      <span class="kicker">${esc(X[0])}</span>
+      <h2>¿Te lo mando <em>por correo y WhatsApp</em>?</h2>
+      <p class="lead">Déjame tus datos y te envío tu resultado con lo que significa para tu negocio.</p>
+      <form class="campos" id="femail" novalidate>
+        <label for="email">Tu correo<input id="email" type="email" autocomplete="email" value="${esc(S.email)}" placeholder="tu@correo.com"></label>
+        <label for="telnum">Tu WhatsApp
+          <div class="tel">
+            <select id="telcod" aria-label="Código de país">${CODIGOS.map(c=>`<option value="${c[0]}" ${c[0]===(S.telcod||codigoPorUbic())?"selected":""}>${c[1]}</option>`).join("")}</select>
+            <input id="telnum" type="tel" inputmode="tel" autocomplete="tel-national" value="${esc(S.telnum||"")}" placeholder="Número">
+          </div></label>
+        <label class="check" for="okmsg"><input id="okmsg" type="checkbox" ${S.okmsg?"checked":""}><span>Acepto recibir mensajes de Ana por WhatsApp o SMS. Puedo darme de baja cuando quiera.</span></label>
+        <p class="error" id="err" hidden></p>
+        <button class="btn full" type="submit">Enviar</button>
+      </form></section>`;
+  }
+  if(P==="listo"){
+    h=`<section class="pantalla hero"><div class="sello">${selloSVG()}</div>
+      <div class="ok">Listo.<br><em>Revisa tu correo.</em></div>
+      <p class="lead">Tu arquetipo: <strong>${esc(X[0])}</strong>.</p>
+      <button class="btn sec full" id="aR4">Volver a mis opciones</button></section>`;
+  }
+  if(location.hash==="#verificar" && S.real && S.d){
+    const d=+S.d,m=+S.m,a=+S.a;
+    h+=`<div class="verif"><b>Verificación (solo con #verificar)</b><br>Camino de Vida: ${caminoDeVida(d,m,a)} → 1º eje ${NUM_EJES[caminoDeVida(d,m,a)][0]} · Día ${d}: ${ejesDelDia(d).join(" + ")} · Animal: ${animalChino(d,m,a)}${ANL[a]?` (Año Nuevo Lunar ${a}: ${ANL[a][1]}/${ANL[a][0]})`:""}<br>Puntos: ${ORDEN.map(e=>`${e} ${S.pReal[e]}`).join(" · ")}<br>Resultado: ${BANCO[S.real][0]} (${S.real})</div>`;
+  }
+  app.innerHTML=generoTxt(h); bind(); window.scrollTo(0,0); guardarAvance();
+}
+
+function bind(){
+  const q=s=>app.querySelector(s);
+  q("#go")?.addEventListener("click",siguiente);
+  q("#atras")?.addEventListener("click",atras);
+  q("#aR4")?.addEventListener("click",()=>ir("r4"));
+  q("#aTarjeta")?.addEventListener("click",()=>ir("tarjeta"));
+  q("#aMini")?.addEventListener("click",()=>ir("mini"));
+  q("#aEmail")?.addEventListener("click",()=>ir("email"));
+  q("#repetir")?.addEventListener("click",()=>{ borrarAvance(); S=NUEVO(); render(); });
+  q("#continuar")?.addEventListener("click",()=>{ const p=leerAvance(); if(!p) return; S=Object.assign(NUEVO(),p); if(S.paso==="calc") S.paso="r1"; render(); });
+  q("#nuevo")?.addEventListener("click",()=>{ borrarAvance(); S=NUEVO(); S.paso="datos"; render(); });
+  app.querySelectorAll("[data-dedica]").forEach(b=>b.onclick=()=>{ S.dedica=DEDICA[+b.dataset.dedica][0]; if(sinIngreso()) S.ingreso=null; if(!tieneNegocio()){ S.giro=""; S.modelo=null; } siguiente(); });
+  app.querySelectorAll("[data-modelo]").forEach(b=>b.onclick=()=>{ S.modelo=MODELOS[+b.dataset.modelo][0];
+    app.querySelectorAll("[data-modelo]").forEach(x=>x.setAttribute("aria-pressed", x===b)); q("#modeloTxt").focus(); });
+  q("#fmodelo")?.addEventListener("submit",ev=>{
+    ev.preventDefault(); const err=q("#err"); S.modeloTxt=q("#modeloTxt").value.trim();
+    if(!S.modelo){ err.textContent="Elige la opción que más se parece a tu modelo de negocio."; err.hidden=false; return; }
+    if(S.modelo==="otro" && S.modeloTxt.length<5){ err.textContent="Cuéntame en pocas palabras cómo funciona tu negocio."; err.hidden=false; return; }
+    siguiente();
+  });
+  app.querySelectorAll("[data-ingreso]").forEach(b=>b.onclick=()=>{ S.ingreso=INGRESO[+b.dataset.ingreso][0]; siguiente(); });
+  app.querySelectorAll("[data-ubic]").forEach(b=>b.onclick=()=>{ S.ubic=UBIC[+b.dataset.ubic][0]; siguiente(); });
+  app.querySelectorAll("[data-busca]").forEach(b=>b.onclick=()=>{ const v=BUSCA[+b.dataset.busca][0]; if(v!==S.busca) S.dolor=null; S.busca=v; siguiente(); });
+  app.querySelectorAll("[data-tiempo]").forEach(b=>b.onclick=()=>{ S.tiempo=TIEMPO[+b.dataset.tiempo][0]; siguiente(); });
+  app.querySelectorAll("[data-esc]").forEach(b=>b.onclick=()=>{
+    const k=Number(S.paso[1]); const o=ESC[k].o[+b.dataset.esc]; S.esc[k]=o[1]; S.escTxt[k]=o[0];
+    if(S.esc.every(Boolean)){ const np=arquetipoPercibido(S.esc); if(np!==S.perc){ S.perc=np; S.pPerc=puntos(S.esc); S.opcApuesta=null; S.apuesta=null; } }
+    siguiente(); });
+  app.querySelectorAll("[data-ap]").forEach(b=>b.onclick=()=>{ S.apuesta=S.opcApuesta[+b.dataset.ap]; siguiente(); });
+  app.querySelectorAll("[data-dolor]").forEach(b=>b.onclick=()=>{ S.dolor=+b.dataset.dolor; siguiente(); });
+
+  app.querySelectorAll("[data-genero]").forEach(b=>b.onclick=()=>{
+    S.genero=b.dataset.genero;
+    app.querySelectorAll("[data-genero]").forEach(x=>{ const on=x.dataset.genero===S.genero; x.classList.toggle("on",on); x.setAttribute("aria-pressed",on); });
+    const h=app.querySelector('[data-hora="aprox"]'); if(h) h.textContent=S.genero==="m"?"No estoy seguro":"No estoy segura";
+  });
+  app.querySelectorAll("[data-hora]").forEach(b=>b.onclick=()=>{
+    const v=b.dataset.hora; S.horaEstado = S.horaEstado===v ? "" : v;
+    app.querySelectorAll("[data-hora]").forEach(x=>{ const on=x.dataset.hora===S.horaEstado; x.classList.toggle("on",on); x.setAttribute("aria-pressed",on); });
+    const h=q("#hora"); h.disabled = S.horaEstado==="nose"; if(h.disabled) h.value="";
+  });
+  q("#fanalisis")?.addEventListener("submit",async ev=>{
+    ev.preventDefault(); const v=q("#cuenta").value.trim(); const err=q("#errA"), nota=q("#notaA");
+    if(v.length<3){ err.textContent="Escribe tu usuario (por ejemplo @tumarca) o pega el link de tu perfil."; err.hidden=false; return; }
+    err.hidden=true; S.cuenta=v;
+    const al=alineacion();
+    const msg=`Hola Ana, hice el quiz y quiero mi análisis de contenido.\nMi arquetipo: ${BANCO[S.real][0]}\nMi negocio está ${al.neg}% alineado con mi diseño.\n${S.giro?`Me presento como: "${S.giro}"\n`:""}Lo que más me pesa: ${DOLORES[S.busca][S.dolor][0]}\nMi cuenta: ${v}`;
+    if(CONFIG.whatsapp){
+      const a=document.createElement("a"); a.href=`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`; a.target="_blank"; a.rel="noopener"; a.click();
+      nota.textContent="Se abrió WhatsApp con tu mensaje listo. Solo tienes que enviarlo."; nota.hidden=false;
+    } else {
+      let copiado=false; try{ await navigator.clipboard.writeText(msg); copiado=true; }catch(e){}
+      const a=document.createElement("a"); a.href=`https://ig.me/m/${CONFIG.instagram.replace("@","")}`; a.target="_blank"; a.rel="noopener"; a.click();
+      nota.textContent = copiado ? `Copiamos tu mensaje. Pégalo en el chat de ${CONFIG.instagram} que se acaba de abrir y envíalo.` : `Escríbele a ${CONFIG.instagram} por Instagram con tu cuenta: ${v}`;
+      nota.hidden=false;
+    }
+  });
+  q("#fgiro")?.addEventListener("submit",ev=>{
+    ev.preventDefault(); const v=q("#giro").value.trim();
+    if(v.length<3){ const err=q("#err"); err.textContent="Escribe cómo te presentas, en pocas palabras."; err.hidden=false; return; }
+    S.giro=v; siguiente();
+  });
+  q("#fdatos")?.addEventListener("submit",ev=>{
+    ev.preventDefault(); const err=q("#err");
+    S.nombre=q("#nombre").value.trim(); S.email=q("#correo0").value.trim(); S.d=q("#fd").value.replace(/\D/g,""); S.m=q("#fm").value; S.a=q("#fa").value.replace(/\D/g,""); S.hora=S.horaEstado==="nose"?"":q("#hora").value; S.lugar=q("#lugar").value.trim();
+    const mal=m=>{ err.textContent=m; err.hidden=false; };
+    if(!S.nombre) return mal("Escribe tu nombre para continuar.");
+    if(!S.genero) return mal("Elige Mujer u Hombre para escribir tu resultado como corresponde.");
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.email)) return mal("Revisa tu correo: falta algo, por ejemplo la @ o el dominio.");
+    if(!S.d||!S.m||!S.a) return mal("Escribe el día, elige el mes y escribe el año en que naciste.");
+    if(+S.d<1||+S.d>31) return mal("El día va del 1 al 31.");
+    if(S.a.length!==4||+S.a<1920||+S.a>new Date().getFullYear()-10) return mal("Escribe el año completo, por ejemplo 1988.");
+    const d=+S.d, m=+S.m, a=+S.a, f=new Date(a,m-1,d);
+    if(f.getMonth()!==m-1) return mal(`El ${d} de ${MESES[m-1]} no existe en ${a}. Revisa el día.`);
+    const nueva=arquetipoReal(d,m,a);
+    if(nueva!==S.real){ S.real=nueva; S.pReal=puntosReal(d,m,a); S.opcApuesta=null; S.apuesta=null; }
+    enviarLead("iniciado");
+    siguiente();
+  });
+
+  q("#femail")?.addEventListener("submit",async ev=>{
+    ev.preventDefault(); const err=q("#err"); const v=q("#email").value.trim(); S.email=v;
+    S.telcod=q("#telcod").value; S.telnum=q("#telnum").value.replace(/[^\d]/g,""); S.okmsg=q("#okmsg").checked;
+    const mal=m=>{ err.textContent=m; err.hidden=false; };
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return mal("Revisa tu correo: falta algo, por ejemplo la @ o el dominio.");
+    if(S.telnum.length<6 || S.telnum.length>15) return mal("Escribe tu número de WhatsApp sin el código de país.");
+    if(!S.okmsg) return mal("Marca la casilla para que pueda enviarte tu resultado por WhatsApp.");
+    S.telefono=`+${S.telcod}${S.telnum}`;
+    enviarLead("completado");
+    ir("listo");
+  });
+}
+
+render();
+
+
+/* ===== Mini: enlace de pago de Stripe con los datos del quiz (para entregar el Mini automático) ===== */
+function refMini(){
+  if(!S.real||!S.d||!S.m||!S.a) return "";
+  const i=e=>ORDEN.indexOf(e);
+  const [a,b]=S.real.split("+");
+  const sp=NUM_EJES[caminoDeVida(+S.d,+S.m,+S.a)][0];
+  let bl=(bloqueos()[0])||ORDEN.filter(e=>e!==a&&e!==b).sort((x,y)=>(S.pReal[y]-S.pReal[x]))[0];
+  const f=String(S.a)+String(S.m).padStart(2,"0")+String(S.d).padStart(2,"0");
+  return `m1-${i(a)}${i(b)}${i(sp)}${i(bl)}-${S.genero==="m"?"m":"f"}-${f}`;
+}
+function linkMini(){
+  const base=CONFIG.links.mini;
+  if(!base||base==="#") return waLink(`Hola Ana, hice el quiz y quiero mi Mini Diagnóstico Exprés.\n${resumenQuiz()}`);
+  const u=new URL(base); const r=refMini();
+  if(r) u.searchParams.set("client_reference_id",r);
+  if(S.email) u.searchParams.set("prefilled_email",S.email);
+  u.searchParams.set("locale","es");
+  return u.toString();
+}
+/* ===== Comparativa lado a lado: Mini vs Diagnóstico ===== */
+const ICO_OK=`<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg>`;
+const ICO_LOCK=`<svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg>`;
+const COMPARA=[
+  ["Tu arquetipo y el nombre completo de tu perfil",true,true],
+  ["Tu superpoder: en qué eres buena de forma natural","1","Todos"],
+  ["Cómo aplicar tus superpoderes en un negocio y volverlos dinero",false,true],
+  ["Tu mejor forma de ganar dinero y cómo lo creas",false,true],
+  ["Tu modelo de negocio ideal según tu diseño",false,true],
+  ["Tu bloqueo principal","1","Todos + cómo destrabarlos"],
+  ["Qué te impide encontrar oportunidades y hacer dinero",false,true],
+  ["Dónde te bloqueas en cada área de tu vida",false,true],
+  ["Tus ventanas ideales para tomar las mejores decisiones",false,true],
+  ["Cómo funcionas: cómo decides, comunicas y lideras",false,true],
+  ["Qué te distingue y cómo volverlo ventaja",false,true],
+  ["Tus oportunidades: personas y contextos que te favorecen",false,true],
+  ["Una acción para esta semana",true,true],
+  ["Formulario privado para hacerme todas tus preguntas",false,true],
+  ["Audio privado de aclaración con mi voz",false,true],
+  ["Acceso a mi WhatsApp para tus dudas",false,true],
+];
+/* Dolor → filas de la comparativa que lo resuelven (índices de COMPARA) */
+const DOLOR_FILAS={vocacion:[[1,2],[7,9],[10,6]],decision:[[8,9],[8,9],[9,13]],noavanza:[[3,4],[10,11],[6,7]],cobrar:[[10,3],[10,1],[3,10]],escalar:[[4,2],[10,1],[10,9]]};
+function comparativa(recoMini){
+  const D=(S.busca&&S.dolor!==null&&DOLORES[S.busca])?DOLORES[S.busca][S.dolor]:null;
+  const marca=D?(DOLOR_FILAS[S.busca]||[])[S.dolor]||[]:[];
+  const celda=(v,col)=> v===false ? `<span class="cp-c cp-lock" aria-label="No incluido">${ICO_LOCK}</span>`
+    : `<span class="cp-c cp-ok cp-${col}" aria-label="Incluido">${ICO_OK}${v===true?"":`<small>${esc(v)}</small>`}</span>`;
+  const intro = D ? `<div class="cp-dolor"><span>Dijiste</span><b>«${esc(D[0])}»</b><p>Las filas marcadas son las que lo resuelven. En el Mini quedan bloqueadas.</p></div>` : "";
+  return `${intro}<div class="compara" role="table" aria-label="Mini Diagnóstico vs Diagnóstico de Identidad">
+    <div class="cp-fila cp-cab" role="row"><span role="columnheader"></span>
+      <span class="cp-h cp-hm" role="columnheader">${recoMini?'<i>Para empezar</i>':''}<b>Mini Exprés</b><em>USD 27</em></span>
+      <span class="cp-h cp-hd" role="columnheader">${recoMini?'':'<i>Recomendado</i>'}<b>Diagnóstico</b><em>USD 152</em></span></div>
+    ${COMPARA.map(([t,m,d],k)=>`<div class="cp-fila ${m===false?'cp-bloq':''} ${marca.includes(k)?'cp-tu':''}" role="row"><span class="cp-t" role="cell">${marca.includes(k)?'<em class="cp-tag">Tu dolor</em>':''}${esc(t)}</span><span role="cell">${celda(m,'mini')}</span><span role="cell">${celda(d,'diag')}</span></div>`).join("")}
+    <div class="cp-nota">Si tomas el Diagnóstico en los 7 días siguientes, tus USD 27 se descuentan.</div>
+  </div>`;
+}
+/* ===== Género: nombres y textos en masculino si la persona eligió "Hombre" ===== */
+const NOMBRE_M={"La Arquitecta Visible":"El Arquitecto Visible","La Referente":"El Referente","La Anfitriona":"El Anfitrión","La Estratega Visible":"El Estratega Visible","La Tejedora":"El Tejedor","La Arquitecta de Expansión":"El Arquitecto de Expansión","Arquitecta de Método":"Arquitecto de Método","La Guardiana Estratégica":"El Guardián Estratégico","La Guardiana":"El Guardián","La Arquitecta Estratega":"El Arquitecto Estratega","La que Cruza Fronteras":"El que Cruza Fronteras","La Convocante":"El Convocante","La Negociadora":"El Negociador","La Aliada":"El Aliado","La Diplomática":"El Diplomático","La Pionera":"El Pionero","La Exploradora Exacta":"El Explorador Exacto","La Cultivadora":"El Cultivador","La Navegante":"El Navegante","La Guía Firme":"El Guía Firme","La Estratega Mayor":"El Estratega Mayor","La Artesana":"El Artesano"};
+/* Frases exactas con género (las neutras como "La Voz que Convoca" o "La Institución" no cambian) */
+const FRASES_M=[["cómo estás hecha","cómo estás hecho"],["para qué estás hecha","para qué estás hecho"],["para qué eres buena","para qué eres bueno"],["para qué soy buena","para qué soy bueno"],["No estoy segura","No estoy seguro"],["Qué tan segura estás","Qué tan seguro estás"],["Parcialmente desalineada","Parcialmente desalineado"],["Desalineada","Desalineado"],["Alineada","Alineado"],["alineada","alineado"],["tú sola","tú solo"],["te hace distinta","te hace distinto"],["Lo haces sola","Lo haces solo"],["Veo a otras avanzar","Veo a otros avanzar"],["Soy coach de emprendedoras","Soy coach de emprendedores"],["te hace única","te hace único"],["cómo estás diseñada","cómo estás diseñado"],["en qué eres buena de forma natural","en qué eres bueno de forma natural"]];
+const FRASES_M_ORD=[...Object.entries(NOMBRE_M),...FRASES_M].sort((a,b)=>b[0].length-a[0].length);
+function generoTxt(t){ if(S.genero!=="m"||!t) return t; for(const [f,m] of FRASES_M_ORD) t=t.split(f).join(m); return t; }
+function nombreArq(k){ const n=BANCO[k][0]; return S.genero==="m"&&NOMBRE_M[n]?NOMBRE_M[n]:n; }
+/* ===== Ventana de pago del Diagnóstico: 1) resumen condensado 2) formulario de pago de Systeme ===== */
+function abrirPago(url){
+  cerrarPago();
+  const arq = S.real && BANCO[S.real] ? BANCO[S.real][0] : "";
+  const wa = "https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent("Hola Ana, hice el quiz"+(arq?" ("+arq+")":"")+" y tengo una duda sobre el Diagnóstico.");
+  const capa=document.createElement("div");
+  capa.className="pago-capa"; capa.id="pagoCapa"; capa.setAttribute("role","dialog"); capa.setAttribute("aria-modal","true"); capa.setAttribute("aria-label","Diagnóstico de Identidad");
+  capa.innerHTML=generoTxt(`<div class="pago-caja">
+    <div class="pago-top"><div><b>Diagnóstico de Identidad™</b><small>Personalizado · cupos del mes</small></div><button class="pago-x" type="button" aria-label="Cerrar">×</button></div>
+    <div class="pago-info" id="pagoInfo">
+      <h3>Tu arquetipo es la portada.<br><em>El Diagnóstico es el mapa completo.</em></h3>
+      ${arq?`<div class="pago-tuyo">El quiz te mostró <b>${esc(arq)}</b>: 2 de tus ejes. El Diagnóstico abre todo tu diseño y lo cruza con lo que estás viviendo hoy.</div>`:""}
+      <p>Un documento hecho solo para ti: cómo funcionas, qué te distingue y qué te pide atención en esta etapa. No es una predicción. Es entenderte mejor para decidir mejor.</p>
+      <div><div class="rot">7 lecturas</div><div class="pago-chips"><span>Cómo funcionas</span><span>Qué te distingue</span><span>Tus dones</span><span>Tus sombras</span><span>Tu dinero</span><span>Tus decisiones</span><span>Tus oportunidades</span></div></div>
+      <div><div class="rot">Qué recibes</div><ul class="pago-lista">
+        <li>Diagnóstico personalizado<small>Tu documento completo, creado con tus datos.</small></li>
+        <li>Formulario privado<small>Me cuentas qué vives y me haces todas las preguntas que quieras: negocio, dinero, una decisión, tu siguiente etapa.</small></li>
+        <li>Audio privado de aclaración<small>Te explico lo más importante con mi voz.</small></li>
+        <li>Acceso a mi WhatsApp<small>Me escribes directo tus dudas sobre tu diagnóstico.</small></li>
+        <li>Acceso permanente<small>Tu diagnóstico queda contigo.</small></li>
+      </ul></div>
+      <div><div class="rot">Cómo funciona</div><div class="pago-pasos">
+        <div><b>01</b>Reservas</div><div><b>02</b>Llenas tu formulario</div><div><b>03</b>Cruzo tus datos</div><div><b>04</b>Recibes documento + audio</div>
+      </div></div>
+      ${CONFIG.testimonios.length?`<div><div class="rot">Lo que dicen</div>${carruselTestis()}</div>`:""}
+      <div class="pago-precio"><strong>USD 152</strong><span>pago único</span></div>
+      <p class="pago-costo">Sí, tiene un costo. No saber también tiene un costo, y al final es más alto: no solo en dinero, también en tiempo.</p>
+      <div class="pago-local" id="pagoLocal" hidden></div>
+    </div>
+    <div class="pago-acc" id="pagoAcc">
+      <p class="pago-gancho">Cada decisión que tomas sin conocer cómo estás diseñada, la pagas dos veces.</p>
+      <button class="btn" type="button" id="pagoIr">Reservar mi Diagnóstico · USD 152</button>
+      <div class="nota">Pago seguro. Recibes el formulario privado en tu correo apenas pagas.<br><a href="${esc(wa)}" target="_blank" rel="noopener">¿Tienes una duda antes? Escríbele a Ana</a></div>
+    </div>
+    <div class="pago-marco" id="pagoMarco" hidden><div class="pago-cargando">Cargando el pago seguro…</div></div>
+    <div class="pago-pie" id="pagoPie" hidden><button class="pago-volver" type="button" id="pagoVolver">← Ver qué incluye</button> · ¿No carga? <a href="${esc(url)}" target="_blank" rel="noopener">Abrir el pago en pantalla completa</a></div>
+  </div>`);
+  capa.addEventListener("click",e=>{ if(e.target===capa||e.target.closest(".pago-x")) cerrarPago(); });
+  const $=id=>capa.querySelector("#"+id);
+  $("pagoIr").addEventListener("click",()=>{
+    const m=$("pagoMarco");
+    if(!m.querySelector("iframe")){ const f=document.createElement("iframe"); f.src=url; f.title="Pago del Diagnóstico"; f.allow="payment *"; m.appendChild(f); }
+    $("pagoInfo").hidden=true; $("pagoAcc").hidden=true; m.hidden=false; $("pagoPie").hidden=false;
+    if(S.email){ try{ fetch("/api/lead",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(datosLead("pago_abierto")),keepalive:true}).catch(()=>{}); }catch(e){} }
+  });
+  $("pagoVolver").addEventListener("click",()=>{ $("pagoInfo").hidden=false; $("pagoAcc").hidden=false; $("pagoMarco").hidden=true; $("pagoPie").hidden=true; });
+  document.body.appendChild(capa); document.body.style.overflow="hidden";
+  capa.querySelector(".pago-x").focus();
+  precioLocal(capa.querySelector("#pagoLocal"),152);
+}
+function cerrarPago(){ const c=document.getElementById("pagoCapa"); if(c){ c.remove(); document.body.style.overflow=""; } }
+document.addEventListener("click",e=>{
+  if(e.target.closest("[data-amini]")){ if(S.paso==="mini"){ document.querySelector(".precio-mini")?.scrollIntoView({behavior:"smooth",block:"center"}); } else { ir("mini"); } return; }
+  const a=e.target.closest("a[data-pago]"); if(!a) return;
+  e.preventDefault(); abrirPago(a.href);
+});
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") cerrarPago(); });
+
+document.addEventListener("scroll",e=>{
+  const p=e.target; if(!(p instanceof Element) || !p.classList.contains("carr-pista")) return;
+  const items=p.children; let k=0, best=1e9;
+  for(let j=0;j<items.length;j++){ const d=Math.abs(items[j].offsetLeft-p.offsetLeft-p.scrollLeft); if(d<best){best=d;k=j;} }
+  if(p.scrollLeft+p.clientWidth>=p.scrollWidth-4) k=items.length-1;
+  p.parentElement.querySelectorAll(".carr-puntos i").forEach((d,j)=>d.classList.toggle("on",j===k));
+},true);
+
+/* ===== Precio en moneda local (país por zona horaria del celular) ===== */
+/* Moneda por país (código ISO de región → moneda). Cubre las Américas, Europa, Medio Oriente, Asia, Oceanía y África principal. */
+const REG_CUR={BO:"BOB",MX:"MXN",US:"USD",ES:"EUR",CO:"COP",PE:"PEN",CL:"CLP",AR:"ARS",EC:"USD",PY:"PYG",UY:"UYU",VE:"USD",PA:"USD",CR:"CRC",GT:"GTQ",HN:"HNL",SV:"USD",NI:"NIO",DO:"DOP",PR:"USD",CU:"USD",BR:"BRL",CA:"CAD",
+GB:"GBP",IE:"EUR",FR:"EUR",DE:"EUR",IT:"EUR",PT:"EUR",NL:"EUR",BE:"EUR",AT:"EUR",FI:"EUR",GR:"EUR",LU:"EUR",SK:"EUR",SI:"EUR",EE:"EUR",LV:"EUR",LT:"EUR",HR:"EUR",MT:"EUR",CY:"EUR",CH:"CHF",SE:"SEK",NO:"NOK",DK:"DKK",PL:"PLN",CZ:"CZK",HU:"HUF",RO:"RON",BG:"BGN",RS:"RSD",UA:"UAH",TR:"TRY",IS:"ISK",
+AE:"AED",SA:"SAR",QA:"QAR",KW:"KWD",BH:"BHD",OM:"OMR",IL:"ILS",JO:"JOD",LB:"USD",EG:"EGP",MA:"MAD",TN:"TND",DZ:"DZD",NG:"NGN",KE:"KES",GH:"GHS",ZA:"ZAR",
+IN:"INR",PK:"PKR",BD:"BDT",LK:"LKR",NP:"NPR",CN:"CNY",HK:"HKD",TW:"TWD",JP:"JPY",KR:"KRW",SG:"SGD",MY:"MYR",TH:"THB",ID:"IDR",PH:"PHP",VN:"VND",AU:"AUD",NZ:"NZD"};
+const TZ_REG={"America/La_Paz":"BO","America/Lima":"PE","America/Bogota":"CO","America/Santiago":"CL","America/Guayaquil":"EC","America/Asuncion":"PY","America/Montevideo":"UY","America/Caracas":"VE","America/Panama":"PA","America/Costa_Rica":"CR","America/Guatemala":"GT","America/El_Salvador":"SV","America/Tegucigalpa":"HN","America/Managua":"NI","America/Santo_Domingo":"DO","America/Puerto_Rico":"PR","America/Havana":"CU","America/Sao_Paulo":"BR","America/Fortaleza":"BR","America/Recife":"BR","America/Bahia":"BR","America/Manaus":"BR","America/Belem":"BR","America/Toronto":"CA","America/Vancouver":"CA","America/Edmonton":"CA","America/Winnipeg":"CA","America/Halifax":"CA","America/Montreal":"CA",
+"America/New_York":"US","America/Chicago":"US","America/Denver":"US","America/Phoenix":"US","America/Los_Angeles":"US","America/Anchorage":"US","Pacific/Honolulu":"US","America/Detroit":"US","America/Boise":"US","America/Indiana/Indianapolis":"US","America/Kentucky/Louisville":"US",
+"Europe/Madrid":"ES","Atlantic/Canary":"ES","Africa/Ceuta":"ES","Europe/London":"GB","Europe/Dublin":"IE","Europe/Paris":"FR","Europe/Berlin":"DE","Europe/Rome":"IT","Europe/Lisbon":"PT","Atlantic/Madeira":"PT","Atlantic/Azores":"PT","Europe/Amsterdam":"NL","Europe/Brussels":"BE","Europe/Vienna":"AT","Europe/Helsinki":"FI","Europe/Athens":"GR","Europe/Luxembourg":"LU","Europe/Bratislava":"SK","Europe/Ljubljana":"SI","Europe/Tallinn":"EE","Europe/Riga":"LV","Europe/Vilnius":"LT","Europe/Zagreb":"HR","Europe/Malta":"MT","Asia/Nicosia":"CY","Europe/Zurich":"CH","Europe/Stockholm":"SE","Europe/Oslo":"NO","Europe/Copenhagen":"DK","Europe/Warsaw":"PL","Europe/Prague":"CZ","Europe/Budapest":"HU","Europe/Bucharest":"RO","Europe/Sofia":"BG","Europe/Belgrade":"RS","Europe/Kiev":"UA","Europe/Kyiv":"UA","Europe/Istanbul":"TR","Atlantic/Reykjavik":"IS",
+"Asia/Dubai":"AE","Asia/Riyadh":"SA","Asia/Qatar":"QA","Asia/Kuwait":"KW","Asia/Bahrain":"BH","Asia/Muscat":"OM","Asia/Jerusalem":"IL","Asia/Tel_Aviv":"IL","Asia/Amman":"JO","Asia/Beirut":"LB","Africa/Cairo":"EG","Africa/Casablanca":"MA","Africa/Tunis":"TN","Africa/Algiers":"DZ","Africa/Lagos":"NG","Africa/Nairobi":"KE","Africa/Accra":"GH","Africa/Johannesburg":"ZA",
+"Asia/Kolkata":"IN","Asia/Calcutta":"IN","Asia/Karachi":"PK","Asia/Dhaka":"BD","Asia/Colombo":"LK","Asia/Kathmandu":"NP","Asia/Shanghai":"CN","Asia/Hong_Kong":"HK","Asia/Taipei":"TW","Asia/Tokyo":"JP","Asia/Seoul":"KR","Asia/Singapore":"SG","Asia/Kuala_Lumpur":"MY","Asia/Bangkok":"TH","Asia/Jakarta":"ID","Asia/Manila":"PH","Asia/Ho_Chi_Minh":"VN","Asia/Saigon":"VN","Australia/Sydney":"AU","Australia/Melbourne":"AU","Australia/Brisbane":"AU","Australia/Perth":"AU","Australia/Adelaide":"AU","Pacific/Auckland":"NZ"};
+const TIPO_FIJO={BOB:11}; // Bolivia: tipo de cambio real que usa Ana
+function nombrePais(reg){ try{ return new Intl.DisplayNames([document.documentElement.lang||"es"],{type:"region"}).of(reg); }catch(e){ return reg; } }
+function regionLocal(){
+  let reg=null;
+  try{ const tz=Intl.DateTimeFormat().resolvedOptions().timeZone||"";
+    reg=TZ_REG[tz]||null;
+    if(!reg && tz.startsWith("America/Argentina")) reg="AR";
+    if(!reg && /^America\/(Mexico_City|Monterrey|Cancun|Merida|Chihuahua|Tijuana|Mazatlan|Hermosillo|Matamoros|Bahia_Banderas|Ciudad_Juarez|Ojinaga)/.test(tz)) reg="MX";
+  }catch(e){}
+  if(!reg){ for(const l of (navigator.languages||[navigator.language||""])){ const m=/-([A-Z]{2})$/i.exec(l||""); if(m && REG_CUR[m[1].toUpperCase()]){ reg=m[1].toUpperCase(); break; } } }
+  return reg;
+}
+function paisLocal(){ const r=regionLocal(); return r?[nombrePais(r),REG_CUR[r],r]:null; }
+function fmtMoneda(n,cur){
+  if(cur==="BOB") return "Bs "+Math.round(n).toLocaleString("es-BO");
+  try{ return new Intl.NumberFormat("es",{style:"currency",currency:cur,maximumFractionDigits:0}).format(n); }catch(e){ return cur+" "+Math.round(n); }
+}
+async function tipoCambio(cur){
+  if(TIPO_FIJO[cur]) return TIPO_FIJO[cur];
+  try{ const c=JSON.parse(sessionStorage.getItem("qb-fx")||"null"); if(c&&c.rates&&Date.now()-c.t<864e5&&c.rates[cur]) return c.rates[cur]; }catch(e){}
+  try{ const r=await fetch("https://open.er-api.com/v6/latest/USD"); const j=await r.json(); if(j&&j.rates){ try{sessionStorage.setItem("qb-fx",JSON.stringify({t:Date.now(),rates:j.rates}));}catch(e){} return j.rates[cur]||null; } }catch(e){}
+  return null;
+}
+const PRIORIDAD=["BO","MX","US","ES","CO","PE","CL","AR","EC","AE"];
+const PAISES_CALC=(()=>{ const todos=Object.keys(REG_CUR).map(r=>[nombrePais(r),REG_CUR[r],r]); const top=PRIORIDAD.map(r=>todos.find(x=>x[2]===r)); const resto=todos.filter(x=>!PRIORIDAD.includes(x[2])).sort((a,b)=>a[0].localeCompare(b[0],"es")); return [...top,...resto,["Otro país","USD","XX"]]; })();
+async function precioLocal(el,usd,prod,cuotas){
+  prod=prod||"el Diagnóstico de Identidad"; const cq=cuotas?cuotas.split("x").map(Number):null;
+  if(!el) return;
+  const pl=paisLocal(); const ini=pl?Math.max(0,PAISES_CALC.findIndex(x=>x[2]===pl[2])):PAISES_CALC.length-1;
+  el.innerHTML=`<div class="cm"><div class="cm-top"><span>Calcula en tu moneda</span><select aria-label="Tu país">${PAISES_CALC.map((x,k)=>`<option value="${k}"${k===ini?" selected":""}>${esc(x[0])}</option>`).join("")}</select></div><div class="cm-monto" aria-live="polite">—</div><div class="cm-nota"></div></div>`;
+  el.hidden=false;
+  const sel=el.querySelector("select"), monto=el.querySelector(".cm-monto"), nota=el.querySelector(".cm-nota");
+  async function pintar(){
+    const [pais,cur]=PAISES_CALC[+sel.value];
+    const extra=(fx,c)=> cq ? `<span class="cm-cuotas">o ${cq[0]} cuotas de ${c==="USD"?"USD "+cq[1]:fmtMoneda(cq[1]*fx,c)}</span>` : "";
+    if(cur==="USD"){ monto.innerHTML=`USD ${usd}${extra(1,"USD")}`; nota.innerHTML="Pagas en dólares, sin conversión."; }
+    else{
+      monto.innerHTML=`<small>≈</small> …`;
+      const fx=await tipoCambio(cur);
+      if(!fx){ monto.innerHTML=`USD ${usd}`; nota.innerHTML="No pudimos cargar el tipo de cambio. Tu banco hace la conversión."; }
+      else{ monto.innerHTML=`<small>≈</small> ${fmtMoneda(usd*fx,cur)}${extra(fx,cur)}`; nota.innerHTML= cur==="BOB" ? "Tipo de cambio 11 Bs por dólar." : "Tipo de cambio de hoy. Tu banco hace la conversión al pagar."; }
+    }
+    if(cur==="BOB"){
+      const wa="https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent("Hola Ana, quiero "+prod+" y quiero pagar con QR o transferencia en Bolivia.");
+      nota.innerHTML+=`<br>¿Tu tarjeta no pasa en dólares? <a href="${esc(wa)}" target="_blank" rel="noopener">Te paso QR o transferencia por WhatsApp</a>`;
+    }
+  }
+  sel.addEventListener("change",pintar); pintar();
+}
+
+/* Calculadoras de moneda dentro de las pantallas (data-calc) */
+new MutationObserver(()=>{ document.querySelectorAll("#app .pago-local[data-calc]:not([data-ok])").forEach(el=>{ el.dataset.ok="1"; precioLocal(el, +el.dataset.calc, el.dataset.prod, el.dataset.cuotas); }); }).observe(document.getElementById("app"),{childList:true,subtree:true});
+
+/* Regreso de Stripe tras pagar el Mini */
+(function(){ try{ const q=new URLSearchParams(location.search); if(q.get("mini")!=="ok") return;
+  const c=document.createElement("div"); c.className="pago-capa"; c.innerHTML=`<div class="pago-caja" style="height:auto;padding:28px 22px;gap:14px;text-align:center"><span class="kicker">Pago confirmado</span><h2 style="margin:0">Tu Mini Diagnóstico va en camino.</h2><p>En unos minutos te llega a tu correo, con tu enlace personal. Revisa también la carpeta de promociones o spam.</p><button class="btn full" type="button">Entendido</button></div>`;
+  c.querySelector("button").onclick=()=>{ c.remove(); history.replaceState(null,"",location.pathname); };
+  document.body.appendChild(c);
+}catch(e){} })();
+</script>
+
+</body></html>
