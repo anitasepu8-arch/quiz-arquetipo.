@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tu Mini Diagnóstico Exprés · Quantum Branding</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@300;400;500;600&display=swap">
+<style>
+:root{--tinto:#0E0506;--borgona:#4E0000;--borgona-2:#7A1A1A;--oro:#D4AF78;--oro-claro:#E9D3A8;--crema:#F5F1E8;--crema-2:#BFB3A6;--turquesa:#35C9C1;--linea:rgba(212,175,120,.22);
+  --display:"Montserrat","Helvetica Neue",Arial,sans-serif;--body:"Poppins","Helvetica Neue",Arial,sans-serif;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--tinto);color:var(--crema);font-family:var(--body);font-size:16px;line-height:1.65;font-weight:300;padding:0 max(16px,env(safe-area-inset-left,0px));-webkit-font-smoothing:antialiased;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(90% 50% at 100% 0%,rgba(122,26,26,.5),transparent 70%),radial-gradient(70% 40% at 0% 100%,rgba(78,0,0,.55),transparent 70%)}
+main{max-width:620px;margin:0 auto;padding:36px 0 72px;display:flex;flex-direction:column;gap:26px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;line-height:1.1}
+p{margin:0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.marca{font-family:var(--display);font-weight:800;font-size:12px;letter-spacing:.28em}.marca span{color:var(--oro)}
+.pdf{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--oro);background:none;border:1px solid var(--linea);border-radius:999px;padding:9px 14px;cursor:pointer}
+.kicker{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--oro-claro)}
+.portada{display:flex;flex-direction:column;gap:12px;padding:30px 24px;border-radius:20px;border:1px solid rgba(212,175,120,.45);background:linear-gradient(155deg,var(--borgona-2),var(--borgona) 50%,#2A0204)}
+.portada .para{color:var(--oro-claro);font-size:14px}
+.portada h1{font-weight:800;font-size:clamp(32px,9vw,46px);text-transform:uppercase;letter-spacing:-.01em}
+.portada .sub{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--oro)}
+.intro{color:var(--crema-2)}
+.ficha{display:flex;flex-direction:column;gap:14px;padding:24px 22px;border-radius:18px;border:1px solid var(--linea);background:rgba(245,241,232,.03);break-inside:avoid}
+.ficha header{display:flex;gap:14px;align-items:center}
+.num{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--oro);color:var(--tinto);font-family:var(--display);font-weight:800}
+.ficha h2{font-size:22px;font-weight:800}
+.tag{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
+.nombre{font-family:var(--display);font-weight:800;font-size:24px;color:var(--oro)}
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media (max-width:480px){.dos{grid-template-columns:1fr}}
+.dos div{padding:14px;border-radius:12px;display:flex;flex-direction:column;gap:6px}
+.dos .si{background:rgba(53,201,193,.08);border:1px solid rgba(53,201,193,.35)}.dos .no{background:rgba(240,138,138,.07);border:1px solid rgba(240,138,138,.35)}
+.dos b{font-family:var(--display);font-size:11px;letter-spacing:.18em;text-transform:uppercase}.dos .si b{color:var(--turquesa)}.dos .no b{color:#F3A7A7}
+.dos span{font-size:14.5px;line-height:1.55}
+ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+li{display:flex;gap:10px;align-items:baseline;font-size:15px}li::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--oro);transform:translateY(-2px)}
+.sub-t{font-weight:600;color:var(--oro)}
+.accion{border:1.5px solid var(--oro);background:rgba(212,175,120,.08)}
+.paso{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border-left:2px solid var(--oro);background:rgba(245,241,232,.03);border-radius:0 10px 10px 0}
+.paso b{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--oro)}
+.puente{display:flex;flex-direction:column;gap:16px;padding:26px 22px;border-radius:20px;border:1.5px solid var(--oro);background:linear-gradient(160deg,rgba(122,26,26,.6),rgba(78,0,0,.35));break-inside:avoid}
+.puente h2{font-size:24px;font-weight:800}
+.bloq{display:flex;flex-direction:column;gap:8px}
+.bloq div{display:flex;gap:10px;align-items:center;padding:11px 14px;border-radius:10px;background:rgba(14,5,6,.45);border:1px solid var(--linea);font-size:15px}
+.credito{padding:14px;border-radius:12px;background:rgba(53,201,193,.1);border:1px solid rgba(53,201,193,.4);font-size:15px}.credito b{color:var(--turquesa)}
+.btn{display:block;text-align:center;font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:18px 24px;border-radius:999px;background:var(--oro);color:var(--tinto)}
+.btn.sec{background:none;color:var(--crema);border:1px solid var(--linea)}
+.pie{text-align:center;color:var(--crema-2);font-size:13px}
+.estado{min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;color:var(--crema-2)}
+@media print{body::after{display:none}body{background:var(--tinto)}.pdf,.no-print{display:none!important}main{padding:0}.ficha,.puente,.portada{break-inside:avoid}@page{margin:12mm;background:#0E0506}}
+</style></head>
+<body><main id="app"><div class="estado"><div class="marca">QUANTUM <span>BRANDING</span></div><p>Cargando tu Mini Diagnóstico…</p></div></main>
+<script>
+const WA="17865188044";
+const PAGO_DIAG="https://www.iprosper28.com/75e08623";
+const CUPON=""; // Código de descuento del Mini en Systeme (ej. MINI27). Vacío = se pide por WhatsApp.
+const esc=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const LOCK=`<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#D4AF78" stroke-width="1.5"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg>`;
+const app=document.getElementById("app");
+(async()=>{
+  const t=new URLSearchParams(location.search).get("t");
+  let d=null;
+  try{ const r=await fetch("/api/mini?t="+encodeURIComponent(t||"")); if(r.ok) d=await r.json(); }catch(e){}
+  if(!d){ app.innerHTML=`<div class="estado"><div class="marca">QUANTUM <span>BRANDING</span></div><p>No pudimos abrir este enlace. Revisa que esté completo o escríbele a Ana.</p><a class="btn" href="https://wa.me/${WA}?text=${encodeURIComponent("Hola Ana, compré el Mini Diagnóstico y no puedo abrir mi enlace.")}">Escribirle a Ana</a></div>`; return; }
+  document.title=`${d.arquetipo} · Mini Diagnóstico Exprés`;
+  const waCredito=`https://wa.me/${WA}?text=${encodeURIComponent(`Hola Ana, tengo mi Mini Diagnóstico (${d.arquetipo}) y quiero pasar al Diagnóstico completo con mi descuento de USD 27.`)}`;
+  app.innerHTML=`
+  <div class="top"><div class="marca">QUANTUM <span>BRANDING</span></div><button class="pdf" onclick="window.print()">Guardar PDF</button></div>
+  <section class="portada">
+    <span class="kicker">Mini Diagnóstico Exprés${d.nombre?` · ${esc(d.nombre)}`:""}</span>
+    <span class="para">${esc(d.fechaNac)}</span>
+    <h1>${esc(d.arquetipo)}</h1>
+    <span class="sub">${esc(d.ejes.join(" · "))}</span>
+  </section>
+  <p class="intro">Esto es lo que dice tu diseño. Léelo con calma y quédate con una sola cosa: la acción del punto 4. Es la que mueve lo demás.</p>
+  <section class="ficha">
+    <header><span class="num">1</span><div><span class="tag">Tu perfil completo</span><h2>${esc(d.perfil.titulo)}</h2></div></header>
+    <p class="nombre">${esc(d.arquetipo)}</p>
+    <p>${esc(d.perfil.texto)}</p>
+    <ul>${d.perfil.puntos.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+  </section>
+  <section class="ficha">
+    <header><span class="num">2</span><div><span class="tag">Tu superpoder principal</span><h2>${esc(d.superpoder.titulo)}</h2></div></header>
+    <p>${esc(d.superpoder.texto)}</p>
+    <div class="dos"><div class="si"><b>Cuando lo usas</b><span>${esc(d.superpoder.usa)}</span></div><div class="no"><b>Cuando lo desperdicias</b><span>${esc(d.superpoder.desperdicia)}</span></div></div>
+  </section>
+  <section class="ficha">
+    <header><span class="num">3</span><div><span class="tag">Tu bloqueo principal</span><h2>${esc(d.bloqueo.titulo)}</h2></div></header>
+    <p>${esc(d.bloqueo.texto)}</p>
+    <p class="sub-t">Cómo se ve en tu día a día:</p>
+    <ul>${d.bloqueo.senales.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+    <p><span class="sub-t">Lo que te cuesta:</span> ${esc(d.bloqueo.costo)}</p>
+  </section>
+  <section class="ficha accion">
+    <header><span class="num">4</span><div><span class="tag">Tu acción de esta semana</span><h2>${esc(d.accion.titulo)}</h2></div></header>
+    <p>${esc(d.accion.texto)}</p>
+    ${d.accion.pasos.map(([dia,t])=>`<div class="paso"><b>${esc(dia)}</b><span>${esc(t)}</span></div>`).join("")}
+  </section>
+  <section class="puente">
+    <span class="kicker">Lo que este Mini no te muestra</span>
+    <h2>Esto es una parte de tu diseño.</h2>
+    <p>Tu diseño tiene más superpoderes y otros bloqueos, algunos ligados al dinero. Eso, y cuándo te conviene actuar, se revela en tu Diagnóstico de Identidad™.</p>
+    <div class="bloq">
+      <div>${LOCK}Todos tus superpoderes y cómo volverlos negocio</div>
+      <div>${LOCK}Tu mejor forma de ganar dinero y tu modelo de negocio ideal</div>
+      <div>${LOCK}Qué te impide encontrar oportunidades y dónde te bloqueas</div>
+      <div>${LOCK}Tus ventanas ideales para decidir</div>
+      <div>${LOCK}Formulario privado, audio con mi voz y mi WhatsApp</div>
+    </div>
+    <p class="credito"><b>Tus USD 27 se descuentan</b> si tomas el Diagnóstico de Identidad™ hasta el <b>${esc(d.credito.venceTexto)}</b>. Pagas USD ${d.credito.precio}.${CUPON?` Usa el código <b>${esc(CUPON)}</b> al pagar.`:""}</p>
+    ${CUPON?`<a class="btn no-print" href="${PAGO_DIAG}" target="_blank" rel="noopener">Quiero mi Diagnóstico</a>`:`<a class="btn no-print" href="${waCredito}" target="_blank" rel="noopener">Quiero mi Diagnóstico con descuento</a>`}
+  </section>
+  <p class="pie">Quantum Branding · @anitasepum<br>Este documento es personal y se basa en tu fecha de nacimiento.</p>`;
+})();
+</script>
+</body></html>

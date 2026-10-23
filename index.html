@@ -1199,7 +1199,7 @@ function render(){
         <div class="ancla"><span>Diagnóstico de Identidad completo</span><span class="p152">USD 152</span></div>
         <div class="hoy"><span>Mini Diagnóstico Exprés, hoy</span><b>USD 27</b></div>
         <p class="garantia">Si tomas el Diagnóstico en los 7 días siguientes, estos USD 27 se descuentan.</p>
-        <a class="btn full" href="${esc(CONFIG.links.mini)}" target="_blank" rel="noopener">Quiero mi Mini Diagnóstico</a>
+        <a class="btn full" href="${esc(linkMini())}" rel="noopener">Quiero mi Mini Diagnóstico</a>
         <p class="nota" style="text-align:center">Pago único y seguro. Sin suscripción.</p>
       </div>
       <div class="faq">${faq.map(f=>`<details><summary>${esc(f[0])}</summary><p>${esc(f[1])}</p></details>`).join("")}</div>
@@ -1348,6 +1348,25 @@ function bind(){
 render();
 
 
+/* ===== Mini: enlace de pago de Stripe con los datos del quiz (para entregar el Mini automático) ===== */
+function refMini(){
+  if(!S.real||!S.d||!S.m||!S.a) return "";
+  const i=e=>ORDEN.indexOf(e);
+  const [a,b]=S.real.split("+");
+  const sp=NUM_EJES[caminoDeVida(+S.d,+S.m,+S.a)][0];
+  let bl=(bloqueos()[0])||ORDEN.filter(e=>e!==a&&e!==b).sort((x,y)=>(S.pReal[y]-S.pReal[x]))[0];
+  const f=String(S.a)+String(S.m).padStart(2,"0")+String(S.d).padStart(2,"0");
+  return `m1-${i(a)}${i(b)}${i(sp)}${i(bl)}-${S.genero==="m"?"m":"f"}-${f}`;
+}
+function linkMini(){
+  const base=CONFIG.links.mini;
+  if(!base||base==="#") return waLink(`Hola Ana, hice el quiz y quiero mi Mini Diagnóstico Exprés.\n${resumenQuiz()}`);
+  const u=new URL(base); const r=refMini();
+  if(r) u.searchParams.set("client_reference_id",r);
+  if(S.email) u.searchParams.set("prefilled_email",S.email);
+  u.searchParams.set("locale","es");
+  return u.toString();
+}
 /* ===== Comparativa lado a lado: Mini vs Diagnóstico ===== */
 const ICO_OK=`<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg>`;
 const ICO_LOCK=`<svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg>`;
@@ -1521,6 +1540,13 @@ async function precioLocal(el,usd,prod,cuotas){
 
 /* Calculadoras de moneda dentro de las pantallas (data-calc) */
 new MutationObserver(()=>{ document.querySelectorAll("#app .pago-local[data-calc]:not([data-ok])").forEach(el=>{ el.dataset.ok="1"; precioLocal(el, +el.dataset.calc, el.dataset.prod, el.dataset.cuotas); }); }).observe(document.getElementById("app"),{childList:true,subtree:true});
+
+/* Regreso de Stripe tras pagar el Mini */
+(function(){ try{ const q=new URLSearchParams(location.search); if(q.get("mini")!=="ok") return;
+  const c=document.createElement("div"); c.className="pago-capa"; c.innerHTML=`<div class="pago-caja" style="height:auto;padding:28px 22px;gap:14px;text-align:center"><span class="kicker">Pago confirmado</span><h2 style="margin:0">Tu Mini Diagnóstico va en camino.</h2><p>En unos minutos te llega a tu correo, con tu enlace personal. Revisa también la carpeta de promociones o spam.</p><button class="btn full" type="button">Entendido</button></div>`;
+  c.querySelector("button").onclick=()=>{ c.remove(); history.replaceState(null,"",location.pathname); };
+  document.body.appendChild(c);
+}catch(e){} })();
 </script>
 
 </body></html>
