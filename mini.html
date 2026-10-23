@@ -44,6 +44,7 @@ li{display:flex;gap:10px;align-items:baseline;font-size:15px}li::before{content:
 .bloq{display:flex;flex-direction:column;gap:8px}
 .bloq svg{flex:none}
 .bloq div{display:flex;gap:10px;align-items:center;padding:11px 14px;border-radius:10px;background:rgba(14,5,6,.45);border:1px solid var(--linea);font-size:15px}
+.formu{display:flex;flex-direction:column;gap:6px;padding:16px;border-radius:12px;border:1px solid var(--oro);background:rgba(212,175,120,.08)}.formu b{font-family:var(--display);font-weight:700;font-size:15px;color:var(--oro)}.formu p{font-size:15px}
 .credito{padding:14px;border-radius:12px;background:rgba(53,201,193,.1);border:1px solid rgba(53,201,193,.4);font-size:15px}.credito b{color:var(--turquesa)}
 .btn{display:block;text-align:center;font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:18px 24px;border-radius:999px;background:var(--oro);color:var(--tinto)}
 .btn.sec{background:none;color:var(--crema);border:1px solid var(--linea)}
@@ -107,8 +108,9 @@ const app=document.getElementById("app");
       <div>${LOCK}Tu mejor forma de ganar dinero y tu modelo de negocio ideal</div>
       <div>${LOCK}Qué te impide encontrar oportunidades y dónde te bloqueas</div>
       <div>${LOCK}Tus ventanas ideales para decidir</div>
-      <div>${LOCK}Formulario privado, audio con mi voz y mi WhatsApp</div>
+      <div>${LOCK}Audio con mi voz y mi WhatsApp para tus dudas</div>
     </div>
+    <div class="formu"><b>Tu formulario, sin límite de preguntas</b><p>En tu Diagnóstico me haces todas las preguntas que quieras, sobre cualquier área de tu vida: tu negocio, tu dinero, tu pareja, tu familia, tu siguiente etapa. Las que necesites. Y te respondo cómo resolver cada una desde tu diseño.</p></div>
     <p class="credito"><b>Tus USD 27 se descuentan</b> si tomas el Diagnóstico de Identidad™ hasta el <b>${esc(d.credito.venceTexto)}</b>. Pagas USD ${d.credito.precio}.${CUPON?` Usa el código <b>${esc(CUPON)}</b> al pagar.`:""}</p>
     ${CUPON?`<a class="btn no-print" href="${PAGO_DIAG}" target="_blank" rel="noopener">Quiero mi Diagnóstico</a>`:`<a class="btn no-print" href="${waCredito}" target="_blank" rel="noopener">Quiero mi Diagnóstico con descuento</a>`}
   </section>

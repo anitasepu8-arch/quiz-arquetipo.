@@ -1179,7 +1179,7 @@ function render(){
     </section>`;
   }
   if(P==="mini"){
-    const B=bloqueos(), al=alineacion(), area=B.length?AREA[B[0]]:null;
+    const B=bloqueos(), al=alineacion(), area=S.real?AREA[bloqueoMini()]:null;
     const D=DOLORES[S.busca][S.dolor];
     const testis = CONFIG.testimonios.length ? carruselTestis() : "";
     const faq = [
@@ -1359,12 +1359,20 @@ render();
 
 
 /* ===== Mini: enlace de pago de Stripe con los datos del quiz (para entregar el Mini automático) ===== */
+/* Bloqueo del Mini: un eje de su diseño que no usa y que NO es parte de su arquetipo
+   (si fuera parte, el Mini repetiría lo mismo en perfil, superpoder y bloqueo). */
+function bloqueoMini(){
+  const [a,b]=S.real.split("+"), fuera=e=>e!==a&&e!==b, orden=(x,y)=>(S.pReal[y]-S.pReal[x])||(ORDEN.indexOf(x)-ORDEN.indexOf(y));
+  return bloqueos().find(fuera)
+    || ORDEN.filter(e=>fuera(e)&&!S.esc.includes(e)).sort(orden)[0]
+    || ORDEN.filter(fuera).sort(orden)[0];
+}
 function refMini(){
   if(!S.real||!S.d||!S.m||!S.a) return "";
   const i=e=>ORDEN.indexOf(e);
   const [a,b]=S.real.split("+");
   const sp=NUM_EJES[caminoDeVida(+S.d,+S.m,+S.a)][0];
-  let bl=(bloqueos()[0])||ORDEN.filter(e=>e!==a&&e!==b).sort((x,y)=>(S.pReal[y]-S.pReal[x]))[0];
+  const bl=bloqueoMini();
   const f=String(S.a)+String(S.m).padStart(2,"0")+String(S.d).padStart(2,"0");
   return `m1-${i(a)}${i(b)}${i(sp)}${i(bl)}-${S.genero==="m"?"m":"f"}-${f}`;
 }

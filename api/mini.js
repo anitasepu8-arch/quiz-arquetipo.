@@ -19,6 +19,9 @@ export default function handler(req, res) {
   const f = ref.fecha;
   const vence = (() => { const d = new Date(datos.compra + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() + 7); return d.toISOString().slice(0, 10); })();
   const sp = SUPERPODER[ref.sp], bl = BLOQUEO[ref.bl];
+  // Perfil: una frase del eje principal (el del superpoder) y dos del segundo eje, para que no repita la ficha 2.
+  const principal = ref.ejes.includes(ref.sp) ? ref.sp : ref.ejes[0];
+  const segundo = ref.ejes.find((e) => e !== principal) || ref.ejes[1];
 
   res.setHeader("Cache-Control", "private, no-store");
   return res.status(200).json({
@@ -26,7 +29,7 @@ export default function handler(req, res) {
     fechaNac: `${+f.slice(6, 8)} de ${MESES[+f.slice(4, 6) - 1]} de ${f.slice(0, 4)}`,
     arquetipo: nombreArq,
     ejes: ref.ejes,
-    perfil: { titulo: hombre ? "Cómo estás hecho" : "Cómo estás hecha", texto: desc, puntos: [PERFIL_EJE[ref.ejes[0]][0], PERFIL_EJE[ref.ejes[1]][1], PERFIL_EJE[ref.ejes[0]][2]].map(g) },
+    perfil: { titulo: hombre ? "Cómo estás hecho" : "Cómo estás hecha", texto: desc, puntos: [PERFIL_EJE[principal][0], PERFIL_EJE[segundo][1], PERFIL_EJE[segundo][2]].map(g) },
     superpoder: { titulo: sp.titulo, texto: g(sp.texto), usa: g(sp.usa), desperdicia: g(sp.desperdicia) },
     bloqueo: { titulo: g(bl.titulo), texto: g(bl.texto), senales: bl.senales.map(g), costo: g(bl.costo) },
     accion: { titulo: g(bl.accion.titulo), texto: g(bl.accion.texto), pasos: bl.accion.pasos.map(([d, t]) => [d, g(t)]) },
