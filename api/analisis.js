@@ -22,7 +22,7 @@ export function leerCuenta(txt) {
 }
 
 async function apify(actor, input, maxItems, token) {
-  const url = `https://api.apify.com/v2/acts/${actor}/run-sync-get-dataset-items?timeout=50&maxItems=${maxItems}&clean=true`;
+  const url = `https://api.apify.com/v2/acts/${actor}/run-sync-get-dataset-items?timeout=50&maxItems=${maxItems}&maxTotalChargeUsd=0.25&clean=true`;
   const r = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
