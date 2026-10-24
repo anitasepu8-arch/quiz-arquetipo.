@@ -1202,20 +1202,6 @@ function render(){
           <p class="nota" id="notaA" hidden></p>
         </form>
         <div id="resA">${S.resA||""}</div>
-        <div class="capt">
-          <h4>¿Prefieres que lo veamos con tus capturas?</h4>
-          <p class="nota">Sube una captura de tu perfil o de tus Insights (hasta 3). Las usamos solo para responderte; no las guardamos.</p>
-          <label class="btn sec full sube" for="capArch">Subir capturas</label>
-          <input id="capArch" type="file" accept="image/*" multiple hidden>
-          <p class="error" id="errC" hidden></p>
-          <div id="capChat" hidden>
-            <div id="capMsgs"></div>
-            <form class="capform" id="capForm" novalidate>
-              <input id="capIn" placeholder="Pregunta algo sobre tu análisis" autocomplete="off">
-              <button class="btn" type="submit">Enviar</button>
-            </form>
-          </div>
-        </div>
         ${(alto||tramoD)?"":`        <div class="salto">
           <p>¿Quieres saltar directo a la solución? La <b>Auditoría de Marca™ (USD 555 o ${CONFIG.auditoriaCuotas.n} cuotas de USD ${CONFIG.auditoriaCuotas.monto})</b> incluye tu Diagnóstico de Identidad completo, la auditoría de tu negocio y tu marca, tus pilares de contenido y toda la estrategia lista para implementar.</p>
           <p>El análisis te dice qué falla; la Auditoría te da el plan para corregirlo en tu negocio.</p>
@@ -1356,6 +1342,7 @@ function bind(){
     app.querySelectorAll("[data-hora]").forEach(x=>{ const on=x.dataset.hora===S.horaEstado; x.classList.toggle("on",on); x.setAttribute("aria-pressed",on); });
     const h=q("#hora"); h.disabled = S.horaEstado==="nose"; if(h.disabled) h.value="";
   });
+  q("#verAnalisis")?.addEventListener("click",()=>abrirHoja(S.resAFull||S.resA));
   q("#fanalisis")?.addEventListener("submit",async ev=>{
     ev.preventDefault(); const v=q("#cuentaRed").value.trim(); const err=q("#errA"), nota=q("#notaA"), res=q("#resA"), btn=ev.target.querySelector("button");
     if(v.length<3){ err.textContent="Escribe tu usuario (por ejemplo @tumarca) o pega el link de tu perfil."; err.hidden=false; return; }
@@ -1409,8 +1396,9 @@ function bind(){
         <a class="btn sec full" href="${esc(CONFIG.links.auditoria)}" target="_blank" rel="noopener">Ver qué incluye la Auditoría</a>
       </div>
     </div>`);
-    S.resA=res.innerHTML; guardarAvance();
+    S.resAFull=res.innerHTML; S.resA=compactoHtml(A); res.innerHTML=S.resA; guardarAvance();
     ev.target.hidden=true;
+    abrirHoja(S.resAFull);
     res.scrollIntoView({behavior:"smooth",block:"start"});
   });
   window.CAPTURA=window.CAPTURA||{msgs:[],imgs:null};
@@ -1426,13 +1414,13 @@ function bind(){
     });
   }
   function pintarChat(cargando){
-    const box=q("#capMsgs"); if(!box) return;
+    const box=document.querySelector("#capMsgs"); if(!box) return;
     box.innerHTML=CAPTURA.msgs.map(m=>`<div class="cm ${m.role}">${esc(m.mostrar||m.texto)}</div>`).join("")+(cargando?`<div class="cm assistant">Analizando…</div>`:"");
     box.lastElementChild?.scrollIntoView({block:"end"});
   }
   async function enviarCaptura(texto,mostrar){
     CAPTURA.msgs.push({role:"user",texto,mostrar:mostrar||texto}); pintarChat(true);
-    const err=q("#errC"); err.hidden=true; let r=null;
+    const err=document.querySelector("#errC"); err.hidden=true; let r=null;
     try{ const x=await fetch("/api/captura",{method:"POST",headers:{"Content-Type":"application/json"},
       body:JSON.stringify({imagenes:CAPTURA.imgs,mensajes:CAPTURA.msgs.map(m=>({role:m.role,texto:m.texto})),arquetipo:nombreArq(S.real),vende:BANCO[S.real][3]})});
       r=await x.json(); }catch(e){}
@@ -1441,17 +1429,41 @@ function bind(){
       err.hidden=false; return; }
     CAPTURA.msgs.push({role:"assistant",texto:r.respuesta}); pintarChat(false);
   }
-  q("#capArch")?.addEventListener("change",async ev=>{
-    const files=[...ev.target.files].slice(0,3), err=q("#errC"); err.hidden=true; if(!files.length) return;
+  if(!window.CAPT_BIND){ window.CAPT_BIND=1;
+  document.addEventListener("change",async ev=>{ if(ev.target.id!=="capArch") return;
+    const files=[...ev.target.files].slice(0,3), err=document.querySelector("#errC"); err.hidden=true; if(!files.length) return;
     try{ CAPTURA.imgs=await Promise.all(files.map(reducirImagen)); }
     catch(e){ err.textContent="No pudimos leer esa imagen. Prueba con otra captura."; err.hidden=false; return; }
-    CAPTURA.msgs=[]; q("#capChat").hidden=false;
+    CAPTURA.msgs=[]; document.querySelector("#capChat").hidden=false;
     await enviarCaptura("Analiza estas capturas: qué comunica mi perfil, mis pilares, mis ángulos que funcionan, mis métricas y el freno principal. Cierra con una estrategia en 3 pasos basada en mi arquetipo.","Analiza mis capturas");
   });
-  q("#capForm")?.addEventListener("submit",async ev=>{
-    ev.preventDefault(); const inp=q("#capIn"), t=inp.value.trim(); if(!t||!CAPTURA.imgs) return;
+  document.addEventListener("submit",async ev=>{ if(ev.target.id!=="capForm") return;
+    ev.preventDefault(); const inp=document.querySelector("#capIn"), t=inp.value.trim(); if(!t||!CAPTURA.imgs) return;
     inp.value=""; await enviarCaptura(t);
   });
+  }
+  function capturaHtml(){
+    return `<div class="capt"><h4>¿Prefieres que lo veamos con tus capturas?</h4>
+      <p class="nota">Sube una captura de tu perfil o de tus Insights (hasta 3). Las usamos solo para responderte; no las guardamos.</p>
+      <label class="btn sec full sube" for="capArch">Subir capturas</label>
+      <input id="capArch" type="file" accept="image/*" multiple hidden>
+      <p class="error" id="errC" hidden></p>
+      <div id="capChat" ${CAPTURA.imgs?"":"hidden"}><div id="capMsgs"></div>
+        <form class="capform" id="capForm" novalidate><input id="capIn" placeholder="Pregunta algo sobre tu análisis" autocomplete="off"><button class="btn" type="submit">Enviar</button></form>
+      </div></div>`;
+  }
+  function compactoHtml(A){
+    return `<div class="an-res"><div class="an-freno"><span class="kicker">Lo que más frena tu crecimiento</span><h4>${esc(A.freno.titulo)}</h4><p>Revisamos @${esc(A.usuario)} con tus números: abre el análisis completo para ver todo lo que no funciona, tus pilares y tu estrategia.</p><button class="btn full" id="verAnalisis" type="button">Ver mi análisis completo</button></div></div>`;
+  }
+  function abrirHoja(html){
+    document.getElementById("hojaCapa")?.remove();
+    const capa=document.createElement("div");
+    capa.className="pago-capa"; capa.id="hojaCapa"; capa.setAttribute("role","dialog"); capa.setAttribute("aria-modal","true");
+    capa.innerHTML=`<div class="pago-caja"><div class="pago-top"><div><b>Tu análisis de contenido</b><small>Mini audit</small></div><button class="pago-x" type="button" aria-label="Cerrar">×</button></div><div class="pago-info">${html}${capturaHtml()}</div></div>`;
+    document.body.appendChild(capa); document.body.style.overflow="hidden";
+    capa.addEventListener("click",e=>{ if(e.target===capa||e.target.closest(".pago-x")){ capa.remove(); document.body.style.overflow=""; } });
+    if(CAPTURA.msgs.length) pintarChat(false);
+  }
   q("#fgiro")?.addEventListener("submit",ev=>{
     ev.preventDefault(); const v=q("#giro").value.trim();
     if(v.length<3){ const err=q("#err"); err.textContent="Escribe cómo te presentas, en pocas palabras."; err.hidden=false; return; }
