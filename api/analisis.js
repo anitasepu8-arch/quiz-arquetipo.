@@ -191,8 +191,16 @@ export function analizar(d) {
   };
 
   const contenido = analizarContenido(d, base, ctaBio);
+  // Todo lo que no funciona, sin suavizar: cada indicador no verde + lo que falta en la bio, destacados, pilares y aperturas
+  const NOMBRES = { alcance: "Alcance", interaccion: "Interacción", constancia: "Constancia", perfil: "Perfil que convierte" };
+  const fallas = Object.entries(ind).filter(([, v]) => v && v.nivel !== "verde").map(([k, v]) => `${NOMBRES[k]}: ${v.detalle}`);
+  if (!contenido.bio.dice) fallas.push("Tu bio no dice a quién ayudas ni qué logras.");
+  if (!contenido.bio.cta) fallas.push("Tu bio no tiene un llamado a la acción.");
+  if (contenido.destacados === 0) fallas.push("No tienes destacados: quien llega a tu perfil no encuentra tu método ni tus casos.");
+  if (contenido.angulos.length) fallas.push(`Repites la misma apertura en ${contenido.angulos[0].veces} publicaciones («${contenido.angulos[0].texto}…»).`);
+  if (!contenido.pilares.length) fallas.push("No se ve un tema que se repita: tu contenido no tiene pilares claros.");
   return {
-    contenido,
+    contenido, fallas,
     red: d.red, usuario: d.usuario, nombre: d.nombre, seguidores: fmt(seg), publicaciones: base.length,
     indicadores: [
       alcance && { clave: "alcance", nombre: "Alcance", ...alcance },

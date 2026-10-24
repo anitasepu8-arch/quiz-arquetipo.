@@ -1393,6 +1393,7 @@ function bind(){
         <div class="an-acc"><b>Tu acción de esta semana</b>${esc(A.freno.accion)}</div>
       </div>
       <div class="an-ind">${A.indicadores.map(i=>`<div class="an-i ${i.nivel}"><header><i></i>${esc(i.nombre)}</header><strong>${esc(i.valor)}</strong><span>${esc(i.detalle)}</span></div>`).join("")}</div>
+      ${A.fallas&&A.fallas.length?`<div class="an-freno"><span class="kicker">Lo que no funciona</span><ul>${A.fallas.map(f=>`<li>${esc(f)}</li>`).join("")}</ul></div>`:""}
       ${A.contenido?`<div class="an-bien an-cont"><b>Lo que comunica tu perfil</b>
         <span>Bio: ${A.contenido.bio.dice?"dice a quién ayudas":"no dice a quién ayudas"}${A.contenido.bio.cta?" y tiene llamado a la acción":" y no tiene llamado a la acción"}.</span>
         <span>Destacados: ${A.contenido.destacados==null?"no los podemos leer con esta cuenta":A.contenido.destacados+" (revisa qué muestran)"}.</span>
