@@ -62,6 +62,9 @@ li{display:flex;gap:10px;align-items:baseline;font-size:15px}li::before{content:
 .cp-c small{font-size:10.5px;line-height:1.2;color:var(--crema-2)}
 .cp-mini{color:var(--crema-2)}.cp-diag{color:var(--oro)}.cp-diag small{color:var(--oro-claro);font-weight:600}
 .cp-lock{color:rgba(245,241,232,.3);width:30px;height:30px;border-radius:50%;background:rgba(245,241,232,.05);justify-content:center}
+.cp-dest{background:linear-gradient(90deg,rgba(212,175,120,.28),rgba(212,175,120,.10));box-shadow:inset 3px 0 0 var(--oro)}
+.cp-dest .cp-t{font-weight:600;color:var(--crema)}
+.cp-dtag{display:table;font-style:normal;font-family:var(--display);font-weight:700;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--tinto);background:var(--oro);border-radius:999px;padding:2px 7px;margin:0 0 4px}
 .cp-bloq>span:nth-child(2){background:repeating-linear-gradient(135deg,rgba(245,241,232,.025) 0 6px,transparent 6px 12px)}
 .credito{padding:14px;border-radius:12px;background:rgba(53,201,193,.1);border:1px solid rgba(53,201,193,.4);font-size:15px}.credito b{color:var(--turquesa)}
 .btn{display:block;text-align:center;font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:18px 24px;border-radius:999px;background:var(--oro);color:var(--tinto)}
@@ -91,7 +94,7 @@ const COMPARA=[
   ["Qué te distingue y cómo volverlo ventaja",false,true],
   ["Tus oportunidades: personas y contextos que te favorecen",false,true],
   ["Una acción para esta semana",true,true],
-  ["Formulario privado para hacerme todas tus preguntas",false,true],
+  ["Formulario privado para hacerme todas tus preguntas sobre las decisiones que tienes que tomar en cada área de tu vida",false,"Sin límite","dest"],
   ["Audio privado de aclaración con mi voz",false,true],
   ["Acceso a mi WhatsApp para tus dudas",false,true],
 ];
@@ -102,7 +105,7 @@ function comparativa(precio){
     <div class="cp-fila cp-cab" role="row"><span role="columnheader"></span>
       <span class="cp-h cp-hm" role="columnheader"><i>Ya lo tienes</i><b>Tu Mini</b><em>USD 27</em></span>
       <span class="cp-h cp-hd" role="columnheader"><i>Con tu crédito</i><b>Diagnóstico</b><s>USD 152</s><em>USD ${esc(precio)}</em></span></div>
-    ${COMPARA.map(([t,m,d])=>`<div class="cp-fila ${m===false?'cp-bloq':''}" role="row"><span class="cp-t" role="cell">${esc(t)}</span><span role="cell">${celda(m,'mini')}</span><span role="cell">${celda(d,'diag')}</span></div>`).join("")}
+    ${COMPARA.map(([t,m,d,x])=>`<div class="cp-fila ${m===false?'cp-bloq':''} ${x?'cp-dest':''}" role="row"><span class="cp-t" role="cell">${x?'<em class="cp-dtag">Lo más valioso</em>':''}${esc(t)}</span><span role="cell">${celda(m,'mini')}</span><span role="cell">${celda(d,'diag')}</span></div>`).join("")}
   </div>`;
 }
 const esc=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));

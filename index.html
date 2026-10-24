@@ -356,6 +356,9 @@ select:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 .cp-c.cp-ok.cp-diag svg{filter:drop-shadow(0 0 6px rgba(212,175,120,.6))}
 .cp-c.cp-ok.cp-diag small{color:var(--oro-claro);font-weight:600}
 .cp-c.cp-lock{color:rgba(245,241,232,.28);width:30px;height:30px;border-radius:50%;background:rgba(245,241,232,.05);justify-content:center}
+.cp-dest{background:linear-gradient(90deg,rgba(212,175,120,.28),rgba(212,175,120,.10));box-shadow:inset 3px 0 0 var(--oro)}
+.cp-dest .cp-t{font-weight:600;color:var(--crema)}
+.cp-dtag{display:table;font-style:normal;font-family:var(--display);font-weight:700;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--tinto);background:var(--oro);border-radius:999px;padding:2px 7px;margin:0 0 4px}
 .cp-bloq>span:nth-child(2){background:repeating-linear-gradient(135deg,rgba(245,241,232,.025) 0 6px,transparent 6px 12px)}
 .cp-nota{border-top:1px solid rgba(212,175,120,.12);padding:12px 14px;font-size:12px;text-align:center;color:var(--crema-2)}
 .cp-btn{padding:10px 6px!important;font-size:10.5px!important;letter-spacing:.06em!important;width:100%}
@@ -1406,7 +1409,7 @@ const COMPARA=[
   ["Qué te distingue y cómo volverlo ventaja",false,true],
   ["Tus oportunidades: personas y contextos que te favorecen",false,true],
   ["Una acción para esta semana",true,true],
-  ["Formulario privado para hacerme todas tus preguntas",false,true],
+  ["Formulario privado para hacerme todas tus preguntas sobre las decisiones que tienes que tomar en cada área de tu vida",false,"Sin límite","dest"],
   ["Audio privado de aclaración con mi voz",false,true],
   ["Acceso a mi WhatsApp para tus dudas",false,true],
 ];
@@ -1422,7 +1425,7 @@ function comparativa(recoMini){
     <div class="cp-fila cp-cab" role="row"><span role="columnheader"></span>
       <span class="cp-h cp-hm" role="columnheader">${recoMini?'<i>Para empezar</i>':''}<b>Mini Exprés</b><em>USD 27</em></span>
       <span class="cp-h cp-hd" role="columnheader">${recoMini?'':'<i>Recomendado</i>'}<b>Diagnóstico</b><em>USD 152</em></span></div>
-    ${COMPARA.map(([t,m,d],k)=>`<div class="cp-fila ${m===false?'cp-bloq':''} ${marca.includes(k)?'cp-tu':''}" role="row"><span class="cp-t" role="cell">${marca.includes(k)?'<em class="cp-tag">Tu dolor</em>':''}${esc(t)}</span><span role="cell">${celda(m,'mini')}</span><span role="cell">${celda(d,'diag')}</span></div>`).join("")}
+    ${COMPARA.map(([t,m,d,x],k)=>`<div class="cp-fila ${m===false?'cp-bloq':''} ${marca.includes(k)?'cp-tu':''} ${x?'cp-dest':''}" role="row"><span class="cp-t" role="cell">${marca.includes(k)?'<em class="cp-tag">Tu dolor</em>':x?'<em class="cp-dtag">Lo más valioso</em>':''}${esc(t)}</span><span role="cell">${celda(m,'mini')}</span><span role="cell">${celda(d,'diag')}</span></div>`).join("")}
     <div class="cp-nota">Si tomas el Diagnóstico en los 7 días siguientes, tus USD 27 se descuentan.</div>
   </div>`;
 }
