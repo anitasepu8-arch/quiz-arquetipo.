@@ -45,6 +45,24 @@ li{display:flex;gap:10px;align-items:baseline;font-size:15px}li::before{content:
 .bloq svg{flex:none}
 .bloq div{display:flex;gap:10px;align-items:center;padding:11px 14px;border-radius:10px;background:rgba(14,5,6,.45);border:1px solid var(--linea);font-size:15px}
 .formu{display:flex;flex-direction:column;gap:6px;padding:16px;border-radius:12px;border:1px solid var(--oro);background:rgba(212,175,120,.08)}.formu b{font-family:var(--display);font-weight:700;font-size:15px;color:var(--oro)}.formu p{font-size:15px}
+.compara{border:1px solid var(--linea);border-radius:16px;overflow:hidden;background:rgba(14,5,6,.45)}
+.cp-fila{display:grid;grid-template-columns:1fr 70px 92px;align-items:center;border-top:1px solid rgba(212,175,120,.12)}
+.cp-fila>span{padding:10px 8px}
+.cp-fila>span:nth-child(2){display:flex;align-items:center;justify-content:center;height:100%}
+.cp-fila>span:nth-child(3){background:linear-gradient(180deg,rgba(212,175,120,.14),rgba(212,175,120,.06));height:100%;display:flex;align-items:center;justify-content:center}
+.cp-cab{border-top:0}
+.cp-h{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;padding:12px 4px!important}
+.cp-h i{font-style:normal;font-family:var(--display);font-weight:700;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--tinto);background:var(--oro);border-radius:999px;padding:2px 6px}
+.cp-hm i{background:rgba(245,241,232,.15);color:var(--crema)}
+.cp-h b{font-family:var(--display);font-size:12px;font-weight:800;color:var(--crema)}
+.cp-h em{font-style:normal;font-family:var(--display);font-weight:800;font-size:15px;color:var(--crema-2)}
+.cp-hd em{color:var(--oro)}.cp-h s{font-size:11px;color:var(--crema-2);font-family:var(--display)}
+.cp-t{font-size:13.5px;line-height:1.35}
+.cp-c{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
+.cp-c small{font-size:10.5px;line-height:1.2;color:var(--crema-2)}
+.cp-mini{color:var(--crema-2)}.cp-diag{color:var(--oro)}.cp-diag small{color:var(--oro-claro);font-weight:600}
+.cp-lock{color:rgba(245,241,232,.3);width:30px;height:30px;border-radius:50%;background:rgba(245,241,232,.05);justify-content:center}
+.cp-bloq>span:nth-child(2){background:repeating-linear-gradient(135deg,rgba(245,241,232,.025) 0 6px,transparent 6px 12px)}
 .credito{padding:14px;border-radius:12px;background:rgba(53,201,193,.1);border:1px solid rgba(53,201,193,.4);font-size:15px}.credito b{color:var(--turquesa)}
 .btn{display:block;text-align:center;font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:18px 24px;border-radius:999px;background:var(--oro);color:var(--tinto)}
 .btn.sec{background:none;color:var(--crema);border:1px solid var(--linea)}
@@ -57,6 +75,36 @@ li{display:flex;gap:10px;align-items:baseline;font-size:15px}li::before{content:
 const WA="17865188044";
 const PAGO_DIAG="https://www.iprosper28.com/75e08623";
 const CUPON=""; // Código de descuento del Mini en Systeme (ej. MINI27). Vacío = se pide por WhatsApp.
+const ICO_OK=`<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg>`;
+const ICO_LOCK=`<svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg>`;
+const COMPARA=[
+  ["Tu arquetipo y el nombre completo de tu perfil",true,true],
+  ["Tu superpoder: lo que haces bien de forma natural","1","Todos"],
+  ["Cómo aplicar tus superpoderes en un negocio y volverlos dinero",false,true],
+  ["Tu mejor forma de ganar dinero y cómo lo creas",false,true],
+  ["Tu modelo de negocio ideal según tu diseño",false,true],
+  ["Tu bloqueo principal","1","Todos + cómo destrabarlos"],
+  ["Qué te impide encontrar oportunidades y hacer dinero",false,true],
+  ["Dónde te bloqueas en cada área de tu vida",false,true],
+  ["Tus ventanas ideales para tomar las mejores decisiones",false,true],
+  ["Cómo funcionas: cómo decides, comunicas y lideras",false,true],
+  ["Qué te distingue y cómo volverlo ventaja",false,true],
+  ["Tus oportunidades: personas y contextos que te favorecen",false,true],
+  ["Una acción para esta semana",true,true],
+  ["Formulario privado para hacerme todas tus preguntas",false,true],
+  ["Audio privado de aclaración con mi voz",false,true],
+  ["Acceso a mi WhatsApp para tus dudas",false,true],
+];
+function comparativa(precio){
+  const celda=(v,col)=> v===false ? `<span class="cp-c cp-lock" aria-label="No incluido">${ICO_LOCK}</span>`
+    : `<span class="cp-c cp-${col}" aria-label="Incluido">${ICO_OK}${v===true?"":`<small>${esc(v)}</small>`}</span>`;
+  return `<div class="compara" role="table" aria-label="Tu Mini vs Diagnóstico de Identidad">
+    <div class="cp-fila cp-cab" role="row"><span role="columnheader"></span>
+      <span class="cp-h cp-hm" role="columnheader"><i>Ya lo tienes</i><b>Tu Mini</b><em>USD 27</em></span>
+      <span class="cp-h cp-hd" role="columnheader"><i>Con tu crédito</i><b>Diagnóstico</b><s>USD 152</s><em>USD ${esc(precio)}</em></span></div>
+    ${COMPARA.map(([t,m,d])=>`<div class="cp-fila ${m===false?'cp-bloq':''}" role="row"><span class="cp-t" role="cell">${esc(t)}</span><span role="cell">${celda(m,'mini')}</span><span role="cell">${celda(d,'diag')}</span></div>`).join("")}
+  </div>`;
+}
 const esc=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const LOCK=`<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#D4AF78" stroke-width="1.5"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg>`;
 const app=document.getElementById("app");
@@ -103,13 +151,7 @@ const app=document.getElementById("app");
     <span class="kicker">Lo que este Mini no te muestra</span>
     <h2>Esto es una parte de tu diseño.</h2>
     <p>Tu diseño tiene más superpoderes y otros bloqueos, algunos ligados al dinero. Eso, y cuándo te conviene actuar, se revela en tu Diagnóstico de Identidad™.</p>
-    <div class="bloq">
-      <div>${LOCK}Todos tus superpoderes y cómo volverlos negocio</div>
-      <div>${LOCK}Tu mejor forma de ganar dinero y tu modelo de negocio ideal</div>
-      <div>${LOCK}Qué te impide encontrar oportunidades y dónde te bloqueas</div>
-      <div>${LOCK}Tus ventanas ideales para decidir</div>
-      <div>${LOCK}Audio con mi voz y mi WhatsApp para tus dudas</div>
-    </div>
+    ${comparativa(d.credito.precio)}
     <div class="formu"><b>Tu formulario, sin límite de preguntas</b><p>En tu Diagnóstico me haces todas las preguntas que quieras, sobre cualquier área de tu vida: tu negocio, tu dinero, tu pareja, tu familia, tu siguiente etapa. Las que necesites. Y te respondo cómo resolver cada una desde tu diseño.</p></div>
     <p class="credito"><b>Tus USD 27 se descuentan</b> si tomas el Diagnóstico de Identidad™ hasta el <b>${esc(d.credito.venceTexto)}</b>. Pagas USD ${d.credito.precio}.${CUPON?` Usa el código <b>${esc(CUPON)}</b> al pagar.`:""}</p>
     ${CUPON?`<a class="btn no-print" href="${PAGO_DIAG}" target="_blank" rel="noopener">Quiero mi Diagnóstico</a>`:`<a class="btn no-print" href="${waCredito}" target="_blank" rel="noopener">Quiero mi Diagnóstico con descuento</a>`}
