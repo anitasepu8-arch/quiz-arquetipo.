@@ -1128,7 +1128,7 @@ function render(){
           <p class="ligero">¿Prefieres empezar más ligero?</p>
           <div class="cab-of"><h3>Diagnóstico de Identidad™</h3><span class="precio"><small>USD</small>152</span></div>
           <p>Es exclusivamente para ti. Vemos cómo funcionas, tus dones, patrones, dinero, decisiones y aquello que te hace única.</p>
-          <a class="btn sec full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Quiero mi Diagnóstico</a>
+          <a class="btn sec full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Ver todo lo que revela mi Diagnóstico</a>
         </div>
       </div>`:tramoD?`<span class="kicker">Tus opciones</span>
       <h3 class="cp-tit">Mini vs Diagnóstico completo</h3>
@@ -1145,7 +1145,7 @@ function render(){
             <li>Acceso a un cuestionario para que preguntes lo que quieras</li>
             <li>El WhatsApp de Ana, para hacerle preguntas de aclaración cuando recibes tu entrega</li>
           </ul>
-          <a class="btn full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Quiero mi Diagnóstico</a>
+          <a class="btn full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Ver todo lo que revela mi Diagnóstico</a>
         </div>
         ${lejos ? cardLlamadaVisible + cardAuditoriaUpgrade : cardAuditoriaUpgrade}
       </div>
@@ -1154,7 +1154,7 @@ function render(){
       <p class="para-ti">${esc(PARA_TI[S.busca])}</p>
       ${comparativa(recoMini)}
       <button class="btn ${recoMini?'':'sec'} full" id="aMini">${recoMini?"Empezar por el Mini · USD 27":"Ver el Mini Exprés · USD 27"}</button>
-      <a class="btn ${recoMini?'sec':''} full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Quiero mi Diagnóstico · USD 152</a>
+      <a class="btn ${recoMini?'sec':''} full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Ver todo lo que revela mi Diagnóstico</a>
 `}
       <p class="espejo">${esc(espejo)}</p>
       ${auditoria?`<div class="analisis">
