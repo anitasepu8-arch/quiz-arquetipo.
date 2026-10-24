@@ -9,6 +9,7 @@ const CAMPOS = [
   "dedica", "negocio", "modelo", "modelo_detalle", "modelo_encaje", "ingreso", "ubicacion",
   "busca", "dolor", "tiempo", "alineacion_vida", "alineacion_negocio", "acepta_mensajes", "paso",
   "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid",
+  "cuenta", "analisis",
 ];
 
 const limpiar = (v, max = 400) => (v === undefined || v === null ? "" : String(v).slice(0, max).trim());
@@ -29,7 +30,7 @@ export default async function handler(req, res) {
   const fields = { name: limpiar(b.nombre, 100) };
   if (b.telefono) fields.phone = limpiar(b.telefono, 20);
   for (const k of CAMPOS) {
-    const v = limpiar(b[k]);
+    const v = limpiar(b[k], k === "analisis" ? 900 : 400);
     if (v !== "") fields["quiz_" + k] = v;
   }
 

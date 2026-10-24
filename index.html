@@ -243,6 +243,27 @@ input::-webkit-calendar-picker-indicator{filter:invert(.8) sepia(.4)}
 .analisis{border:1.5px solid var(--turquesa);border-radius:18px;padding:22px 20px;display:flex;flex-direction:column;gap:14px;background:rgba(53,201,193,.06)}
 .analisis h3{font-size:20px;line-height:1.2}
 .analisis>p{margin:0;color:var(--crema-2)}
+.an-carga{display:flex;gap:12px;align-items:center;padding:16px;border-radius:14px;background:rgba(14,5,6,.45);border:1px solid var(--linea);color:var(--crema-2);font-size:15px}
+.an-carga i{flex:none;width:22px;height:22px;border-radius:50%;border:2.5px solid rgba(53,201,193,.25);border-top-color:var(--turquesa);animation:giro 1s linear infinite}
+@keyframes giro{to{transform:rotate(360deg)}}
+.an-res{display:flex;flex-direction:column;gap:14px}
+.an-cab{font-size:13px;color:var(--crema-2)}.an-cab b{color:var(--crema);font-weight:600}
+.an-freno{padding:18px;border-radius:16px;border:1.5px solid #F08A8A;background:linear-gradient(160deg,rgba(122,26,26,.65),rgba(78,0,0,.35));display:flex;flex-direction:column;gap:10px}
+.an-freno .kicker{color:#F3A7A7}.an-freno h4{margin:0;font-family:var(--display);font-weight:800;font-size:20px;line-height:1.2}
+.an-freno p{margin:0;font-size:15px}
+.an-acc{padding:12px 14px;border-left:2px solid var(--oro);background:rgba(245,241,232,.04);border-radius:0 10px 10px 0;font-size:14.5px}.an-acc b{display:block;font-family:var(--display);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--oro);margin-bottom:2px}
+.an-ind{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media (max-width:420px){.an-ind{grid-template-columns:1fr}}
+.an-i{padding:13px;border-radius:12px;background:rgba(14,5,6,.45);border:1px solid var(--linea);display:flex;flex-direction:column;gap:4px}
+.an-i header{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--crema-2)}
+.an-i header i{width:10px;height:10px;border-radius:50%;flex:none}
+.an-i.rojo header i{background:#F08A8A;box-shadow:0 0 8px #F08A8A}.an-i.amarillo header i{background:#E9C46A;box-shadow:0 0 8px #E9C46A}.an-i.verde header i{background:var(--turquesa);box-shadow:0 0 8px var(--turquesa)}
+.an-i strong{font-family:var(--display);font-weight:800;font-size:19px}.an-i.rojo strong{color:#F3A7A7}.an-i.amarillo strong{color:#E9C46A}.an-i.verde strong{color:var(--turquesa)}
+.an-i span{font-size:13px;line-height:1.45;color:var(--crema-2)}
+.an-bien{padding:14px;border-radius:12px;background:rgba(53,201,193,.08);border:1px solid rgba(53,201,193,.35);display:flex;flex-direction:column;gap:6px;font-size:14.5px}
+.an-bien b{font-family:var(--display);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--turquesa)}
+.an-bien a{color:var(--oro-claro)}
+.an-arq{font-size:15px}.an-arq b{color:var(--oro)}
+.an-cta{border-top:1px dashed var(--linea);padding-top:14px;display:flex;flex-direction:column;gap:10px}.an-cta p{margin:0;font-size:15px}
 .analisis .salto{border-top:1px dashed var(--linea);padding-top:16px;display:flex;flex-direction:column;gap:10px}
 .analisis .salto p{margin:0;font-size:15px}
 .analisis .salto b{color:var(--oro)}
@@ -604,6 +625,7 @@ function tituloEsc(k){
   return ESC[k].t;
 }
 /* Pista del área de cada bloqueo (el nombre y la explicación son pagos) */
+const CONTENIDO_EJE = {Visibilidad:"mostrar tu cara y tu voz: que te elijan a ti, no solo a tus ideas",Estructura:"enseñar tu método paso a paso",Alianzas:"mostrar a otros contigo: clientes, casos y colaboraciones",Expansión:"abrir temas nuevos y adelantarte a lo que viene",Autoridad:"tomar postura y decir lo que otros no se atreven",Precisión:"ir a un solo tema y profundizarlo como nadie",Cuidado:"mostrar cómo acompañas y lo que cambia en tus clientes",Estrategia:"compartir tu lectura del mercado y las decisiones detrás de cada resultado"};
 const AREA = {Visibilidad:"cómo te muestras",Estructura:"cómo te organizas",Alianzas:"cómo te relacionas",Expansión:"cómo te mueves hacia lo nuevo",Autoridad:"cómo decides",Precisión:"dónde pones tu foco",Cuidado:"cómo acompañas a otros",Estrategia:"cómo planeas"};
 function alineacion(){
   const max=Math.max(...Object.values(S.pReal))||1, sc=e=>S.pReal[e]/max;
@@ -740,7 +762,7 @@ function datosLead(estado){
     ingreso: S.ingreso||"", ubicacion: S.ubic?UBIC.find(x=>x[0]===S.ubic)[1]:"",
     busca: S.busca||"", dolor: S.busca&&S.dolor!==null?DOLORES[S.busca][S.dolor][0]:"", tiempo: S.tiempo||"",
     alineacion_vida: al?al.vida:"", alineacion_negocio: al?al.neg:"",
-    telefono: S.telefono||"", acepta_mensajes: S.okmsg?"si":"",
+    telefono: S.telefono||"", acepta_mensajes: S.okmsg?"si":"", cuenta: S.cuenta||"", analisis: S.analisis||"",
     paso: S.paso, ...S.utm };
 }
 function carruselTestis(){
@@ -1163,13 +1185,14 @@ function render(){
       ${auditoria?`<div class="analisis">
         <span class="kicker">Para ti, que ya facturas</span>
         <h3>Tu negocio ya factura. Lo que te frena para escalar suele verse en tu contenido.</h3>
-        <p>Déjame tu Instagram, TikTok o link y te digo qué está frenando tu crecimiento.</p>
+        <p>Déjame tu Instagram o TikTok y en menos de un minuto te muestro qué está frenando tu crecimiento, con tus números reales.</p>
         <form class="campos" id="fanalisis" novalidate>
-          <label for="cuenta"><small>Tu cuenta o link</small><input id="cuenta" value="${esc(S.cuenta||"")}" placeholder="@tuusuario" autocomplete="off"></label>
+          <label for="cuentaRed"><small>Tu cuenta de Instagram o TikTok</small><input id="cuentaRed" value="${esc(S.cuenta||"")}" placeholder="@tuusuario o link de TikTok" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
           <p class="error" id="errA" hidden></p>
           <button class="btn full" type="submit">Quiero mi análisis de contenido</button>
           <p class="nota" id="notaA" hidden></p>
         </form>
+        <div id="resA"></div>
         ${(alto||tramoD)?"":`        <div class="salto">
           <p>¿Quieres saltar directo a la solución? La <b>Auditoría de Marca™ (USD 555 o ${CONFIG.auditoriaCuotas.n} cuotas de USD ${CONFIG.auditoriaCuotas.monto})</b> incluye tu Diagnóstico de Identidad completo, la auditoría de tu negocio y tu marca, tus pilares de contenido y toda la estrategia lista para implementar.</p>
           <p>El análisis te dice qué falla; la Auditoría te da el plan para corregirlo en tu negocio.</p>
@@ -1311,20 +1334,55 @@ function bind(){
     const h=q("#hora"); h.disabled = S.horaEstado==="nose"; if(h.disabled) h.value="";
   });
   q("#fanalisis")?.addEventListener("submit",async ev=>{
-    ev.preventDefault(); const v=q("#cuenta").value.trim(); const err=q("#errA"), nota=q("#notaA");
+    ev.preventDefault(); const v=q("#cuentaRed").value.trim(); const err=q("#errA"), nota=q("#notaA"), res=q("#resA"), btn=ev.target.querySelector("button");
     if(v.length<3){ err.textContent="Escribe tu usuario (por ejemplo @tumarca) o pega el link de tu perfil."; err.hidden=false; return; }
-    err.hidden=true; S.cuenta=v;
+    err.hidden=true; nota.hidden=true; S.cuenta=v; guardarAvance();
     const al=alineacion();
     const msg=`Hola Ana, hice el quiz y quiero mi análisis de contenido.\nMi arquetipo: ${BANCO[S.real][0]}\nMi negocio está ${al.neg}% alineado con mi diseño.\n${S.giro?`Me presento como: "${S.giro}"\n`:""}Lo que más me pesa: ${DOLORES[S.busca][S.dolor][0]}\nMi cuenta: ${v}`;
-    if(CONFIG.whatsapp){
-      const a=document.createElement("a"); a.href=`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`; a.target="_blank"; a.rel="noopener"; a.click();
-      nota.textContent="Se abrió WhatsApp con tu mensaje listo. Solo tienes que enviarlo."; nota.hidden=false;
-    } else {
-      let copiado=false; try{ await navigator.clipboard.writeText(msg); copiado=true; }catch(e){}
-      const a=document.createElement("a"); a.href=`https://ig.me/m/${CONFIG.instagram.replace("@","")}`; a.target="_blank"; a.rel="noopener"; a.click();
-      nota.textContent = copiado ? `Copiamos tu mensaje. Pégalo en el chat de ${CONFIG.instagram} que se acaba de abrir y envíalo.` : `Escríbele a ${CONFIG.instagram} por Instagram con tu cuenta: ${v}`;
+    const aMano=(motivo)=>{
+      res.innerHTML="";
+      if(CONFIG.whatsapp){
+        const a=document.createElement("a"); a.href=`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`; a.target="_blank"; a.rel="noopener"; a.click();
+        nota.textContent=`${motivo} Se abrió WhatsApp con tu mensaje listo para que Ana la revise contigo.`;
+      } else nota.textContent=`${motivo} Escríbele a ${CONFIG.instagram} por Instagram con tu cuenta: ${v}`;
       nota.hidden=false;
+    };
+    btn.disabled=true;
+    res.innerHTML=`<div class="an-carga"><i></i><span>Revisando tus últimas publicaciones… tarda entre 15 y 40 segundos.</span></div>`;
+    let r=null;
+    try{ const x=await fetch("/api/analisis",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({cuenta:v})}); r=await x.json(); }catch(e){}
+    btn.disabled=false;
+    if(!r||!r.ok){
+      const e=r&&r.error;
+      if(e==="privada") return aMano("Tu cuenta es privada o no tiene publicaciones, así que no pudimos leerla.");
+      if(e==="no_encontrada") { res.innerHTML=""; err.textContent="No encontramos esa cuenta. Revisa el usuario (sin espacios) o pega el link de tu perfil."; err.hidden=false; return; }
+      if(e==="web") return aMano("El análisis automático funciona con Instagram y TikTok.");
+      return aMano("No pudimos hacer el análisis automático en este momento.");
     }
+    const A=r.analisis; S.analisis=`${A.red} @${A.usuario} · ${A.freno.titulo} · `+A.indicadores.map(i=>`${i.nombre}: ${i.valor} (${i.nivel})`).join(" · ");
+    guardarAvance(); enviarLead("completado");
+    const ejeTop=[...ORDEN].sort((x,y)=>(S.pReal[y]-S.pReal[x])||(ORDEN.indexOf(x)-ORDEN.indexOf(y)))[0];
+    const red=A.red==="tiktok"?"TikTok":"Instagram";
+    const waA=waLink(`Hola Ana, hice el análisis de contenido de @${A.usuario} (${red}).\nMi freno principal: ${A.freno.titulo}.\n${A.indicadores.map(i=>`${i.nombre}: ${i.valor}`).join(" · ")}\nQuiero que lo revisemos y saber cómo es la Auditoría.\n${resumenQuiz()}`);
+    res.innerHTML=generoTxt(`<div class="an-res">
+      <p class="an-cab"><b>@${esc(A.usuario)}</b> · ${red} · ${esc(A.seguidores)} seguidores · últimas ${A.publicaciones} publicaciones</p>
+      <div class="an-freno">
+        <span class="kicker">Lo que más frena tu crecimiento</span>
+        <h4>${esc(A.freno.titulo)}</h4>
+        <p>${esc(A.freno.texto)}</p>
+        <div class="an-acc"><b>Tu acción de esta semana</b>${esc(A.freno.accion)}</div>
+      </div>
+      <div class="an-ind">${A.indicadores.map(i=>`<div class="an-i ${i.nivel}"><header><i></i>${esc(i.nombre)}</header><strong>${esc(i.valor)}</strong><span>${esc(i.detalle)}</span></div>`).join("")}</div>
+      ${(A.formato||A.mejor)?`<div class="an-bien"><b>Lo que sí te funciona</b>${A.formato?`<span>${esc(A.formato.texto)} Ahí está tu terreno.</span>`:""}${A.mejor&&A.mejor.texto?`<span>Tu mejor publicación reciente tuvo ${esc(A.mejor.interacciones)} interacciones, ${esc(A.mejor.veces)} veces tu promedio: «${esc(A.mejor.texto)}»${A.mejor.url?` <a href="${esc(A.mejor.url)}" target="_blank" rel="noopener">Verla</a>`:""}</span>`:""}</div>`:""}
+      <p class="an-arq">Como <b>${esc(nombreArq(S.real))}</b>, tu diseño vende cuando puedes ${esc(BANCO[S.real][3])}. Tu contenido rinde más cuando te deja ${esc(CONTENIDO_EJE[ejeTop])}.</p>
+      <div class="an-cta">
+        <p>Esto es lo que se ve desde afuera. En la <b>Auditoría de Marca™</b> reviso tu contenido contra tu diseño completo y te dejo el plan para corregirlo.</p>
+        <a class="btn full" href="${esc(waA)}" target="_blank" rel="noopener">Revisar mi análisis con Ana</a>
+        <a class="btn sec full" href="${esc(CONFIG.links.auditoria)}" target="_blank" rel="noopener">Ver qué incluye la Auditoría</a>
+      </div>
+    </div>`);
+    ev.target.hidden=true;
+    res.scrollIntoView({behavior:"smooth",block:"start"});
   });
   q("#fgiro")?.addEventListener("submit",ev=>{
     ev.preventDefault(); const v=q("#giro").value.trim();
