@@ -276,6 +276,9 @@ input::-webkit-calendar-picker-indicator{filter:invert(.8) sepia(.4)}
 .cm.assistant{align-self:flex-start;background:rgba(255,255,255,.06)}
 .capform{display:flex;gap:8px}
 .capform input{flex:1}
+.subir-cap{display:flex;flex-direction:column;gap:6px;border:1.5px dashed var(--turquesa);border-radius:14px;padding:16px;text-align:center;cursor:pointer}
+.subir-cap b{font-family:var(--display);font-size:15px;color:var(--crema)}
+.subir-cap small{font-size:12.5px;color:var(--crema-2)}
 .modelo{border:1px solid var(--linea);border-radius:18px;padding:20px 18px;display:flex;flex-direction:column;gap:12px;background:rgba(245,241,232,.02)}
 .modelo h3{font-size:13px;letter-spacing:.2em;text-transform:uppercase}
 .modelo p{margin:0;font-size:15px}
@@ -1197,9 +1200,9 @@ function render(){
         <p>¿Estás construyendo tu marca y/o tu negocio en redes? Quieres ver si lo estás haciendo bien. Haz esta mini auditoría gratis: sube tu captura y pon @ tu cuenta.</p>
         <form class="campos" id="fanalisis" novalidate ${S.resA?"hidden":""}>
           <label for="cuentaRed"><small>Tu cuenta de Instagram o TikTok</small><input id="cuentaRed" value="${esc(S.cuenta||"")}" placeholder="@tuusuario o link de TikTok" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
-          <label><small>Captura de tu perfil o de tus Insights (opcional, hasta 3)</small><input id="capPerfil" type="file" accept="image/*" multiple></label>
+          <label class="subir-cap"><b>Sube tu captura</b><small>Perfil o Insights (opcional, hasta 3)</small><input id="capPerfil" type="file" accept="image/*" multiple></label>
           <p class="error" id="errA" hidden></p>
-          <button class="btn full" type="submit">Mini Audit Gratis</button>
+          <button class="btn full" type="submit">Analizar</button>
           <p class="nota" id="notaA" hidden></p>
         </form>
         <div id="resA">${S.resAFull?S.resA:(S.resA?`<button class="btn full" id="verAnalisis" type="button">Ver mi análisis completo</button>`:"")}</div>
