@@ -276,6 +276,7 @@ input::-webkit-calendar-picker-indicator{filter:invert(.8) sepia(.4)}
 .cm.assistant{align-self:flex-start;background:rgba(255,255,255,.06)}
 .capform{display:flex;gap:8px}
 .capform input{flex:1}
+.an-i .sig{display:block;margin-top:6px;font-size:13px;line-height:1.45;color:var(--crema);opacity:.9}
 .subir-cap{display:flex;flex-direction:column;gap:6px;border:1.5px dashed var(--turquesa);border-radius:14px;padding:16px;text-align:center;cursor:pointer}
 .subir-cap b{font-family:var(--display);font-size:15px;color:var(--crema)}
 .subir-cap small{font-size:12.5px;color:var(--crema-2)}
@@ -1386,7 +1387,7 @@ function bind(){
         <p>${esc(A.freno.texto)}</p>
         <div class="an-acc"><b>Tu acción de esta semana</b>${esc(A.freno.accion)}</div>
       </div>
-      <div class="an-ind">${A.indicadores.map(i=>`<div class="an-i ${i.nivel}"><header><i></i>${esc(i.nombre)}</header><strong>${esc(i.valor)}</strong><span>${esc(i.detalle)}</span></div>`).join("")}</div>
+      <div class="an-ind">${A.indicadores.map(i=>`<div class="an-i ${i.nivel}"><header><i></i>${esc(i.nombre)}</header><strong>${esc(i.valor)}</strong><span>${esc(i.detalle)}</span><small class="sig">${esc(i.significa||"")}</small></div>`).join("")}</div>
       ${A.fallas&&A.fallas.length?`<div class="an-freno"><span class="kicker">Lo que no funciona</span><ul>${A.fallas.map(f=>`<li>${esc(f)}</li>`).join("")}</ul></div>`:""}
       ${A.contenido?`<div class="an-bien an-cont"><b>Lo que comunica tu perfil</b>
         <span>Bio: ${A.contenido.bio.dice?"dice a quién ayudas":"no dice a quién ayudas"}${A.contenido.bio.cta?" y tiene llamado a la acción":" y no tiene llamado a la acción"}.</span>

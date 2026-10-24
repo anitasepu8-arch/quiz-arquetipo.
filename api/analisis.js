@@ -177,6 +177,16 @@ export function analizar(d) {
   const mejor = top ? { texto: ((t) => (t.length > 110 ? t.slice(0, 107).replace(/\s+\S*$/, "") + "…" : t))((top.texto || "").split("\n")[0]), interacciones: fmt(top.interacciones), veces: intProm ? String(Math.round((top.interacciones / intProm) * 10) / 10).replace(".", ",") : "0", url: top.url } : null;
 
   // Freno principal: el indicador más débil, en orden de impacto
+  // Qué significa cada número, en lenguaje simple
+  const de100 = (x) => (x * 100 < 1 ? "menos de 1" : String(Math.round(x * 100)));
+  if (alcance) alcance.significa = `De cada 100 seguidores, unos ${de100(alc)} ven tus videos. Lo sano es 15 o más: si pocos te ven, el algoritmo tampoco te muestra a personas nuevas.`;
+  interaccion.significa = `De cada 100 seguidores, unos ${de100(inter)} reaccionan a cada publicación. Para tu tamaño lo sano son unos ${de100(ref)}: te miran, pero no sienten que les hablas a ellos.`;
+  constancia.significa = diasUltima > 14
+    ? `Llevas ${diasUltima} días sin publicar. Quien te siguió deja de esperarte y el algoritmo deja de empujarte.`
+    : `${ps >= 3 ? "Publicas con ritmo." : "Publicas menos de 3 veces por semana."} Con poca frecuencia, tu audiencia no construye el hábito de verte.`;
+  perfil.significa = perfil.nivel === "verde"
+    ? "Quien entra a tu perfil sabe qué hacer y dónde. Eso convierte visitas en conversaciones."
+    : "Quien entra a tu perfil ve tu bio y decide en segundos. Hoy no tiene una acción clara: se va sin hacer nada.";
   const ind = { alcance, interaccion, constancia, perfil };
   const orden = ["alcance", "interaccion", "constancia", "perfil"];
   const peso = { rojo: 0, amarillo: 1, verde: 2 };
