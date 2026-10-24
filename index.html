@@ -1197,6 +1197,7 @@ function render(){
         <p>Déjame tu Instagram o TikTok y en menos de un minuto te muestro qué está frenando tu crecimiento, con tus números reales.</p>
         <form class="campos" id="fanalisis" novalidate ${S.resA?"hidden":""}>
           <label for="cuentaRed"><small>Tu cuenta de Instagram o TikTok</small><input id="cuentaRed" value="${esc(S.cuenta||"")}" placeholder="@tuusuario o link de TikTok" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+          <label><small>Captura de tu perfil o de tus Insights (opcional, hasta 3)</small><input id="capPerfil" type="file" accept="image/*" multiple></label>
           <p class="error" id="errA" hidden></p>
           <button class="btn full" type="submit">Mini Audit Gratis</button>
           <p class="nota" id="notaA" hidden></p>
@@ -1347,6 +1348,9 @@ function bind(){
     ev.preventDefault(); const v=q("#cuentaRed").value.trim(); const err=q("#errA"), nota=q("#notaA"), res=q("#resA"), btn=ev.target.querySelector("button");
     if(v.length<3){ err.textContent="Escribe tu usuario (por ejemplo @tumarca) o pega el link de tu perfil."; err.hidden=false; return; }
     err.hidden=true; nota.hidden=true; S.cuenta=v; guardarAvance();
+    const fotos=[...(document.querySelector("#capPerfil")?.files||[])].slice(0,3);
+    CAPTURA.imgs=null;
+    if(fotos.length){ try{ CAPTURA.imgs=await Promise.all(fotos.map(reducirImagen)); }catch(e){ CAPTURA.imgs=null; } }
     const al=alineacion();
     const msg=`Hola Ana, hice el quiz y quiero mi análisis de contenido.\nMi arquetipo: ${BANCO[S.real][0]}\nMi negocio está ${al.neg}% alineado con mi diseño.\n${S.giro?`Me presento como: "${S.giro}"\n`:""}Lo que más me pesa: ${DOLORES[S.busca][S.dolor][0]}\nMi cuenta: ${v}`;
     const aMano=(motivo)=>{
@@ -1399,6 +1403,7 @@ function bind(){
     S.resAFull=res.innerHTML; S.resA=compactoHtml(A); res.innerHTML=S.resA; guardarAvance();
     ev.target.hidden=true;
     abrirHoja(S.resAFull);
+    if(CAPTURA.imgs){ CAPTURA.msgs=[]; enviarCaptura("Analiza estas capturas: qué comunica mi perfil, mis pilares, mis ángulos que funcionan, mis métricas y el freno principal. Cierra con una estrategia en 3 pasos basada en mi arquetipo.","Analiza mis capturas"); }
     res.scrollIntoView({behavior:"smooth",block:"start"});
   });
   window.CAPTURA=window.CAPTURA||{msgs:[],imgs:null};
