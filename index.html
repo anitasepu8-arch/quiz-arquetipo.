@@ -1113,6 +1113,8 @@ function render(){
       ${testis}
       <div class="pitch">${pitch.map(p=>`<p>${p}</p>`).join("")}</div>
       ${alto?`<span class="kicker">Tus opciones</span>
+      <h3 class="cp-tit">Mini vs Diagnóstico completo</h3>
+      ${comparativa(false)}
       <div class="ofertas">
         <div class="oferta reco">
           <span class="badge">Recomendado para ti</span>
@@ -1129,6 +1131,8 @@ function render(){
           <a class="btn sec full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Quiero mi Diagnóstico</a>
         </div>
       </div>`:tramoD?`<span class="kicker">Tus opciones</span>
+      <h3 class="cp-tit">Mini vs Diagnóstico completo</h3>
+      ${comparativa(false)}
       <div class="ofertas">
         <div class="oferta reco">
           <span class="badge">Recomendado para ti</span>
