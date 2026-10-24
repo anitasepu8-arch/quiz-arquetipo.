@@ -1204,7 +1204,7 @@ function render(){
       ${auditoria?`<div class="analisis">
         <span class="kicker">Para ti, que ya facturas</span>
         <h3>Tu negocio ya factura. Lo que te frena para escalar suele verse en tu contenido.</h3>
-        <p>¿Estás construyendo tu marca y/o tu negocio en redes? Quieres ver si lo estás haciendo bien. Haz esta mini auditoría gratis: sube tu captura y pon @ tu cuenta.</p>
+        <p>¿Estás construyendo tu marca y tu negocio en redes? Quieres ver qué te frena en tu facturación. Pon tu @ y sube tu captura.</p>
         <div class="qinc-box"><b>Lo que revela la auditoría:</b>
           <ul class="qinc">
             <li><b>Tu identidad:</b> qué es naturalmente fácil de decir para ti, y cómo eso se vuelve tus pilares de contenido.</li>
@@ -1379,10 +1379,12 @@ function bind(){
       nota.hidden=false;
     };
     btn.disabled=true;
-    res.innerHTML=`<div class="an-carga"><i></i><span>Revisando tus últimas publicaciones… tarda entre 15 y 40 segundos.</span></div>`;
+    const box=document.querySelector(".qinc-box"), copia=box?box.outerHTML:"";
+    if(box) box.hidden=true;
+    res.innerHTML=`<div class="an-carga"><i></i><span>Analizando tu cuenta… tarda entre 15 y 40 segundos. Mientras, lee lo que revela la auditoría:</span></div>`+copia;
     let r=null;
     try{ const x=await fetch("/api/analisis",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({cuenta:v})}); r=await x.json(); }catch(e){}
-    btn.disabled=false;
+    btn.disabled=false; if(box) box.hidden=false;
     if(!r||!r.ok){
       const e=r&&r.error;
       if(e==="privada") return aMano("Tu cuenta es privada o no tiene publicaciones, así que no pudimos leerla.");
