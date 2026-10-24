@@ -1720,7 +1720,7 @@ async function precioLocal(el,usd,prod,cuotas){
       monto.innerHTML=`<small>≈</small> …`;
       const fx=await tipoCambio(cur);
       if(!fx){ monto.innerHTML=`USD ${usd}`; nota.innerHTML="No pudimos cargar el tipo de cambio. Tu banco hace la conversión."; }
-      else{ monto.innerHTML=`<small>≈</small> ${fmtMoneda(usd*fx,cur)}${extra(fx,cur)}`; nota.innerHTML= cur==="BOB" ? "Tipo de cambio 11 Bs por dólar." : "Tipo de cambio de hoy. Tu banco hace la conversión al pagar."; }
+      else{ monto.innerHTML=`<small>≈</small> ${fmtMoneda(usd*fx,cur)}${extra(fx,cur)}`; nota.innerHTML= cur==="BOB" ? "Tipo de cambio 11 Bs por dólar. Pago en QR en Bs. se acepta." : "Tipo de cambio de hoy. Tu banco hace la conversión al pagar."; }
     }
     if(cur==="BOB"){
       const wa="https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent("Hola Ana, quiero "+prod+" y quiero pagar con QR o transferencia en Bolivia.");
