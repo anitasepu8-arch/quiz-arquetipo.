@@ -1186,13 +1186,13 @@ function render(){
         <span class="kicker">Para ti, que ya facturas</span>
         <h3>Tu negocio ya factura. Lo que te frena para escalar suele verse en tu contenido.</h3>
         <p>Déjame tu Instagram o TikTok y en menos de un minuto te muestro qué está frenando tu crecimiento, con tus números reales.</p>
-        <form class="campos" id="fanalisis" novalidate>
+        <form class="campos" id="fanalisis" novalidate ${S.resA?"hidden":""}>
           <label for="cuentaRed"><small>Tu cuenta de Instagram o TikTok</small><input id="cuentaRed" value="${esc(S.cuenta||"")}" placeholder="@tuusuario o link de TikTok" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
           <p class="error" id="errA" hidden></p>
           <button class="btn full" type="submit">Quiero mi análisis de contenido</button>
           <p class="nota" id="notaA" hidden></p>
         </form>
-        <div id="resA"></div>
+        <div id="resA">${S.resA||""}</div>
         ${(alto||tramoD)?"":`        <div class="salto">
           <p>¿Quieres saltar directo a la solución? La <b>Auditoría de Marca™ (USD 555 o ${CONFIG.auditoriaCuotas.n} cuotas de USD ${CONFIG.auditoriaCuotas.monto})</b> incluye tu Diagnóstico de Identidad completo, la auditoría de tu negocio y tu marca, tus pilares de contenido y toda la estrategia lista para implementar.</p>
           <p>El análisis te dice qué falla; la Auditoría te da el plan para corregirlo en tu negocio.</p>
@@ -1378,6 +1378,7 @@ function bind(){
         <a class="btn sec full" href="${esc(CONFIG.links.auditoria)}" target="_blank" rel="noopener">Ver qué incluye la Auditoría</a>
       </div>
     </div>`);
+    S.resA=res.innerHTML; guardarAvance();
     ev.target.hidden=true;
     res.scrollIntoView({behavior:"smooth",block:"start"});
   });
