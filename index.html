@@ -366,6 +366,10 @@ select:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 .genero{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .genero .glbl{font-family:var(--display);font-weight:600;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
 .genero-op{display:flex;gap:8px}
+.pago-det{margin-top:2px}
+.pago-det summary{list-style:none;cursor:pointer;text-align:center;font-size:14px;color:var(--oro);padding:8px 0;text-decoration:underline;text-underline-offset:3px}
+.pago-det summary::-webkit-details-marker{display:none}
+.pago-det[open] summary{opacity:.6}
 .cmp-det summary{list-style:none;cursor:pointer;margin-bottom:6px}
 .cmp-det summary::-webkit-details-marker{display:none}
 .cp-tit{font-family:var(--display);font-weight:800;font-size:24px;line-height:1.15;margin:14px 0 2px;color:var(--oro-claro);padding:12px 14px;border-left:3px solid var(--oro);background:linear-gradient(90deg,rgba(212,175,120,.14),rgba(212,175,120,0));border-radius:0 12px 12px 0}
@@ -1198,7 +1202,7 @@ function render(){
             <li>El WhatsApp de Ana, para hacerle preguntas de aclaración cuando recibes tu entrega</li>
           </ul>
           <a class="btn full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Ver todo lo que revela mi Diagnóstico</a>
-          <div class="pago-local" data-calc="152" data-prod="el Diagnóstico de Identidad"></div>
+          <details class="pago-det"><summary>Calcula el precio en tu moneda</summary><div class="pago-local" data-calc="152" data-prod="el Diagnóstico de Identidad"></div></details>
         </div>
         ${lejos ? cardLlamadaVisible + cardAuditoriaUpgrade : cardAuditoriaUpgrade}
       </div>
