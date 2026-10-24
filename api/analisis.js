@@ -40,7 +40,7 @@ function normalizarIG(items) {
   const tipo = (x) => (x.productType === "clips" || x.type === "Video" ? "Reels" : x.type === "Sidecar" ? "Carruseles" : "Fotos");
   return {
     red: "instagram", usuario: p.username, nombre: p.fullName || "", bio: p.biography || "",
-    link: p.externalUrl || "", seguidores: n(p.followersCount), privada: !!p.private,
+    link: p.externalUrl || "", seguidores: n(p.followersCount), privada: !!p.private, destacados: n(p.highlightReelCount),
     posts: (p.latestPosts || []).map((x) => ({
       tipo: tipo(x), fecha: x.timestamp, pin: !!x.isPinned, texto: x.caption || "", url: x.url || "",
       vistas: x.videoViewCount != null ? n(x.videoViewCount) : null,
@@ -68,6 +68,48 @@ const CTA_POST = /(comenta|escr[ií]beme|agenda|link|enlace|dm|mensaje|guarda|co
 
 const pct = (x) => String(Math.round(x * 1000) / 10).replace(".", ","); // 0.0123 -> "1,2"
 const fmt = (x) => Math.round(x).toLocaleString("es-ES");
+
+// Contenido: qué comunica el perfil (bio, destacados, pilares, aperturas repetidas) y estrategia concreta.
+const STOP = new Set("para como pero porque cuando desde sobre entre tambien tiene tienen puedes puede hacer esto esta este estos estas eso ese esa todo todos toda cada muy mas menos aqui ahora siempre nunca solo sino aunque donde quien cual estoy estan somos tienes hay fue ser son era sus nos les nuestro nuestra mismo misma hasta ademas".split(" "));
+const norm = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z\s]/g, " ");
+
+function analizarContenido(d, base, ctaBio) {
+  // Pilares: palabras (5+ letras) que aparecen en al menos 3 publicaciones y en 1 de cada 4 como mínimo
+  const conteo = {};
+  base.forEach((p) => {
+    const set = new Set(norm(p.texto).split(/\s+/).filter((w) => w.length >= 5 && !STOP.has(w)));
+    set.forEach((w) => { conteo[w] = (conteo[w] || 0) + 1; });
+  });
+  const minimo = Math.max(3, Math.ceil(base.length * 0.25));
+  const pilares = Object.entries(conteo).filter(([, c]) => c >= minimo).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([tema, veces]) => ({ tema, veces }));
+
+  // Aperturas repetidas: las dos primeras palabras de la publicación que se repiten 3 veces o más
+  const aperturas = {};
+  base.forEach((p) => {
+    const w = norm(p.texto).split(/\s+/).filter(Boolean).slice(0, 2).join(" ");
+    if (w.length >= 4) aperturas[w] = (aperturas[w] || 0) + 1;
+  });
+  const angulos = Object.entries(aperturas).filter(([, c]) => c >= 3).sort((a, b) => b[1] - a[1]).slice(0, 2).map(([texto, veces]) => ({ texto, veces }));
+
+  const bio = norm(d.bio);
+  const dice = /(ayudo|ayudamos|soy|transformo|creo|asesoro|consultor|coach|fundador|especialista|marca|empresa|ense)/.test(bio);
+  const destacados = Number.isFinite(d.destacados) ? d.destacados : null;
+
+  const estrategia = [];
+  if (!dice) estrategia.push("Tu bio no dice a quién ayudas ni qué logra. Escribe: «Ayudo a [quién] a [resultado]».");
+  if (destacados === 0) estrategia.push("No tienes destacados. Crea 3: Método, Casos y Cómo trabajar conmigo.");
+  else if (destacados > 0) estrategia.push(`Tienes ${destacados} destacados: revisa que cada portada diga qué encontrará quien entra.`);
+  if (!pilares.length) estrategia.push("No se ve un tema que se repita. Elige 3 pilares y publica cada uno al menos 4 veces al mes.");
+  else estrategia.push(`Tus pilares actuales son ${pilares.map((x) => x.tema).join(", ")}. Úsalos como base de tu contenido.`);
+  if (angulos.length) estrategia.push(`Tus publicaciones empiezan igual («${angulos[0].texto}…», ${angulos[0].veces} veces). Cambia la apertura: pregunta, dato o historia.`);
+  return {
+    bio: { dice, cta: ctaBio },
+    destacados,
+    pilares,
+    angulos,
+    estrategia: estrategia.slice(0, 4),
+  };
+}
 
 export function analizar(d) {
   const recientes = d.posts.filter((p) => !p.pin && p.fecha).sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
@@ -148,7 +190,9 @@ export function analizar(d) {
     oferta: { titulo: "Tu contenido funciona. Lo que frena es la conversión", texto: `Tus números de contenido están sanos. Si tu negocio no escala, el freno no está en cuánta gente te ve: está en qué vendes y cómo lo conectas con tu contenido. ${perfil.conCta} de tus últimas ${perfil.total} publicaciones piden una acción concreta.`, accion: "Revisa tus últimas 12 publicaciones y cuenta cuántas llevan a tu oferta. Si son menos de 4, ahí está tu freno." },
   };
 
+  const contenido = analizarContenido(d, base, ctaBio);
   return {
+    contenido,
     red: d.red, usuario: d.usuario, nombre: d.nombre, seguidores: fmt(seg), publicaciones: base.length,
     indicadores: [
       alcance && { clave: "alcance", nombre: "Alcance", ...alcance },

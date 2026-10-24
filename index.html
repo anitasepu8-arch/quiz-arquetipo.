@@ -1370,6 +1370,13 @@ function bind(){
         <div class="an-acc"><b>Tu acción de esta semana</b>${esc(A.freno.accion)}</div>
       </div>
       <div class="an-ind">${A.indicadores.map(i=>`<div class="an-i ${i.nivel}"><header><i></i>${esc(i.nombre)}</header><strong>${esc(i.valor)}</strong><span>${esc(i.detalle)}</span></div>`).join("")}</div>
+      ${A.contenido?`<div class="an-bien an-cont"><b>Lo que comunica tu perfil</b>
+        <span>Bio: ${A.contenido.bio.dice?"dice a quién ayudas":"no dice a quién ayudas"}${A.contenido.bio.cta?" y tiene llamado a la acción":" y no tiene llamado a la acción"}.</span>
+        <span>Destacados: ${A.contenido.destacados==null?"no los podemos leer con esta cuenta":A.contenido.destacados+" (revisa qué muestran)"}.</span>
+        <span>Pilares que se repiten: ${A.contenido.pilares.length?esc(A.contenido.pilares.map(x=>x.tema+" ("+x.veces+" publicaciones)").join(", ")):"ninguno claro todavía"}.</span>
+        ${A.contenido.angulos.length?`<span>Aperturas repetidas: ${A.contenido.angulos.map(x=>"«"+esc(x.texto)+"…» ("+x.veces+" veces)").join(", ")}.</span>`:""}
+        <div class="an-acc"><b>Estrategia</b><ul>${A.contenido.estrategia.map(e=>`<li>${esc(e)}</li>`).join("")}</ul></div>
+      </div>`:""}
       ${(A.formato||A.mejor)?`<div class="an-bien"><b>Lo que sí te funciona</b>${A.formato?`<span>${esc(A.formato.texto)} Ahí está tu terreno.</span>`:""}${A.mejor&&A.mejor.texto?`<span>Tu mejor publicación reciente tuvo ${esc(A.mejor.interacciones)} interacciones, ${esc(A.mejor.veces)} veces tu promedio: «${esc(A.mejor.texto)}»${A.mejor.url?` <a href="${esc(A.mejor.url)}" target="_blank" rel="noopener">Verla</a>`:""}</span>`:""}</div>`:""}
       <p class="an-arq">Como <b>${esc(nombreArq(S.real))}</b>, tu diseño vende cuando puedes ${esc(BANCO[S.real][3])}. Tu contenido rinde más cuando te deja ${esc(CONTENIDO_EJE[ejeTop])}.</p>
       <div class="an-cta">
