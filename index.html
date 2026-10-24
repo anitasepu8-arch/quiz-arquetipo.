@@ -277,6 +277,12 @@ input::-webkit-calendar-picker-indicator{filter:invert(.8) sepia(.4)}
 .capform{display:flex;gap:8px}
 .capform input{flex:1}
 .an-i .sig{display:block;margin-top:6px;font-size:13px;line-height:1.45;color:var(--crema);opacity:.9}
+.qinc-box{display:flex;flex-direction:column;gap:10px}
+.qinc-box>b{font-family:var(--display);font-size:15px;color:var(--oro)}
+.qinc{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.qinc li{font-size:14px;line-height:1.45;color:var(--crema-2);padding-left:20px;position:relative}
+.qinc li::before{content:"✓";position:absolute;left:0;color:var(--oro);font-weight:700}
+.qinc li b{color:var(--crema)}
 .subir-cap{display:flex;flex-direction:column;gap:6px;border:1.5px dashed var(--turquesa);border-radius:14px;padding:16px;text-align:center;cursor:pointer}
 .subir-cap b{font-family:var(--display);font-size:15px;color:var(--crema)}
 .subir-cap small{font-size:12.5px;color:var(--crema-2)}
@@ -1199,6 +1205,15 @@ function render(){
         <span class="kicker">Para ti, que ya facturas</span>
         <h3>Tu negocio ya factura. Lo que te frena para escalar suele verse en tu contenido.</h3>
         <p>¿Estás construyendo tu marca y/o tu negocio en redes? Quieres ver si lo estás haciendo bien. Haz esta mini auditoría gratis: sube tu captura y pon @ tu cuenta.</p>
+        <div class="qinc-box"><b>Lo que revela la auditoría:</b>
+          <ul class="qinc">
+            <li><b>Tu identidad:</b> qué es naturalmente fácil de decir para ti, y cómo eso se vuelve tus pilares de contenido.</li>
+            <li><b>Cómo conecta la gente contigo:</b> qué te hace reconocible y qué te hace confiable.</li>
+            <li><b>Tu estilo de comunicación:</b> cómo hablar para que te escuchen, no solo para que te vean.</li>
+            <li><b>Tus ángulos de comunicación:</b> qué decir según tu oferta, qué repetir y qué dejar de decir.</li>
+            <li><b>Si tu oferta es vendible:</b> si lo que vendes tiene estructura y precio que se sostienen. Si no, el marketing no lo arregla.</li>
+            <li><b>Tu estrategia alineada:</b> un plan que puedas sostener y contenido que puedas replicar cada semana.</li>
+          </ul></div>
         <form class="campos" id="fanalisis" novalidate ${S.resA?"hidden":""}>
           <label for="cuentaRed"><small>Tu cuenta de Instagram o TikTok</small><input id="cuentaRed" value="${esc(S.cuenta||"")}" placeholder="@tuusuario o link de TikTok" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
           <label class="subir-cap"><b>Sube tu captura</b><small>Perfil o Insights (opcional, hasta 3)</small><input id="capPerfil" type="file" accept="image/*" multiple></label>
