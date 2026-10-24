@@ -7,7 +7,7 @@
 import crypto from "node:crypto";
 import { crearToken, leerReferencia } from "./_mini-token.js";
 
-const BASE = "https://quiz-arquetipo.vercel.app";
+const BASE = "https://quiz.quantumbranding.iprosper28.com";
 
 async function cuerpoCrudo(req) {
   const partes = [];
