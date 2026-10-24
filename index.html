@@ -267,6 +267,15 @@ input::-webkit-calendar-picker-indicator{filter:invert(.8) sepia(.4)}
 .analisis .salto{border-top:1px dashed var(--linea);padding-top:16px;display:flex;flex-direction:column;gap:10px}
 .analisis .salto p{margin:0;font-size:15px}
 .analisis .salto b{color:var(--oro)}
+.capt{border-top:1px dashed var(--linea);padding-top:16px;display:flex;flex-direction:column;gap:10px}
+.capt h4{font-size:18px;line-height:1.2}
+.capt .sube{display:block;text-align:center;cursor:pointer}
+#capMsgs{display:flex;flex-direction:column;gap:8px;max-height:60vh;overflow:auto}
+.cm{padding:12px 14px;border-radius:14px;font-size:15px;line-height:1.45;white-space:pre-wrap;max-width:92%}
+.cm.user{align-self:flex-end;background:rgba(53,201,193,.15)}
+.cm.assistant{align-self:flex-start;background:rgba(255,255,255,.06)}
+.capform{display:flex;gap:8px}
+.capform input{flex:1}
 .modelo{border:1px solid var(--linea);border-radius:18px;padding:20px 18px;display:flex;flex-direction:column;gap:12px;background:rgba(245,241,232,.02)}
 .modelo h3{font-size:13px;letter-spacing:.2em;text-transform:uppercase}
 .modelo p{margin:0;font-size:15px}
@@ -1193,6 +1202,20 @@ function render(){
           <p class="nota" id="notaA" hidden></p>
         </form>
         <div id="resA">${S.resA||""}</div>
+        <div class="capt">
+          <h4>¿Prefieres que lo veamos con tus capturas?</h4>
+          <p class="nota">Sube una captura de tu perfil o de tus Insights (hasta 3). Las usamos solo para responderte; no las guardamos.</p>
+          <label class="btn sec full sube" for="capArch">Subir capturas</label>
+          <input id="capArch" type="file" accept="image/*" multiple hidden>
+          <p class="error" id="errC" hidden></p>
+          <div id="capChat" hidden>
+            <div id="capMsgs"></div>
+            <form class="capform" id="capForm" novalidate>
+              <input id="capIn" placeholder="Pregunta algo sobre tu análisis" autocomplete="off">
+              <button class="btn" type="submit">Enviar</button>
+            </form>
+          </div>
+        </div>
         ${(alto||tramoD)?"":`        <div class="salto">
           <p>¿Quieres saltar directo a la solución? La <b>Auditoría de Marca™ (USD 555 o ${CONFIG.auditoriaCuotas.n} cuotas de USD ${CONFIG.auditoriaCuotas.monto})</b> incluye tu Diagnóstico de Identidad completo, la auditoría de tu negocio y tu marca, tus pilares de contenido y toda la estrategia lista para implementar.</p>
           <p>El análisis te dice qué falla; la Auditoría te da el plan para corregirlo en tu negocio.</p>
@@ -1388,6 +1411,45 @@ function bind(){
     S.resA=res.innerHTML; guardarAvance();
     ev.target.hidden=true;
     res.scrollIntoView({behavior:"smooth",block:"start"});
+  });
+  window.CAPTURA=window.CAPTURA||{msgs:[],imgs:null};
+  const CAPTURA=window.CAPTURA;
+  function reducirImagen(file){
+    return new Promise((ok,no)=>{
+      const url=URL.createObjectURL(file), im=new Image();
+      im.onload=()=>{ const k=Math.min(1,1100/Math.max(im.width,im.height)), c=document.createElement("canvas");
+        c.width=Math.round(im.width*k); c.height=Math.round(im.height*k);
+        c.getContext("2d").drawImage(im,0,0,c.width,c.height); URL.revokeObjectURL(url); ok(c.toDataURL("image/jpeg",0.75)); };
+      im.onerror=()=>{ URL.revokeObjectURL(url); no(new Error("imagen")); };
+      im.src=url;
+    });
+  }
+  function pintarChat(cargando){
+    const box=q("#capMsgs"); if(!box) return;
+    box.innerHTML=CAPTURA.msgs.map(m=>`<div class="cm ${m.role}">${esc(m.mostrar||m.texto)}</div>`).join("")+(cargando?`<div class="cm assistant">Analizando…</div>`:"");
+    box.lastElementChild?.scrollIntoView({block:"end"});
+  }
+  async function enviarCaptura(texto,mostrar){
+    CAPTURA.msgs.push({role:"user",texto,mostrar:mostrar||texto}); pintarChat(true);
+    const err=q("#errC"); err.hidden=true; let r=null;
+    try{ const x=await fetch("/api/captura",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({imagenes:CAPTURA.imgs,mensajes:CAPTURA.msgs.map(m=>({role:m.role,texto:m.texto})),arquetipo:nombreArq(S.real),vende:BANCO[S.real][3]})});
+      r=await x.json(); }catch(e){}
+    if(!r||!r.ok){ CAPTURA.msgs.pop(); pintarChat(false);
+      err.textContent=r&&r.error==="sin_clave"?"El análisis con capturas todavía no está activo.":"No pudimos analizar la captura. Intenta de nuevo.";
+      err.hidden=false; return; }
+    CAPTURA.msgs.push({role:"assistant",texto:r.respuesta}); pintarChat(false);
+  }
+  q("#capArch")?.addEventListener("change",async ev=>{
+    const files=[...ev.target.files].slice(0,3), err=q("#errC"); err.hidden=true; if(!files.length) return;
+    try{ CAPTURA.imgs=await Promise.all(files.map(reducirImagen)); }
+    catch(e){ err.textContent="No pudimos leer esa imagen. Prueba con otra captura."; err.hidden=false; return; }
+    CAPTURA.msgs=[]; q("#capChat").hidden=false;
+    await enviarCaptura("Analiza estas capturas: qué comunica mi perfil, mis pilares, mis ángulos que funcionan, mis métricas y el freno principal. Cierra con una estrategia en 3 pasos basada en mi arquetipo.","Analiza mis capturas");
+  });
+  q("#capForm")?.addEventListener("submit",async ev=>{
+    ev.preventDefault(); const inp=q("#capIn"), t=inp.value.trim(); if(!t||!CAPTURA.imgs) return;
+    inp.value=""; await enviarCaptura(t);
   });
   q("#fgiro")?.addEventListener("submit",ev=>{
     ev.preventDefault(); const v=q("#giro").value.trim();
