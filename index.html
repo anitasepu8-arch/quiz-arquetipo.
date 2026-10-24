@@ -1202,7 +1202,7 @@ function render(){
           <button class="btn full" type="submit">Mini Audit Gratis</button>
           <p class="nota" id="notaA" hidden></p>
         </form>
-        <div id="resA">${S.resA||""}</div>
+        <div id="resA">${S.resAFull?S.resA:(S.resA?`<button class="btn full" id="verAnalisis" type="button">Ver mi análisis completo</button>`:"")}</div>
         ${(alto||tramoD)?"":`        <div class="salto">
           <p>¿Quieres saltar directo a la solución? La <b>Auditoría de Marca™ (USD 555 o ${CONFIG.auditoriaCuotas.n} cuotas de USD ${CONFIG.auditoriaCuotas.monto})</b> incluye tu Diagnóstico de Identidad completo, la auditoría de tu negocio y tu marca, tus pilares de contenido y toda la estrategia lista para implementar.</p>
           <p>El análisis te dice qué falla; la Auditoría te da el plan para corregirlo en tu negocio.</p>
