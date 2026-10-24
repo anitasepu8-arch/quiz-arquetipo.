@@ -179,8 +179,8 @@ export function analizar(d) {
   // Freno principal: el indicador más débil, en orden de impacto
   // Qué significa cada número, en lenguaje simple
   const de100 = (x) => (x * 100 < 1 ? "menos de 1" : String(Math.round(x * 100)));
-  if (alcance) alcance.significa = `De cada 100 seguidores, unos ${de100(alc)} ven tus videos. Lo sano es 15 o más: si pocos te ven, el algoritmo tampoco te muestra a personas nuevas.`;
-  interaccion.significa = `De cada 100 seguidores, unos ${de100(inter)} reaccionan a cada publicación. Para tu tamaño lo sano son unos ${de100(ref)}: te miran, pero no sienten que les hablas a ellos.`;
+  if (alcance) alcance.significa = `De cada 100 seguidores, solo ${de100(alc)} ven tus videos. Lo sano es 15 o más: si pocos te ven, el algoritmo tampoco te muestra a personas nuevas.`;
+  interaccion.significa = `De cada 100 seguidores, solo ${de100(inter)} reaccionan a cada publicación. Para tu tamaño lo sano son ${de100(ref)} de cada 100: te miran, pero no sienten que les hablas a ellos.`;
   constancia.significa = diasUltima > 14
     ? `Llevas ${diasUltima} días sin publicar. Quien te siguió deja de esperarte y el algoritmo deja de empujarte.`
     : `${ps >= 3 ? "Publicas con ritmo." : "Publicas menos de 3 veces por semana."} Con poca frecuencia, tu audiencia no construye el hábito de verte.`;
