@@ -1341,10 +1341,7 @@ function bind(){
     const msg=`Hola Ana, hice el quiz y quiero mi análisis de contenido.\nMi arquetipo: ${BANCO[S.real][0]}\nMi negocio está ${al.neg}% alineado con mi diseño.\n${S.giro?`Me presento como: "${S.giro}"\n`:""}Lo que más me pesa: ${DOLORES[S.busca][S.dolor][0]}\nMi cuenta: ${v}`;
     const aMano=(motivo)=>{
       res.innerHTML="";
-      if(CONFIG.whatsapp){
-        const a=document.createElement("a"); a.href=`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`; a.target="_blank"; a.rel="noopener"; a.click();
-        nota.textContent=`${motivo} Se abrió WhatsApp con tu mensaje listo para que Ana la revise contigo.`;
-      } else nota.textContent=`${motivo} Escríbele a ${CONFIG.instagram} por Instagram con tu cuenta: ${v}`;
+      nota.textContent=`${motivo} Revisa que la cuenta sea pública, tenga publicaciones y que el usuario esté bien escrito, y vuelve a intentarlo.`;
       nota.hidden=false;
     };
     btn.disabled=true;
