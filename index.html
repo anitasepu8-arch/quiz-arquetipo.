@@ -1155,10 +1155,11 @@ function render(){
       <p class="gancho">${GANCHO[S.busca]}</p>
       <p class="lead">Esto fue tu nombre y tu esencia. Tu decodificación completa revela tus superpoderes, tus bloqueos y cómo usar tu diseño a tu favor.</p>
       <div class="pitch">${pitch.map(p=>`<p>${p}</p>`).join("")}</div>
-      ${testis}
+      ${alto||tramoD?"":testis}
       ${alto?`<span class="kicker">Tus opciones</span>
       <h3 class="cp-tit">Mini vs Diagnóstico completo</h3>
       ${comparativa(false)}
+      ${testis}
       <div class="ofertas">
         <div class="oferta reco">
           <span class="badge">Recomendado para ti</span>
@@ -1177,6 +1178,7 @@ function render(){
       </div>`:tramoD?`<span class="kicker">Tus opciones</span>
       <h3 class="cp-tit">Mini vs Diagnóstico completo</h3>
       ${comparativa(false)}
+      ${testis}
       <div class="ofertas">
         <div class="oferta reco">
           <span class="badge">Recomendado para ti</span>
