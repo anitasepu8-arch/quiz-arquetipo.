@@ -372,6 +372,9 @@ textarea:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 .tarjeta .t-zodiaco{backdrop-filter:blur(6px);display:inline-flex;align-items:center;gap:2cqw;padding:1.6cqw 3.2cqw;align-self:flex-start;
   border:1px solid rgba(212,175,120,.7);border-radius:999px;background:rgba(14,5,6,.5);font-family:var(--display);font-weight:700;font-size:3.6cqw;
   white-space:nowrap;color:var(--crema)}
+.tarjeta .t-gate{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;padding:7cqw;
+  background:rgba(14,5,6,.78);backdrop-filter:blur(3px);text-align:center}
+.tarjeta .t-gate button{width:100%}
 .tarjeta .t-zodiaco span{font-weight:500;font-size:2.2cqw;letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
 .tarjeta .t-ese{font-weight:300;font-size:3.7cqw;line-height:1.45;color:var(--crema);text-shadow:0 2px 14px rgba(0,0,0,.85)}
 .tarjeta .t-pie{margin-top:2cqw;padding-top:3.5cqw;border-top:1px solid rgba(212,175,120,.5);display:flex;flex-direction:column;gap:1cqw}
@@ -1387,10 +1390,9 @@ function render(){
             <div class="t-pie"><b>¿Cuál es el tuyo?</b><span>quiz.quantumbranding.iprosper28.com</span><span>${esc(CONFIG.instagram)}</span></div>
           </div>
         </div>
+        <div class="t-gate" id="tGate"><button class="btn full" id="aDescargarTarjeta" type="button">Descargar tarjeta</button></div>
       </div>
-      <p class="lead" style="text-align:center">Descarga tu tarjeta y súbela a tus historias etiquetando <strong>${esc(CONFIG.instagram)}</strong>.</p>
-      <button class="btn full" id="aDescargarTarjeta" type="button">Descargar tarjeta</button>
-      <button class="btn sec full" id="aVerResultado" type="button">Ver mi resultado</button>
+      <p class="lead" style="text-align:center">Descarga tu tarjeta para verla completa y súbela a tus historias etiquetando <strong>${esc(CONFIG.instagram)}</strong>.</p>
     </section>`;
   }
   if(P==="email"){
@@ -1429,12 +1431,12 @@ function bind(){
   q("#atras")?.addEventListener("click",atras);
   q("#aR4")?.addEventListener("click",()=>ir("r4"));
   q("#aTarjeta")?.addEventListener("click",()=>ir("tarjeta"));
-  q("#aVerResultado")?.addEventListener("click",()=>ir("r4"));
   q("#aDescargarTarjeta")?.addEventListener("click",async()=>{
     const btn=q("#aDescargarTarjeta"); if(!btn) return;
-    btn.disabled=true; const txt=btn.textContent; btn.textContent="Descargando…";
+    btn.disabled=true; btn.textContent="Descargando…";
     try{ await descargarTarjetaPNG(); }catch(e){}
-    btn.disabled=false; btn.textContent=txt;
+    btn.textContent="✓ Descargado";
+    setTimeout(()=>ir("r4"),800);
   });
   q("#aMini")?.addEventListener("click",()=>abrirFlyer(abrirPagoMini));
   q("#aEmail")?.addEventListener("click",()=>ir("email"));
