@@ -1991,8 +1991,9 @@ async function precioLocal(el,usd,prod,cuotas,tipo){
         <label class="subir-cap"><b>Ya pagué por QR</b><small>Sube tu comprobante de pago</small><input type="file" accept="image/*" class="qr-file"></label>
         <p class="error qr-err" hidden></p>
         <button class="btn full qr-btn" type="button" disabled>Enviar comprobante</button>
-        <p class="nota qr-estado" hidden></p>`;
-      const file=caja.querySelector(".qr-file"), btn=caja.querySelector(".qr-btn"), err=caja.querySelector(".qr-err"), estado=caja.querySelector(".qr-estado"), correo=caja.querySelector(".qr-correo");
+        <p class="nota qr-estado" hidden></p>
+        <a class="btn full qr-wa" href="${esc(wa)}" target="_blank" rel="noopener" hidden>Hablar con Ana por WhatsApp</a>`;
+      const file=caja.querySelector(".qr-file"), btn=caja.querySelector(".qr-btn"), err=caja.querySelector(".qr-err"), estado=caja.querySelector(".qr-estado"), correo=caja.querySelector(".qr-correo"), waBtn=caja.querySelector(".qr-wa");
       file.addEventListener("change",()=>{ btn.disabled=!file.files.length; err.hidden=true; });
       btn.addEventListener("click",async ()=>{
         if(!file.files.length) return;
@@ -2006,10 +2007,12 @@ async function precioLocal(el,usd,prod,cuotas,tipo){
             monto:montoBOB||("USD "+usd), ref:S.real?refMini():"", imagen:imagen?{base64:imagen}:null
           })}).catch(()=>{});
         }catch(e){}
-        btn.textContent="Enviar comprobante"; btn.disabled=false;
-        estado.textContent="Listo. Ana revisa tu comprobante y te confirma. Ábrele WhatsApp y reenvíale la captura por si acaso:";
+        btn.textContent="Enviado ✓"; btn.hidden=true;
+        file.closest("label.subir-cap").hidden=true; correo.closest("label.qr-correo-lbl").hidden=true;
+        estado.textContent="Listo. Ana revisa tu comprobante y te confirma. Reenvíale la captura por WhatsApp por si acaso:";
         estado.hidden=false;
-        window.open(wa,"_blank","noopener");
+        waBtn.hidden=false;
+        try{ window.open(wa,"_blank","noopener"); }catch(e){}
       });
     }
   }
