@@ -68,13 +68,23 @@ export default async function handler(req, res) {
     // 1) Guardar datos y enlace (sin grupo todavía)
     const r = await ml("/subscribers", "POST", { email, fields });
     if (!r.ok) { console.error("MailerLite", r.status, (await r.text()).slice(0, 400)); return res.status(500).json({ ok: false }); }
-    const id = (await r.json())?.data?.id;
+    const sub = (await r.json())?.data || {};
+    const id = sub.id;
     // 2) Sacar y volver a meter en el grupo: la automatización se dispara al ENTRAR al grupo,
     //    así que quien ya estaba (segunda compra, pruebas) no recibía el correo.
     if (grupo && id) {
       await ml(`/subscribers/${id}/groups/${grupo}`, "DELETE").catch(() => {});
       const g = await ml(`/subscribers/${id}/groups/${grupo}`, "POST");
       if (!g.ok) { console.error("MailerLite grupo", g.status, (await g.text()).slice(0, 400)); return res.status(500).json({ ok: false }); }
+    }
+    // 3) Quien tiene negocio entra además a "Mini · comprado con negocio": una automatización aparte
+    //    le ofrece la mini-auditoría gratis 24 h después. No toca la automatización de entrega.
+    const dedica = String(sub.fields?.quiz_dedica || "");
+    const grupoNegocio = process.env.ML_GROUP_MINI_NEGOCIO || "202276509645276405";
+    if (id && ["negocio", "independiente"].includes(dedica)) {
+      await ml(`/subscribers/${id}/groups/${grupoNegocio}`, "DELETE").catch(() => {});
+      const gn = await ml(`/subscribers/${id}/groups/${grupoNegocio}`, "POST").catch(() => null);
+      if (gn && !gn.ok) console.error("MailerLite grupo negocio", gn.status);
     }
   } catch (e) { console.error("MailerLite error", e); return res.status(500).json({ ok: false }); }
 
