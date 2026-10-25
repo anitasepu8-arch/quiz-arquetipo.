@@ -1,9 +1,12 @@
-// Stripe → (pago del Mini confirmado) → enlace personal → MailerLite (grupo "Mini · comprado" dispara el correo de entrega).
+// Stripe → (pago del Mini o del Diagnóstico confirmado) → MailerLite (el grupo dispara el correo de entrega).
 // Variables de entorno en Vercel:
-//   STRIPE_WEBHOOK_SECRET  firma del webhook (Stripe → Developers → Webhooks → tu endpoint → Signing secret)
-//   MINI_SECRET            opcional (si no está, se deriva de MAILERLITE_API_KEY)
-//   MAILERLITE_API_KEY     ya existente
-//   ML_GROUP_MINI          id del grupo "Mini · comprado" en MailerLite
+//   STRIPE_WEBHOOK_SECRET      firma del webhook (Stripe → Developers → Webhooks → tu endpoint → Signing secret)
+//   MINI_SECRET                opcional (si no está, se deriva de MAILERLITE_API_KEY)
+//   MAILERLITE_API_KEY         ya existente
+//   ML_GROUP_MINI               id del grupo "Mini · comprado" en MailerLite
+//   ML_GROUP_DIAGNOSTICO        id del grupo "Diagnóstico · comprado" en MailerLite (202324811542693007)
+// El Diagnóstico ($152, Payment Link directo sin client_reference_id) se distingue del Mini ($27) por el monto
+// pagado (amount_total en centavos): 15200 = Diagnóstico, cualquier otro valor se procesa como Mini (compatibilidad).
 import crypto from "node:crypto";
 import { crearToken, leerReferencia } from "./_mini-token.js";
 
@@ -45,6 +48,31 @@ export default async function handler(req, res) {
   const datos = leerReferencia(ref);
   const compra = new Date((ev.created || Date.now() / 1000) * 1000).toISOString().slice(0, 10);
 
+  const ml = (ruta, metodo, cuerpo) => fetch(`https://connect.mailerlite.com/api${ruta}`, {
+    method: metodo,
+    headers: { "Content-Type": "application/json", Accept: "application/json", Authorization: `Bearer ${process.env.MAILERLITE_API_KEY}` },
+    ...(cuerpo ? { body: JSON.stringify(cuerpo) } : {}),
+  });
+
+  // Diagnóstico de Identidad™ ($152): Payment Link directo, sin datos del quiz.
+  // Solo hace falta guardar el nombre y meterlo al grupo que dispara el correo con el PDF del formulario.
+  if (s.amount_total === 15200) {
+    if (!email) { console.error("Diagnóstico sin correo", s.id); return res.status(200).json({ ok: false }); }
+    const grupoDiag = process.env.ML_GROUP_DIAGNOSTICO || "202324811542693007";
+    try {
+      const r = await ml("/subscribers", "POST", { email, fields: { name: nombre, quiz_estado: "diagnostico_comprado" } });
+      if (!r.ok) { console.error("MailerLite Diagnóstico", r.status, (await r.text()).slice(0, 400)); return res.status(500).json({ ok: false }); }
+      const sub = (await r.json())?.data || {};
+      const id = sub.id;
+      if (id) {
+        await ml(`/subscribers/${id}/groups/${grupoDiag}`, "DELETE").catch(() => {});
+        const g = await ml(`/subscribers/${id}/groups/${grupoDiag}`, "POST");
+        if (!g.ok) { console.error("MailerLite grupo Diagnóstico", g.status, (await g.text()).slice(0, 400)); return res.status(500).json({ ok: false }); }
+      }
+    } catch (e) { console.error("MailerLite error Diagnóstico", e); return res.status(500).json({ ok: false }); }
+    return res.status(200).json({ ok: true, tipo: "diagnostico" });
+  }
+
   if (!email) { console.error("Mini sin correo", s.id); return res.status(200).json({ ok: false }); }
 
   const fields = { name: nombre, quiz_estado: "mini_comprado", quiz_mini_compra: compra, quiz_mini_vence: sumarDias(compra, 7) };
@@ -59,11 +87,6 @@ export default async function handler(req, res) {
   }
 
   const grupo = process.env.ML_GROUP_MINI || "";
-  const ml = (ruta, metodo, cuerpo) => fetch(`https://connect.mailerlite.com/api${ruta}`, {
-    method: metodo,
-    headers: { "Content-Type": "application/json", Accept: "application/json", Authorization: `Bearer ${process.env.MAILERLITE_API_KEY}` },
-    ...(cuerpo ? { body: JSON.stringify(cuerpo) } : {}),
-  });
   try {
     // 1) Guardar datos y enlace (sin grupo todavía)
     const r = await ml("/subscribers", "POST", { email, fields });

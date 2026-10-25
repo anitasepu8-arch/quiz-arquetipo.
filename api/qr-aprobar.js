@@ -1,5 +1,6 @@
 // Al aprobar un pago por QR desde el botón del correo: confirma y envía a la persona el siguiente paso.
-// Variables de entorno: las mismas de api/qr.js, más (opcional) ML_GROUP_MINI (ya existente para el Mini).
+// Variables de entorno: las mismas de api/qr.js, más (opcional) ML_GROUP_MINI (ya existente para el Mini)
+// y ML_GROUP_DIAGNOSTICO (grupo "Diagnóstico · comprado", id 202324811542693007) para el Diagnóstico.
 import { leerToken, crearToken, leerReferencia } from "./_mini-token.js";
 
 const BASE = "https://quiz.quantumbranding.iprosper28.com";
@@ -78,8 +79,10 @@ export default async function handler(req, res) {
     await enviarEmailComprador(email, "Tu pago fue confirmado — Auditoría de Marca",
       `<p>Hola ${esc(nombre || "")},</p><p>Confirmamos tu pago de la Auditoría de Marca™. Ana se pondrá en contacto contigo por WhatsApp para los siguientes pasos.</p>`);
   } else {
-    await enviarEmailComprador(email, "Tu pago fue confirmado — Diagnóstico de Identidad",
-      `<p>Hola ${esc(nombre || "")},</p><p>Confirmamos tu pago del Diagnóstico de Identidad™. En breve recibes tu formulario privado para empezar.</p>`);
+    // Diagnóstico de Identidad™: se consolida en MailerLite — al entrar al grupo, la automatización
+    // "Diagnóstico · Entrega" envía el correo con el link al formulario en PDF. Sin correo directo por Resend
+    // (evita duplicar el envío).
+    await mlActualizar(email, { name: nombre, quiz_estado: "diagnostico_comprado" }, process.env.ML_GROUP_DIAGNOSTICO || "202324811542693007");
   }
 
   return res.status(200).send(pagina("✅ Pago aprobado", `Se confirmó el pago de <b>${esc(nombre || "")}</b>${email ? ` (${esc(email)})` : ""} y se le avisó por correo.`));
