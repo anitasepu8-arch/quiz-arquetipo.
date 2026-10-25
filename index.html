@@ -1902,7 +1902,7 @@ function abrirFlyer(onContinuar){
   const capa=document.createElement("div");
   capa.className="pago-capa"; capa.id="pagoCapa"; capa.setAttribute("role","dialog"); capa.setAttribute("aria-modal","true"); capa.setAttribute("aria-label","Comparte tu arquetipo");
   capa.innerHTML=generoTxt(`<div class="pago-caja">
-    <div class="pago-top"><div><b>Antes de seguir</b><small>Comparte tu arquetipo</small></div><button class="pago-x" type="button" aria-label="Cerrar">×</button></div>
+    <div class="pago-top"><div><b>Antes de seguir</b><small>Comparte tu arquetipo</small></div></div>
     <div class="pago-info">
       <p class="lead">Descarga tu tarjeta y súbela a tus historias etiquetando <strong>${esc(CONFIG.instagram)}</strong>. Cuando la tengas descargada, sigue a tu Mini Diagnóstico.</p>
       <div class="tarjeta" id="tarjetaFlyer">
@@ -1921,11 +1921,10 @@ function abrirFlyer(onContinuar){
       </div>
     </div>
     <div class="pago-acc">
-      <button class="btn full" type="button" id="btnDescargarTarjeta">Descargar mi tarjeta</button>
-      <button class="btn sec full" type="button" id="btnContinuarMini" disabled>Ya la descargué · Continuar</button>
+      <button class="btn full" type="button" id="btnDescargarTarjeta">Descargar</button>
+      <button class="btn sec full" type="button" id="btnContinuarMini" disabled>Ver significado</button>
     </div>
   </div>`);
-  capa.addEventListener("click",e=>{ if(e.target===capa||e.target.closest(".pago-x")) cerrarPago(); });
   document.body.appendChild(capa); document.body.style.overflow="hidden";
   const $=id=>capa.querySelector("#"+id);
   $("btnDescargarTarjeta").addEventListener("click",async ()=>{
