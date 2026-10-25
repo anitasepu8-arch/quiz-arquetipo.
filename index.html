@@ -344,24 +344,30 @@ textarea:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 .testi q{font-style:normal;quotes:"“" "”"}
 .testi cite{font-style:normal;font-size:13px;color:var(--oro)}
 
-.tarjeta{width:100%;max-width:320px;align-self:center;min-height:360px;border-radius:22px;overflow:hidden;position:relative;
-  background:linear-gradient(165deg,var(--borgona-2) 0%,var(--borgona) 45%,var(--tinto) 100%);border:1px solid rgba(212,175,120,.5);
-  display:flex;flex-direction:column;gap:18px;padding:28px 22px}
-.tarjeta .t-top{font-family:var(--display);font-weight:800;font-size:10px;letter-spacing:.3em;color:var(--crema)}
+.tarjeta{width:100%;max-width:320px;aspect-ratio:9/16;align-self:center;border-radius:14px;overflow:hidden;position:relative;
+  background:#0E0506;container-type:inline-size;border:1px solid rgba(212,175,120,.5);box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.tarjeta .t-bg{position:absolute;left:0;right:0;top:0;height:63%;background-size:cover;background-position:center 0%;
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 72%,rgba(0,0,0,.5) 86%,transparent 100%);mask-image:linear-gradient(180deg,#000 0%,#000 72%,rgba(0,0,0,.5) 86%,transparent 100%)}
+.tarjeta .t-bg.bruma{top:40%;height:60%;background-position:center 85%;filter:blur(16px) brightness(.55);transform:scale(1.08);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.6) 25%,rgba(0,0,0,.3) 65%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.6) 25%,rgba(0,0,0,.3) 65%,transparent 100%)}
+.tarjeta::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(14,5,6,.85) 0%,rgba(14,5,6,.55) 9%,rgba(14,5,6,0) 17%)}
+.tarjeta .t-in{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;padding:8.5cqw 5cqw 5cqw}
+.tarjeta .t-top{padding-left:3cqw;font-family:var(--display);font-weight:800;font-size:2.9cqw;letter-spacing:.3em;color:var(--crema);
+  text-shadow:0 2px 14px rgba(0,0,0,.85)}
 .tarjeta .t-top span{color:var(--oro)}
-.tarjeta .t-mid{display:flex;flex-direction:column;gap:12px}
-.tarjeta .t-lbl{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--oro-claro)}
-.tarjeta .t-nom{font-family:var(--display);font-weight:800;font-size:36px;line-height:.98;text-transform:uppercase;text-wrap:balance}
-.tarjeta .t-ese{font-size:14px;line-height:1.5;color:var(--crema)}
-.tarjeta .t-zodiaco{display:flex;align-items:center;gap:10px}
-.tarjeta .t-zodiaco .t-animal-ico{font-size:30px;line-height:1}
-.tarjeta .t-zodiaco b{display:block;font-family:var(--display);font-weight:800;font-size:15px;color:var(--crema)}
-.tarjeta .t-mapa{align-self:center;width:72%;max-width:220px}
-.tarjeta .t-mapa svg{width:100%;height:auto;display:block}
-.tarjeta .t-pie{display:flex;flex-direction:column;gap:4px;border-top:1px solid rgba(212,175,120,.35);padding-top:14px;margin-top:auto}
-.tarjeta .t-pie b{font-family:var(--display);font-weight:800;font-size:15px;color:var(--oro)}
-.tarjeta .t-pie span{font-size:12px;color:var(--crema-2)}
-.tarjeta .t-oct{position:absolute;right:-70px;top:70px;width:210px;opacity:.35}
+.tarjeta .t-mid{margin-top:auto;display:flex;flex-direction:column;gap:2.4cqw;padding:0 3cqw}
+.tarjeta .t-lbl{font-weight:500;font-size:2.8cqw;letter-spacing:.24em;text-transform:uppercase;color:var(--crema);text-shadow:0 2px 14px rgba(0,0,0,.85)}
+.tarjeta .t-nom{font-family:var(--display);font-weight:800;font-size:10cqw;line-height:.95;text-transform:uppercase;text-wrap:balance;
+  color:var(--crema);text-shadow:0 2px 20px rgba(0,0,0,.6)}
+.tarjeta .t-nom em{font-style:normal;color:var(--oro);display:block}
+.tarjeta .t-zodiaco{backdrop-filter:blur(6px);display:inline-flex;align-items:center;gap:2cqw;padding:1.6cqw 3.2cqw;align-self:flex-start;
+  border:1px solid rgba(212,175,120,.7);border-radius:999px;background:rgba(14,5,6,.5);font-family:var(--display);font-weight:700;font-size:3.6cqw;
+  white-space:nowrap;color:var(--crema)}
+.tarjeta .t-zodiaco span{font-weight:500;font-size:2.2cqw;letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
+.tarjeta .t-ese{font-weight:300;font-size:3.7cqw;line-height:1.45;color:var(--crema);text-shadow:0 2px 14px rgba(0,0,0,.85)}
+.tarjeta .t-pie{margin-top:2cqw;padding-top:3.5cqw;border-top:1px solid rgba(212,175,120,.5);display:flex;flex-direction:column;gap:1cqw}
+.tarjeta .t-pie b{font-family:var(--display);font-weight:800;font-size:5cqw;color:var(--oro)}
+.tarjeta .t-pie span{font-size:3.4cqw;color:var(--crema-2)}
 
 .hora-campo{display:flex;flex-direction:column;gap:8px;min-width:0}
 .hora-op{display:flex;flex-wrap:wrap;gap:6px}
@@ -586,6 +592,20 @@ const NUM_EJES = {1:["Autoridad","Visibilidad"],2:["Alianzas","Cuidado"],3:["Vis
 const DIAS_ESPECIALES = {20:["Visibilidad","Alianzas"],28:["Autoridad","Alianzas"],29:["Alianzas","Visibilidad"]};
 const ANIMALES = ["Rata","Buey","Tigre","Conejo","Dragón","Serpiente","Caballo","Cabra","Mono","Gallo","Perro","Cerdo"];
 const ANIMAL_EMOJI = {Rata:"🐀",Buey:"🐂",Tigre:"🐅",Conejo:"🐇",Dragón:"🐉",Serpiente:"🐍",Caballo:"🐎",Cabra:"🐐",Mono:"🐒",Gallo:"🐓",Perro:"🐕",Cerdo:"🐖"};
+const ANIMAL_IMG = {
+  Rata:"https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261022_004311_5e6c8cac-5164-4201-b60d-fbfafec817dc.png",
+  Buey:"https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261022_004310_d97630e1-36dd-494b-886d-6afee51fbacb.png",
+  Tigre:"https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261022_004311_4d7985f6-ae70-41b6-8b91-1f9ddc171698.png",
+  Conejo:"https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261022_002206_14d99e80-f28e-49be-a0b2-313985a264b5.png",
+  Dragón:"https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261022_002205_a1efcab7-e196-416e-a022-a2a8a860d33a.png",
+  Serpiente:"https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261022_002206_c0f09dd6-fe47-42a7-b820-1fbcf9327809.png",
+  Caballo:"https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261021_224900_6d629b36-0ab7-41aa-8df6-560464dd51e6.png",
+  Cabra:"https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261022_004310_c04b36f7-640d-4944-8808-5cb2c63e6d5a.png",
+  Mono:"https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261022_004353_49b858a9-f502-48cb-86b8-24cc9b96a719.png",
+  Gallo:"https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261022_004353_70460c1e-bff6-4d26-b2bd-45fe63ea8d6e.png",
+  Perro:"https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261022_002206_3eb44416-f56a-4b20-abb7-343f63b730c6.png",
+  Cerdo:"https://d8j0ntlcm91z4.cloudfront.net/user_30xK0uA0V5923qjMl50pjQ8RZWo/hf_20261022_004352_5fb451af-bf54-4c40-9f91-d73500138c31.png"
+};
 const ANI_EJES = {"Rata":["Estrategia","Expansión"],"Buey":["Estructura","Precisión"],"Tigre":["Autoridad","Visibilidad"],"Conejo":["Alianzas","Cuidado"],"Dragón":["Visibilidad","Autoridad"],"Serpiente":["Estrategia","Precisión"],"Caballo":["Expansión","Visibilidad"],"Cabra":["Cuidado","Precisión"],"Mono":["Estrategia","Expansión"],"Gallo":["Precisión","Estructura"],"Perro":["Cuidado","Alianzas"],"Cerdo":["Alianzas","Cuidado"]};
 
 /* Año Nuevo Chino: fecha real de cada año (mes, día), 1920–2030.
@@ -1338,16 +1358,18 @@ function render(){
     h=`<section class="pantalla">
       <button class="volver" id="aR4">← Volver</button>
       <div class="tarjeta">
-        <div class="t-oct" aria-hidden="true">${selloSVG()}</div>
-        <div class="t-top">QUANTUM <span>BRANDING</span></div>
-        <div class="t-mid">
-          <span class="t-lbl">Mi arquetipo de marca</span>
-          <div class="t-nom">${esc(X[0])}</div>
-          <div class="t-ese">${esc(X[1])}</div>
+        <div class="t-bg" style="background-image:url('${esc(ANIMAL_IMG[zodiaco.animal]||"")}')" aria-hidden="true"></div>
+        <div class="t-bg bruma" style="background-image:url('${esc(ANIMAL_IMG[zodiaco.animal]||"")}')" aria-hidden="true"></div>
+        <div class="t-in">
+          <div class="t-top">QUANTUM <span>BRANDING</span></div>
+          <div class="t-mid">
+            <span class="t-lbl">Mi arquetipo de marca</span>
+            <div class="t-nom">${esc(X[0])}</div>
+            <div class="t-zodiaco"><span>Mi animal</span>${esc(zodiaco.animal)} de ${esc(zodiaco.elemento)}</div>
+            <p class="t-ese">${esc(X[1])}</p>
+            <div class="t-pie"><b>¿Cuál es el tuyo?</b><span>iprosper28.com/quiz-arquetipo</span><span>${esc(CONFIG.instagram)}</span></div>
+          </div>
         </div>
-        <div class="t-zodiaco"><span class="t-animal-ico" aria-hidden="true">${ANIMAL_EMOJI[zodiaco.animal]||"✦"}</span><div><span class="t-lbl" style="margin:0">Tu animal chino</span><b>${esc(zodiaco.animal)} de ${esc(zodiaco.elemento)}</b></div></div>
-        <div class="t-mapa" aria-hidden="true">${mapaSVG(S.pReal,S.pPerc)}</div>
-        <div class="t-pie"><b>¿Cuál es el tuyo?</b><span>Descúbrelo con ${esc(CONFIG.instagram)}</span></div>
       </div>
       <p class="lead" style="text-align:center">Haz captura de pantalla y súbela a tus historias etiquetando <strong>${esc(CONFIG.instagram)}</strong>.</p>
     </section>`;
@@ -1775,75 +1797,89 @@ function abrirPagoMini(){
 
 /* ===== Gate de la tarjeta: antes de pasar al Mini, descargar y poder leer la tarjeta de arquetipo ===== */
 function cargarImagen(src){
-  return new Promise((resolve,reject)=>{ const im=new Image(); im.onload=()=>resolve(im); im.onerror=reject; im.src=src; });
+  return new Promise((resolve,reject)=>{ const im=new Image(); im.crossOrigin="anonymous"; im.onload=()=>resolve(im); im.onerror=reject; im.src=src; });
 }
 async function dibujarTarjetaCanvas(){
   const nom=S.real?BANCO[S.real][0]:"", ese=S.real?BANCO[S.real][1]:"";
   const zodiaco=(S.d&&S.m&&S.a)?animalCompleto(+S.d,+S.m,+S.a):null;
-  const W=1080,H=2200;
+  const W=1080,H=1920;
   const cv=document.createElement("canvas"); cv.width=W; cv.height=H;
   const ctx=cv.getContext("2d");
-  const g=ctx.createLinearGradient(0,0,320,H);
-  g.addColorStop(0,"#7A1A1A"); g.addColorStop(.45,"#4E0000"); g.addColorStop(1,"#0E0506");
-  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
-  // marco dorado
-  const pad=40, rad=56;
-  ctx.strokeStyle="rgba(212,175,120,.55)"; ctx.lineWidth=5;
-  ctx.beginPath();
-  ctx.moveTo(pad+rad,pad); ctx.arcTo(W-pad,pad,W-pad,H-pad,rad); ctx.arcTo(W-pad,H-pad,pad,H-pad,rad);
-  ctx.arcTo(pad,H-pad,pad,pad,rad); ctx.arcTo(pad,pad,W-pad,pad,rad); ctx.closePath(); ctx.stroke();
+  ctx.fillStyle="#0E0506"; ctx.fillRect(0,0,W,H);
+  // fondo: ilustración del animal chino, cubriendo ~63% superior, con degradado hacia transparente
+  const bgH=Math.round(H*.63);
+  if(zodiaco && ANIMAL_IMG[zodiaco.animal]){
+    try{
+      const im=await cargarImagen(ANIMAL_IMG[zodiaco.animal]);
+      const off=document.createElement("canvas"); off.width=W; off.height=bgH;
+      const octx=off.getContext("2d");
+      const esc2=Math.max(W/im.width,bgH/im.height);
+      const iw=im.width*esc2, ih=im.height*esc2;
+      octx.drawImage(im,(W-iw)/2,(bgH-ih)/2,iw,ih);
+      const mg=octx.createLinearGradient(0,0,0,bgH);
+      mg.addColorStop(0,"rgba(0,0,0,1)"); mg.addColorStop(.72,"rgba(0,0,0,1)");
+      mg.addColorStop(.86,"rgba(0,0,0,.5)"); mg.addColorStop(1,"rgba(0,0,0,0)");
+      octx.globalCompositeOperation="destination-in"; octx.fillStyle=mg; octx.fillRect(0,0,W,bgH);
+      ctx.drawImage(off,0,0);
+    }catch(e){}
+  }
+  // velo oscuro arriba, para legibilidad del encabezado
+  const vg=ctx.createLinearGradient(0,0,0,Math.round(H*.17));
+  vg.addColorStop(0,"rgba(14,5,6,.85)"); vg.addColorStop(.53,"rgba(14,5,6,.55)"); vg.addColorStop(1,"rgba(14,5,6,0)");
+  ctx.fillStyle=vg; ctx.fillRect(0,0,W,Math.round(H*.17));
+  ctx.shadowColor="rgba(0,0,0,.85)"; ctx.shadowBlur=14;
   // encabezado
   ctx.textBaseline="alphabetic"; ctx.textAlign="left";
-  ctx.font="800 34px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
-  ctx.fillText("QUANTUM",96,200);
+  ctx.font="800 32px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
+  ctx.fillText("QUANTUM",92,118);
   const wQ=ctx.measureText("QUANTUM ").width;
-  ctx.fillStyle="#D4AF78"; ctx.fillText("BRANDING",96+wQ,200);
+  ctx.fillStyle="#D4AF78"; ctx.fillText("BRANDING",92+wQ,118);
   function envolver(texto,maxW){
     const palabras=texto.split(" "); let linea="", lineas=[];
     for(const p of palabras){ const prueba=linea?linea+" "+p:p; if(ctx.measureText(prueba).width>maxW && linea){ lineas.push(linea); linea=p; } else linea=prueba; }
     if(linea) lineas.push(linea);
     return lineas;
   }
-  // etiqueta
-  ctx.font="700 26px Montserrat, sans-serif"; ctx.fillStyle="#E9D3A8";
-  ctx.fillText("MI ARQUETIPO DE MARCA",96,1080);
-  // nombre (envuelto, mayúsculas)
-  ctx.font="800 88px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
-  const lineasNom=envolver(nom.toUpperCase(),W-192).slice(0,2);
-  let y=1180;
-  lineasNom.forEach(l=>{ ctx.fillText(l,96,y); y+=88; });
-  // esencia
-  y+=22;
-  ctx.font="400 32px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
-  const lineasEse=envolver(ese,W-192).slice(0,3);
-  lineasEse.forEach(l=>{ ctx.fillText(l,96,y); y+=44; });
-  // animal chino
+  // bloque inferior: etiqueta, nombre, animal, esencia, pie
+  let y=Math.round(H*.60);
+  ctx.font="500 29px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
+  ctx.fillText("MI ARQUETIPO DE MARCA",76,y); y+=58;
+  ctx.font="800 104px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
+  const lineasNom=envolver(nom.toUpperCase(),W-152).slice(0,2);
+  lineasNom.forEach(l=>{ ctx.fillText(l,76,y); y+=100; });
+  y+=20;
   if(zodiaco){
-    y+=56;
-    ctx.font="42px -apple-system, 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif";
-    ctx.fillText(ANIMAL_EMOJI[zodiaco.animal]||"✦",96,y+14);
-    ctx.font="700 22px Montserrat, sans-serif"; ctx.fillStyle="#E9D3A8";
-    ctx.fillText("TU ANIMAL CHINO",96+64,y-14);
-    ctx.font="800 32px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
-    ctx.fillText(zodiaco.animal+" de "+zodiaco.elemento,96+64,y+22);
-    y+=70;
+    ctx.font="700 38px Montserrat, sans-serif";
+    const txtAnimal=zodiaco.animal+" de "+zodiaco.elemento;
+    const lblW=ctx.measureText("Mi animal  ").width, aniW=ctx.measureText(txtAnimal).width;
+    ctx.font="500 23px Montserrat, sans-serif"; const lblWreal=ctx.measureText("MI ANIMAL").width;
+    const padX=30,padY=16,gap=20, boxW=padX*2+lblWreal+gap+aniW, boxH=76;
+    ctx.shadowBlur=0;
+    ctx.fillStyle="rgba(14,5,6,.5)"; ctx.strokeStyle="rgba(212,175,120,.7)"; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.roundRect(76,y-boxH+18,boxW,boxH,999); ctx.fill(); ctx.stroke();
+    ctx.shadowColor="rgba(0,0,0,.85)"; ctx.shadowBlur=14;
+    ctx.font="500 23px Montserrat, sans-serif"; ctx.fillStyle="#D4AF78";
+    ctx.fillText("MI ANIMAL",76+padX,y-boxH/2+28);
+    ctx.font="700 38px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
+    ctx.fillText(txtAnimal,76+padX+lblWreal+gap,y-boxH/2+32);
+    y+=46;
   }
-  // gráfico de los 8 ejes
-  try{
-    const svg=mapaSVG(S.pReal,S.pPerc);
-    const img=await cargarImagen("data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg));
-    const tam=560, cx=(W-tam)/2;
-    ctx.drawImage(img,cx,y,tam,tam*(370/440));
-    y+=tam*(370/440)+30;
-  }catch(e){}
+  ctx.font="300 40px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
+  const lineasEse=envolver(ese,W-152).slice(0,4);
+  lineasEse.forEach(l=>{ ctx.fillText(l,76,y); y+=52; });
   // pie
-  const py=H-180;
-  ctx.strokeStyle="rgba(212,175,120,.35)"; ctx.lineWidth=2;
-  ctx.beginPath(); ctx.moveTo(96,py); ctx.lineTo(W-96,py); ctx.stroke();
-  ctx.font="800 40px Montserrat, sans-serif"; ctx.fillStyle="#D4AF78";
-  ctx.fillText("¿CUÁL ES EL TUYO?",96,py+66);
-  ctx.font="400 30px Montserrat, sans-serif"; ctx.fillStyle="#BFB3A6";
-  ctx.fillText("Descúbrelo con "+CONFIG.instagram,96,py+116);
+  y+=30;
+  ctx.shadowBlur=0;
+  ctx.strokeStyle="rgba(212,175,120,.5)"; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(76,y); ctx.lineTo(W-76,y); ctx.stroke();
+  y+=56;
+  ctx.font="800 54px Montserrat, sans-serif"; ctx.fillStyle="#D4AF78";
+  ctx.fillText("¿CUÁL ES EL TUYO?",76,y); y+=46;
+  ctx.font="500 36px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
+  ctx.fillText("iprosper28.com/quiz-arquetipo",76,y); y+=42;
+  ctx.font="400 32px Montserrat, sans-serif"; ctx.fillStyle="#BFB3A6";
+  ctx.fillText(CONFIG.instagram,76,y);
+  ctx.shadowBlur=0;
   return cv;
 }
 async function descargarTarjetaPNG(){
@@ -1870,16 +1906,18 @@ function abrirFlyer(onContinuar){
     <div class="pago-info">
       <p class="lead">Descarga tu tarjeta y súbela a tus historias etiquetando <strong>${esc(CONFIG.instagram)}</strong>. Cuando la tengas descargada, sigue a tu Mini Diagnóstico.</p>
       <div class="tarjeta" id="tarjetaFlyer">
-        <div class="t-oct" aria-hidden="true">${selloSVG()}</div>
-        <div class="t-top">QUANTUM <span>BRANDING</span></div>
-        <div class="t-mid">
-          <span class="t-lbl">Mi arquetipo de marca</span>
-          <div class="t-nom">${esc(S.real?BANCO[S.real][0]:"")}</div>
-          <div class="t-ese">${esc(S.real?BANCO[S.real][1]:"")}</div>
+        <div class="t-bg" style="background-image:url('${esc(zodiaco?ANIMAL_IMG[zodiaco.animal]||"":"")}')" aria-hidden="true"></div>
+        <div class="t-bg bruma" style="background-image:url('${esc(zodiaco?ANIMAL_IMG[zodiaco.animal]||"":"")}')" aria-hidden="true"></div>
+        <div class="t-in">
+          <div class="t-top">QUANTUM <span>BRANDING</span></div>
+          <div class="t-mid">
+            <span class="t-lbl">Mi arquetipo de marca</span>
+            <div class="t-nom">${esc(S.real?BANCO[S.real][0]:"")}</div>
+            ${zodiaco?`<div class="t-zodiaco"><span>Mi animal</span>${esc(zodiaco.animal)} de ${esc(zodiaco.elemento)}</div>`:""}
+            <p class="t-ese">${esc(S.real?BANCO[S.real][1]:"")}</p>
+            <div class="t-pie"><b>¿Cuál es el tuyo?</b><span>iprosper28.com/quiz-arquetipo</span><span>${esc(CONFIG.instagram)}</span></div>
+          </div>
         </div>
-        ${zodiaco?`<div class="t-zodiaco"><span class="t-animal-ico" aria-hidden="true">${ANIMAL_EMOJI[zodiaco.animal]||"✦"}</span><div><span class="t-lbl" style="margin:0">Tu animal chino</span><b>${esc(zodiaco.animal)} de ${esc(zodiaco.elemento)}</b></div></div>`:""}
-        ${S.real?`<div class="t-mapa" aria-hidden="true">${mapaSVG(S.pReal,S.pPerc)}</div>`:""}
-        <div class="t-pie"><b>¿Cuál es el tuyo?</b><span>Descúbrelo con ${esc(CONFIG.instagram)}</span></div>
       </div>
     </div>
     <div class="pago-acc">
