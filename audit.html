@@ -286,6 +286,12 @@ input::-webkit-calendar-picker-indicator{filter:invert(.8) sepia(.4)}
 .an-i .sig{display:block;margin-top:6px;font-size:13px;line-height:1.45;color:var(--crema);opacity:.9}
 .qinc-box{display:flex;flex-direction:column;gap:10px}
 .qinc-box>b{font-family:var(--display);font-size:15px;color:var(--oro)}
+.oferta-audit{border:1.5px solid var(--oro);border-radius:16px;padding:20px 18px;display:flex;flex-direction:column;gap:12px;background:rgba(212,175,120,.07)}
+.oferta-audit h3{margin:0;font-family:var(--display);font-weight:800;font-size:19px;line-height:1.32;color:var(--crema)}
+.kicker.oro{color:var(--oro)}
+.lead-sm{margin:0;color:var(--crema-2);font-size:14px;line-height:1.5}
+.precio-audit{font-family:var(--display);font-weight:800;font-size:26px;color:var(--crema);margin:2px 0}
+.precio-audit small{font-size:14px;color:var(--crema-2);font-weight:600;margin-left:6px}
 .qinc{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
 .qinc li{font-size:14px;line-height:1.45;color:var(--crema-2);padding-left:20px;position:relative;opacity:0;animation:liIn .5s cubic-bezier(.2,.7,.2,1) forwards}
 .qinc li:nth-child(1){animation-delay:.05s}.qinc li:nth-child(2){animation-delay:.12s}.qinc li:nth-child(3){animation-delay:.19s}
@@ -528,10 +534,20 @@ select:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
       </div>
     </div>
     <div class="salto">
-      <p>Necesitas tomar acción en tu negocio. Para construir una marca que conecte, con un diferencial que te haga reconocible, necesitas saber quién eres realmente: eso es tu Diagnóstico de Identidad.</p>
-      <p>Si ya tienes esa base clara y quieres el plan completo sobre tu contenido, tu oferta y tu estrategia, esa es la <b>Auditoría de Marca™ (USD 555 o 2 cuotas de USD 289)</b>: revisa tu identidad, tu oferta y tu contenido, y te deja tus pilares, tus ángulos de comunicación y la estrategia lista para implementar.</p>
-      <a class="btn full" id="waAud" href="#" target="_blank" rel="noopener">Quiero la Auditoría: hablar con Ana</a>
-      <a class="btn sec full" href="https://www.iprosper28.com/quantubranding-audit" target="_blank" rel="noopener">Ver qué incluye la Auditoría</a>
+      <div class="oferta-audit">
+        <span class="kicker oro">El siguiente nivel</span>
+        <h3>La Auditoría de Marca™ incluye tu Diagnóstico de Identidad completo</h3>
+        <p class="lead-sm">No es solo mirar tus redes: es ver tu negocio completo — cómo lo piensas, cómo lo estás construyendo y si tu modelo de trabajo realmente es para ti.</p>
+        <ul class="qinc">
+          <li><b>Tu Diagnóstico de Identidad:</b> incluido, no aparte.</li>
+          <li><b>Tu negocio completo:</b> cómo coordinas tu oferta, tu modelo de trabajo y tu estrategia, no solo tus redes.</li>
+          <li><b>Tu contenido:</b> pilares, ángulos de comunicación y lo que no está funcionando.</li>
+          <li><b>Un plan que puedas sostener:</b> estrategia alineada a tu diseño, lista para implementar.</li>
+        </ul>
+        <div class="precio-audit">USD 555 <small>o 2 cuotas de USD 289</small></div>
+        <a class="btn full" id="waAud" href="#" target="_blank" rel="noopener">Quiero la Auditoría: hablar con Ana</a>
+        <a class="btn sec full" href="https://www.iprosper28.com/quantubranding-audit" target="_blank" rel="noopener">Ver qué incluye la Auditoría</a>
+      </div>
       <p class="otra">¿Todavía no tienes tu Diagnóstico completo? <a href="https://www.iprosper28.com/75e08623" target="_blank" rel="noopener">Hazlo primero (USD 152)</a></p>
     </div>
   </div>
