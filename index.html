@@ -1215,7 +1215,7 @@ function render(){
           <p class="porque">${esc(porque)}</p>
           <p>Es exclusivamente para ti. Vemos cómo funcionas, tus dones, patrones, dinero, decisiones y aquello que te hace única.</p>
           <p class="para-ti">${esc(PARA_TI[S.busca])}</p>
-      ${S.decision==="si"?`<p class="para-ti">Tienes una decisión pendiente. Tu diseño completo te ayuda a tomar una decisión alineada, a lo que te conviene.</p>`:""}
+      ${S.decision==="si"?`<p class="para-ti">Tienes una decisión pendiente. Tu diseño completo te ayuda a tomar una decisión alineada a lo que te conviene, te acerca a tu propósito y a cumplir tus metas y tus objetivos en torno al dinero.</p>`:""}
           <ul>
             <li>Todos tus bloqueos y cómo destrabarlos</li>
             <li>Acceso a un cuestionario para que preguntes lo que quieras</li>
@@ -1229,7 +1229,7 @@ function render(){
       ${lejos ? "" : lineaLlamadaSuave}`:`      <span class="kicker">Tienes dos formas de seguir</span>
       <p class="porque">${esc(porque)}</p>
       <p class="para-ti">${esc(PARA_TI[S.busca])}</p>
-      ${S.decision==="si"?`<p class="para-ti">Tienes una decisión pendiente. Tu diseño completo te ayuda a tomar una decisión alineada, a lo que te conviene.</p>`:""}
+      ${S.decision==="si"?`<p class="para-ti">Tienes una decisión pendiente. Tu diseño completo te ayuda a tomar una decisión alineada a lo que te conviene, te acerca a tu propósito y a cumplir tus metas y tus objetivos en torno al dinero.</p>`:""}
       ${comparativa(recoMini)}
       <button class="btn ${recoMini?'':'sec'} full" id="aMini">${recoMini?"Empezar por el Mini · USD 27":"Ver el Mini Exprés · USD 27"}</button>
       <a class="btn ${recoMini?'sec':''} full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Ver todo lo que revela mi Diagnóstico</a>
@@ -1662,7 +1662,7 @@ function abrirPago(url){
     <div class="pago-top"><div><b>Diagnóstico de Identidad™</b><small>Personalizado · cupos del mes</small></div><button class="pago-x" type="button" aria-label="Cerrar">×</button></div>
     <div class="pago-info" id="pagoInfo">
       <h3>Tu arquetipo es la portada.<br><em>El Diagnóstico es el mapa completo.</em></h3>
-      ${S.decision==="si"?`<div class="pago-tuyo">Tienes una decisión pendiente. Tu diseño completo te ayuda a tomar una decisión alineada, a lo que te conviene.</div>`:""}
+      ${S.decision==="si"?`<div class="pago-tuyo">Tienes una decisión pendiente. Tu diseño completo te ayuda a tomar una decisión alineada a lo que te conviene, te acerca a tu propósito y a cumplir tus metas y tus objetivos en torno al dinero.</div>`:""}
       ${arq?`<div class="pago-tuyo">El quiz te mostró <b>${esc(arq)}</b>: 2 de tus ejes. El Diagnóstico abre todo tu diseño y lo cruza con lo que estás viviendo hoy.</div>`:""}
       <p>Un documento hecho solo para ti: cómo funcionas, qué te distingue y qué te pide atención en esta etapa. No es una predicción. Es entenderte mejor para decidir mejor.</p>
       <div><div class="rot">7 lecturas</div><div class="pago-chips"><span>Cómo funcionas</span><span>Qué te distingue</span><span>Tus dones</span><span>Tus sombras</span><span>Tu dinero</span><span>Tus decisiones</span><span>Tus oportunidades</span></div></div>
