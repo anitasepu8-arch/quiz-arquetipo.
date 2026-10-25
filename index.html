@@ -1464,7 +1464,7 @@ function bind(){
     btn.textContent="✓ Descargado";
     setTimeout(()=>ir("r4"),800);
   });
-  q("#aMini")?.addEventListener("click",()=>abrirFlyer(abrirPagoMini));
+  q("#aMini")?.addEventListener("click",()=>abrirPagoMini());
   q("#aEmail")?.addEventListener("click",()=>ir("email"));
   q("#repetir")?.addEventListener("click",()=>{ borrarAvance(); S=NUEVO(); render(); });
   q("#continuar")?.addEventListener("click",()=>{ const p=leerAvance(); if(!p) return; S=Object.assign(NUEVO(),p); recalcularGuardado(); if(S.paso==="calc") S.paso="r1"; render(); });
@@ -1994,7 +1994,7 @@ function abrirFlyer(onContinuar){
 }
 
 document.addEventListener("click",e=>{
-  if(e.target.closest("[data-amini]")){ if(S.paso==="mini"){ document.querySelector(".precio-mini")?.scrollIntoView({behavior:"smooth",block:"center"}); } else { abrirFlyer(abrirPagoMini); } return; }
+  if(e.target.closest("[data-amini]")){ if(S.paso==="mini"){ document.querySelector(".precio-mini")?.scrollIntoView({behavior:"smooth",block:"center"}); } else { abrirPagoMini(); } return; }
   const a=e.target.closest("a[data-pago]"); if(!a) return;
   e.preventDefault(); abrirPago(a.href);
 });
