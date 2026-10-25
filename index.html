@@ -1138,7 +1138,7 @@ function render(){
           <a class="btn full" href="${esc(llamada)}" target="_blank" rel="noopener">Agenda aquí</a>
         </div>`;
     const lineaLlamadaSuave = `<p class="otra">¿Quieres que lo veamos en llamada? <a href="${esc(llamada)}" target="_blank" rel="noopener">Agenda aquí</a></p>`;
-    const auditoria = alto || ((ing==="3000") && (S.busca==="cobrar"||S.busca==="escalar"||S.busca==="noavanza"));
+    const auditoria = tieneNegocio();
     const D = DOLORES[S.busca][S.dolor];
     const rg = RANGO[ing];
     const POR_DIAG = {
@@ -1245,9 +1245,11 @@ function render(){
 `}
       <p class="espejo">${esc(espejo)}</p>
       ${auditoria?`<div class="analisis">
-        <span class="kicker">Para ti, que ya facturas</span>
+        ${(alto||tramoD)?`<span class="kicker">Para ti, que ya facturas</span>
         <h3>Tu negocio ya factura. Lo que te frena para escalar suele verse en tu contenido.</h3>
-        <p>¿Estás construyendo tu marca y tu negocio en redes? Quieres ver qué te frena en tu facturación. Pon tu @ y sube tu captura.</p>
+        <p>¿Estás construyendo tu marca y tu negocio en redes? Quieres ver qué te frena en tu facturación. Pon tu @ y sube tu captura.</p>`:`<span class="kicker">Tienes un negocio</span>
+        <h3>¿Quieres que te diga gratis qué le falta a tu marca para vender más?</h3>
+        <p>Pon tu @ de Instagram o tu link de TikTok y sube una captura de tu perfil. Te lo reviso gratis, sin importar cuánto factures hoy.</p>`}
         <div class="qinc-box"><b>Lo que revela la auditoría:</b>
           <ul class="qinc">
             <li><b>Tu identidad:</b> qué es naturalmente fácil de decir para ti, y cómo eso se vuelve tus pilares de contenido.</li>
@@ -1371,7 +1373,7 @@ function bind(){
   q("#atras")?.addEventListener("click",atras);
   q("#aR4")?.addEventListener("click",()=>ir("r4"));
   q("#aTarjeta")?.addEventListener("click",()=>ir("tarjeta"));
-  q("#aMini")?.addEventListener("click",()=>ir("mini"));
+  q("#aMini")?.addEventListener("click",()=>abrirFlyer(abrirPagoMini));
   q("#aEmail")?.addEventListener("click",()=>ir("email"));
   q("#repetir")?.addEventListener("click",()=>{ borrarAvance(); S=NUEVO(); render(); });
   q("#continuar")?.addEventListener("click",()=>{ const p=leerAvance(); if(!p) return; S=Object.assign(NUEVO(),p); recalcularGuardado(); if(S.paso==="calc") S.paso="r1"; render(); });
@@ -1725,8 +1727,139 @@ function abrirPago(url){
   precioLocal(capa.querySelector("#pagoLocal"),152);
 }
 function cerrarPago(){ const c=document.getElementById("pagoCapa"); if(c){ c.remove(); document.body.style.overflow=""; } }
+
+/* ===== Ventana de pago del Mini Exprés: overlay simple, precio y CTA ===== */
+function abrirPagoMini(){
+  cerrarPago();
+  const B=bloqueos(), area=S.real?AREA[bloqueoMini()]:null;
+  const capa=document.createElement("div");
+  capa.className="pago-capa"; capa.id="pagoCapa"; capa.setAttribute("role","dialog"); capa.setAttribute("aria-modal","true"); capa.setAttribute("aria-label","Mini Diagnóstico Exprés");
+  capa.innerHTML=generoTxt(`<div class="pago-caja">
+    <div class="pago-top"><div><b>Mini Diagnóstico Exprés</b><small>Resultado inmediato</small></div><button class="pago-x" type="button" aria-label="Cerrar">×</button></div>
+    <div class="pago-info">
+      <h3>${esc(S.nombre||"")?esc(S.nombre)+", esto":"Esto"} es lo que te falta ver${area?`, con tu bloqueo en <em>${esc(area)}</em>`:""}.</h3>
+      <div><div class="rot">Qué recibes</div><ul class="pago-lista">
+        <li>El nombre completo de tu perfil<small>Más allá del arquetipo: la combinación exacta que te hace distinta.</small></li>
+        <li>Tu primer superpoder<small>El talento que hoy usas a medias y cómo ponerlo a trabajar.</small></li>
+        <li>Tu bloqueo principal${area?`, el de ${esc(area)}`:""}<small>Cómo se llama, por qué aparece y cómo se ve en tu día a día.</small></li>
+      </ul></div>
+      <div class="pago-precio"><strong>USD 27</strong><span>pago único</span></div>
+      <p class="pago-costo">Si tomas el Diagnóstico completo en los 7 días siguientes, estos USD 27 se descuentan.</p>
+      <div class="pago-local" id="pagoLocalMini" hidden></div>
+    </div>
+    <div class="pago-acc">
+      <a class="btn full" href="${esc(linkMini())}" rel="noopener">Quiero mi Mini Diagnóstico · USD 27</a>
+      <div class="nota">Pago único y seguro. Sin suscripción.<br><a href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">¿Prefieres ver todo de una vez? Diagnóstico de Identidad™ (USD 152)</a></div>
+    </div>
+  </div>`);
+  capa.addEventListener("click",e=>{ if(e.target===capa||e.target.closest(".pago-x")) cerrarPago(); });
+  document.body.appendChild(capa); document.body.style.overflow="hidden";
+  capa.querySelector(".pago-x").focus();
+  precioLocal(capa.querySelector("#pagoLocalMini"),27,"el Mini Diagnóstico");
+}
+
+/* ===== Gate de la tarjeta: antes de pasar al Mini, descargar y poder leer la tarjeta de arquetipo ===== */
+function dibujarTarjetaCanvas(){
+  const nom=S.real?BANCO[S.real][0]:"", ese=S.real?BANCO[S.real][1]:"";
+  const cv=document.createElement("canvas"); cv.width=1080; cv.height=1920;
+  const ctx=cv.getContext("2d");
+  const g=ctx.createLinearGradient(0,0,320,1920);
+  g.addColorStop(0,"#7A1A1A"); g.addColorStop(.45,"#4E0000"); g.addColorStop(1,"#0E0506");
+  ctx.fillStyle=g; ctx.fillRect(0,0,1080,1920);
+  // marco dorado
+  const pad=40, rad=56;
+  ctx.strokeStyle="rgba(212,175,120,.55)"; ctx.lineWidth=5;
+  ctx.beginPath();
+  ctx.moveTo(pad+rad,pad); ctx.arcTo(1080-pad,pad,1080-pad,1920-pad,rad); ctx.arcTo(1080-pad,1920-pad,pad,1920-pad,rad);
+  ctx.arcTo(pad,1920-pad,pad,pad,rad); ctx.arcTo(pad,pad,1080-pad,pad,rad); ctx.closePath(); ctx.stroke();
+  // encabezado
+  ctx.textBaseline="alphabetic"; ctx.textAlign="left";
+  ctx.font="800 34px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
+  ctx.fillText("QUANTUM",96,200);
+  const wQ=ctx.measureText("QUANTUM ").width;
+  ctx.fillStyle="#D4AF78"; ctx.fillText("BRANDING",96+wQ,200);
+  function envolver(texto,x,maxW,lh){
+    const palabras=texto.split(" "); let linea="", lineas=[];
+    for(const p of palabras){ const prueba=linea?linea+" "+p:p; if(ctx.measureText(prueba).width>maxW && linea){ lineas.push(linea); linea=p; } else linea=prueba; }
+    if(linea) lineas.push(linea);
+    return lineas;
+  }
+  // etiqueta
+  ctx.font="700 26px Montserrat, sans-serif"; ctx.fillStyle="#E9D3A8";
+  ctx.fillText("MI ARQUETIPO DE MARCA",96,1120);
+  // nombre (envuelto, mayúsculas)
+  ctx.font="800 92px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
+  const lineasNom=envolver(nom.toUpperCase(),96,1080-192,96);
+  let y=1230;
+  lineasNom.forEach(l=>{ ctx.fillText(l,96,y); y+=92; });
+  // esencia
+  y+=24;
+  ctx.font="400 34px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
+  const lineasEse=envolver(ese,96,1080-192,46);
+  lineasEse.slice(0,4).forEach(l=>{ ctx.fillText(l,96,y); y+=46; });
+  // pie
+  const py=1920-180;
+  ctx.strokeStyle="rgba(212,175,120,.35)"; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(96,py); ctx.lineTo(1080-96,py); ctx.stroke();
+  ctx.font="800 40px Montserrat, sans-serif"; ctx.fillStyle="#D4AF78";
+  ctx.fillText("¿CUÁL ES EL TUYO?",96,py+66);
+  ctx.font="400 30px Montserrat, sans-serif"; ctx.fillStyle="#BFB3A6";
+  ctx.fillText("Descúbrelo con "+CONFIG.instagram,96,py+116);
+  return cv;
+}
+async function descargarTarjetaPNG(){
+  try{ if(document.fonts&&document.fonts.load){ await Promise.all(["800 92px Montserrat","700 26px Montserrat","400 34px Montserrat"].map(f=>document.fonts.load(f).catch(()=>{}))); await document.fonts.ready; } }catch(e){}
+  const cv=dibujarTarjetaCanvas();
+  const nombre="mi-arquetipo-"+(S.real?BANCO[S.real][0].toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-"):"quantum-branding")+".png";
+  await new Promise(resolve=>{
+    cv.toBlob(blob=>{
+      if(!blob){ resolve(); return; }
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement("a"); a.href=url; a.download=nombre; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),4000);
+      resolve();
+    },"image/png");
+  });
+}
+function abrirFlyer(onContinuar){
+  cerrarPago();
+  const capa=document.createElement("div");
+  capa.className="pago-capa"; capa.id="pagoCapa"; capa.setAttribute("role","dialog"); capa.setAttribute("aria-modal","true"); capa.setAttribute("aria-label","Comparte tu arquetipo");
+  capa.innerHTML=generoTxt(`<div class="pago-caja">
+    <div class="pago-top"><div><b>Antes de seguir</b><small>Comparte tu arquetipo</small></div><button class="pago-x" type="button" aria-label="Cerrar">×</button></div>
+    <div class="pago-info">
+      <p class="lead">Descarga tu tarjeta y súbela a tus historias etiquetando <strong>${esc(CONFIG.instagram)}</strong>. Cuando la tengas descargada, sigue a tu Mini Diagnóstico.</p>
+      <div class="tarjeta" id="tarjetaFlyer">
+        <div class="t-oct" aria-hidden="true">${selloSVG()}</div>
+        <div class="t-top">QUANTUM <span>BRANDING</span></div>
+        <div class="t-mid">
+          <span class="t-lbl">Mi arquetipo de marca</span>
+          <div class="t-nom">${esc(S.real?BANCO[S.real][0]:"")}</div>
+          <div class="t-ese">${esc(S.real?BANCO[S.real][1]:"")}</div>
+        </div>
+        <div class="t-pie"><b>¿Cuál es el tuyo?</b><span>Descúbrelo con ${esc(CONFIG.instagram)}</span></div>
+      </div>
+    </div>
+    <div class="pago-acc">
+      <button class="btn full" type="button" id="btnDescargarTarjeta">Descargar mi tarjeta</button>
+      <button class="btn sec full" type="button" id="btnContinuarMini" disabled>Ya la descargué · Continuar</button>
+    </div>
+  </div>`);
+  capa.addEventListener("click",e=>{ if(e.target===capa||e.target.closest(".pago-x")) cerrarPago(); });
+  document.body.appendChild(capa); document.body.style.overflow="hidden";
+  const $=id=>capa.querySelector("#"+id);
+  $("btnDescargarTarjeta").addEventListener("click",async ()=>{
+    const btn=$("btnDescargarTarjeta"); btn.disabled=true; btn.textContent="Descargando…";
+    try{ await descargarTarjetaPNG(); }catch(e){}
+    btn.disabled=false; btn.textContent="Descargar de nuevo";
+    const sig=$("btnContinuarMini"); sig.disabled=false; sig.classList.remove("sec"); sig.focus();
+  });
+  $("btnContinuarMini").addEventListener("click",()=>{ cerrarPago(); onContinuar(); });
+  $("btnDescargarTarjeta").focus();
+}
+
 document.addEventListener("click",e=>{
-  if(e.target.closest("[data-amini]")){ if(S.paso==="mini"){ document.querySelector(".precio-mini")?.scrollIntoView({behavior:"smooth",block:"center"}); } else { ir("mini"); } return; }
+  if(e.target.closest("[data-amini]")){ if(S.paso==="mini"){ document.querySelector(".precio-mini")?.scrollIntoView({behavior:"smooth",block:"center"}); } else { abrirFlyer(abrirPagoMini); } return; }
   const a=e.target.closest("a[data-pago]"); if(!a) return;
   e.preventDefault(); abrirPago(a.href);
 });
