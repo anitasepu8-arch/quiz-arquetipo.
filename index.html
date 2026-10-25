@@ -344,16 +344,21 @@ textarea:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 .testi q{font-style:normal;quotes:"“" "”"}
 .testi cite{font-style:normal;font-size:13px;color:var(--oro)}
 
-.tarjeta{width:100%;max-width:320px;align-self:center;aspect-ratio:9/16;border-radius:22px;overflow:hidden;position:relative;
+.tarjeta{width:100%;max-width:320px;align-self:center;min-height:360px;border-radius:22px;overflow:hidden;position:relative;
   background:linear-gradient(165deg,var(--borgona-2) 0%,var(--borgona) 45%,var(--tinto) 100%);border:1px solid rgba(212,175,120,.5);
-  display:flex;flex-direction:column;justify-content:space-between;padding:28px 22px}
+  display:flex;flex-direction:column;gap:18px;padding:28px 22px}
 .tarjeta .t-top{font-family:var(--display);font-weight:800;font-size:10px;letter-spacing:.3em;color:var(--crema)}
 .tarjeta .t-top span{color:var(--oro)}
 .tarjeta .t-mid{display:flex;flex-direction:column;gap:12px}
 .tarjeta .t-lbl{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--oro-claro)}
 .tarjeta .t-nom{font-family:var(--display);font-weight:800;font-size:36px;line-height:.98;text-transform:uppercase;text-wrap:balance}
 .tarjeta .t-ese{font-size:14px;line-height:1.5;color:var(--crema)}
-.tarjeta .t-pie{display:flex;flex-direction:column;gap:4px;border-top:1px solid rgba(212,175,120,.35);padding-top:14px}
+.tarjeta .t-zodiaco{display:flex;align-items:center;gap:10px}
+.tarjeta .t-zodiaco .t-animal-ico{font-size:30px;line-height:1}
+.tarjeta .t-zodiaco b{display:block;font-family:var(--display);font-weight:800;font-size:15px;color:var(--crema)}
+.tarjeta .t-mapa{align-self:center;width:72%;max-width:220px}
+.tarjeta .t-mapa svg{width:100%;height:auto;display:block}
+.tarjeta .t-pie{display:flex;flex-direction:column;gap:4px;border-top:1px solid rgba(212,175,120,.35);padding-top:14px;margin-top:auto}
 .tarjeta .t-pie b{font-family:var(--display);font-weight:800;font-size:15px;color:var(--oro)}
 .tarjeta .t-pie span{font-size:12px;color:var(--crema-2)}
 .tarjeta .t-oct{position:absolute;right:-70px;top:70px;width:210px;opacity:.35}
@@ -480,6 +485,12 @@ select:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 .cm-monto small{font-size:16px;color:var(--crema-2);font-weight:600}
 .cm-nota{font-size:12px;line-height:1.5;color:var(--crema-2);margin-top:2px}
 .cm-nota a{color:var(--oro)}
+.qr-bo{margin-top:12px;padding-top:12px;border-top:1px dashed var(--linea);display:flex;flex-direction:column;gap:10px}
+.qr-img{width:100%;max-width:200px;align-self:center;border-radius:10px;display:block}
+.qr-ayuda{font-size:13px;line-height:1.5;color:var(--crema-2);margin:0;text-align:center}
+.qr-correo-lbl{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--crema-2)}
+.qr-correo-lbl input{font-size:15px;padding:11px 14px}
+.qr-estado{font-size:13px;line-height:1.5;color:var(--oro-claro);text-align:center;margin:0}
 .pago-costo{margin:-8px 0 0;font-size:14px;line-height:1.5;color:var(--oro-claro);font-style:italic}
 .pago-gancho{margin:0 0 4px;font-family:var(--display);font-weight:700;font-size:15px;line-height:1.35;text-align:center;color:var(--crema)}
 .pago-precio{display:flex;align-items:baseline;gap:10px}
@@ -574,6 +585,7 @@ const NUM_EJES = {1:["Autoridad","Visibilidad"],2:["Alianzas","Cuidado"],3:["Vis
 /* Días especiales: no se reducen */
 const DIAS_ESPECIALES = {20:["Visibilidad","Alianzas"],28:["Autoridad","Alianzas"],29:["Alianzas","Visibilidad"]};
 const ANIMALES = ["Rata","Buey","Tigre","Conejo","Dragón","Serpiente","Caballo","Cabra","Mono","Gallo","Perro","Cerdo"];
+const ANIMAL_EMOJI = {Rata:"🐀",Buey:"🐂",Tigre:"🐅",Conejo:"🐇",Dragón:"🐉",Serpiente:"🐍",Caballo:"🐎",Cabra:"🐐",Mono:"🐒",Gallo:"🐓",Perro:"🐕",Cerdo:"🐖"};
 const ANI_EJES = {"Rata":["Estrategia","Expansión"],"Buey":["Estructura","Precisión"],"Tigre":["Autoridad","Visibilidad"],"Conejo":["Alianzas","Cuidado"],"Dragón":["Visibilidad","Autoridad"],"Serpiente":["Estrategia","Precisión"],"Caballo":["Expansión","Visibilidad"],"Cabra":["Cuidado","Precisión"],"Mono":["Estrategia","Expansión"],"Gallo":["Precisión","Estructura"],"Perro":["Cuidado","Alianzas"],"Cerdo":["Alianzas","Cuidado"]};
 
 /* Año Nuevo Chino: fecha real de cada año (mes, día), 1920–2030.
@@ -871,7 +883,7 @@ function mapaSVG(pR,pP){
   const et=ORDEN.map((e,i)=>{ const [x,y]=xy(i,1.2); const cs=Math.cos(ang(i)), sn=Math.sin(ang(i));
     const an=Math.abs(cs)<.2?"middle":(cs>0?"start":"end"); const dy=sn>.5?12:(sn<-.5?-4:4); const on=top.includes(e);
     return `<text x="${x.toFixed(1)}" y="${(y+dy).toFixed(1)}" text-anchor="${an}" font-family="Montserrat, Arial, sans-serif" font-size="12" font-weight="${on?800:500}" fill="${on?'#D4AF78':'#BFB3A6'}">${e.toUpperCase()}</text>`; }).join("");
-  return `<svg viewBox="-40 0 440 370" role="img" aria-label="Tus 8 ejes: diseño frente a respuestas">${g}
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-40 0 440 370" role="img" aria-label="Tus 8 ejes: diseño frente a respuestas">${g}
     <polygon points="${pol(pR,mR)}" fill="rgba(212,175,120,.28)" stroke="#D4AF78" stroke-width="2" stroke-linejoin="round"/>
     <polygon points="${pol(pP,mP)}" fill="none" stroke="#35C9C1" stroke-width="2" stroke-dasharray="5 4" stroke-linejoin="round"/>${et}</svg>`;
 }
@@ -1322,6 +1334,7 @@ function render(){
     </section>`;
   }
   if(P==="tarjeta"){
+    const zodiaco=animalCompleto(+S.d,+S.m,+S.a);
     h=`<section class="pantalla">
       <button class="volver" id="aR4">← Volver</button>
       <div class="tarjeta">
@@ -1332,6 +1345,8 @@ function render(){
           <div class="t-nom">${esc(X[0])}</div>
           <div class="t-ese">${esc(X[1])}</div>
         </div>
+        <div class="t-zodiaco"><span class="t-animal-ico" aria-hidden="true">${ANIMAL_EMOJI[zodiaco.animal]||"✦"}</span><div><span class="t-lbl" style="margin:0">Tu animal chino</span><b>${esc(zodiaco.animal)} de ${esc(zodiaco.elemento)}</b></div></div>
+        <div class="t-mapa" aria-hidden="true">${mapaSVG(S.pReal,S.pPerc)}</div>
         <div class="t-pie"><b>¿Cuál es el tuyo?</b><span>Descúbrelo con ${esc(CONFIG.instagram)}</span></div>
       </div>
       <p class="lead" style="text-align:center">Haz captura de pantalla y súbela a tus historias etiquetando <strong>${esc(CONFIG.instagram)}</strong>.</p>
@@ -1759,26 +1774,31 @@ function abrirPagoMini(){
 }
 
 /* ===== Gate de la tarjeta: antes de pasar al Mini, descargar y poder leer la tarjeta de arquetipo ===== */
-function dibujarTarjetaCanvas(){
+function cargarImagen(src){
+  return new Promise((resolve,reject)=>{ const im=new Image(); im.onload=()=>resolve(im); im.onerror=reject; im.src=src; });
+}
+async function dibujarTarjetaCanvas(){
   const nom=S.real?BANCO[S.real][0]:"", ese=S.real?BANCO[S.real][1]:"";
-  const cv=document.createElement("canvas"); cv.width=1080; cv.height=1920;
+  const zodiaco=(S.d&&S.m&&S.a)?animalCompleto(+S.d,+S.m,+S.a):null;
+  const W=1080,H=2200;
+  const cv=document.createElement("canvas"); cv.width=W; cv.height=H;
   const ctx=cv.getContext("2d");
-  const g=ctx.createLinearGradient(0,0,320,1920);
+  const g=ctx.createLinearGradient(0,0,320,H);
   g.addColorStop(0,"#7A1A1A"); g.addColorStop(.45,"#4E0000"); g.addColorStop(1,"#0E0506");
-  ctx.fillStyle=g; ctx.fillRect(0,0,1080,1920);
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
   // marco dorado
   const pad=40, rad=56;
   ctx.strokeStyle="rgba(212,175,120,.55)"; ctx.lineWidth=5;
   ctx.beginPath();
-  ctx.moveTo(pad+rad,pad); ctx.arcTo(1080-pad,pad,1080-pad,1920-pad,rad); ctx.arcTo(1080-pad,1920-pad,pad,1920-pad,rad);
-  ctx.arcTo(pad,1920-pad,pad,pad,rad); ctx.arcTo(pad,pad,1080-pad,pad,rad); ctx.closePath(); ctx.stroke();
+  ctx.moveTo(pad+rad,pad); ctx.arcTo(W-pad,pad,W-pad,H-pad,rad); ctx.arcTo(W-pad,H-pad,pad,H-pad,rad);
+  ctx.arcTo(pad,H-pad,pad,pad,rad); ctx.arcTo(pad,pad,W-pad,pad,rad); ctx.closePath(); ctx.stroke();
   // encabezado
   ctx.textBaseline="alphabetic"; ctx.textAlign="left";
   ctx.font="800 34px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
   ctx.fillText("QUANTUM",96,200);
   const wQ=ctx.measureText("QUANTUM ").width;
   ctx.fillStyle="#D4AF78"; ctx.fillText("BRANDING",96+wQ,200);
-  function envolver(texto,x,maxW,lh){
+  function envolver(texto,maxW){
     const palabras=texto.split(" "); let linea="", lineas=[];
     for(const p of palabras){ const prueba=linea?linea+" "+p:p; if(ctx.measureText(prueba).width>maxW && linea){ lineas.push(linea); linea=p; } else linea=prueba; }
     if(linea) lineas.push(linea);
@@ -1786,21 +1806,40 @@ function dibujarTarjetaCanvas(){
   }
   // etiqueta
   ctx.font="700 26px Montserrat, sans-serif"; ctx.fillStyle="#E9D3A8";
-  ctx.fillText("MI ARQUETIPO DE MARCA",96,1120);
+  ctx.fillText("MI ARQUETIPO DE MARCA",96,1080);
   // nombre (envuelto, mayúsculas)
-  ctx.font="800 92px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
-  const lineasNom=envolver(nom.toUpperCase(),96,1080-192,96);
-  let y=1230;
-  lineasNom.forEach(l=>{ ctx.fillText(l,96,y); y+=92; });
+  ctx.font="800 88px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
+  const lineasNom=envolver(nom.toUpperCase(),W-192).slice(0,2);
+  let y=1180;
+  lineasNom.forEach(l=>{ ctx.fillText(l,96,y); y+=88; });
   // esencia
-  y+=24;
-  ctx.font="400 34px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
-  const lineasEse=envolver(ese,96,1080-192,46);
-  lineasEse.slice(0,4).forEach(l=>{ ctx.fillText(l,96,y); y+=46; });
+  y+=22;
+  ctx.font="400 32px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
+  const lineasEse=envolver(ese,W-192).slice(0,3);
+  lineasEse.forEach(l=>{ ctx.fillText(l,96,y); y+=44; });
+  // animal chino
+  if(zodiaco){
+    y+=56;
+    ctx.font="42px -apple-system, 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif";
+    ctx.fillText(ANIMAL_EMOJI[zodiaco.animal]||"✦",96,y+14);
+    ctx.font="700 22px Montserrat, sans-serif"; ctx.fillStyle="#E9D3A8";
+    ctx.fillText("TU ANIMAL CHINO",96+64,y-14);
+    ctx.font="800 32px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
+    ctx.fillText(zodiaco.animal+" de "+zodiaco.elemento,96+64,y+22);
+    y+=70;
+  }
+  // gráfico de los 8 ejes
+  try{
+    const svg=mapaSVG(S.pReal,S.pPerc);
+    const img=await cargarImagen("data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg));
+    const tam=560, cx=(W-tam)/2;
+    ctx.drawImage(img,cx,y,tam,tam*(370/440));
+    y+=tam*(370/440)+30;
+  }catch(e){}
   // pie
-  const py=1920-180;
+  const py=H-180;
   ctx.strokeStyle="rgba(212,175,120,.35)"; ctx.lineWidth=2;
-  ctx.beginPath(); ctx.moveTo(96,py); ctx.lineTo(1080-96,py); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(96,py); ctx.lineTo(W-96,py); ctx.stroke();
   ctx.font="800 40px Montserrat, sans-serif"; ctx.fillStyle="#D4AF78";
   ctx.fillText("¿CUÁL ES EL TUYO?",96,py+66);
   ctx.font="400 30px Montserrat, sans-serif"; ctx.fillStyle="#BFB3A6";
@@ -1808,8 +1847,8 @@ function dibujarTarjetaCanvas(){
   return cv;
 }
 async function descargarTarjetaPNG(){
-  try{ if(document.fonts&&document.fonts.load){ await Promise.all(["800 92px Montserrat","700 26px Montserrat","400 34px Montserrat"].map(f=>document.fonts.load(f).catch(()=>{}))); await document.fonts.ready; } }catch(e){}
-  const cv=dibujarTarjetaCanvas();
+  try{ if(document.fonts&&document.fonts.load){ await Promise.all(["800 88px Montserrat","700 26px Montserrat","400 32px Montserrat"].map(f=>document.fonts.load(f).catch(()=>{}))); await document.fonts.ready; } }catch(e){}
+  const cv=await dibujarTarjetaCanvas();
   const nombre="mi-arquetipo-"+(S.real?BANCO[S.real][0].toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-"):"quantum-branding")+".png";
   await new Promise(resolve=>{
     cv.toBlob(blob=>{
@@ -1823,6 +1862,7 @@ async function descargarTarjetaPNG(){
 }
 function abrirFlyer(onContinuar){
   cerrarPago();
+  const zodiaco=(S.d&&S.m&&S.a)?animalCompleto(+S.d,+S.m,+S.a):null;
   const capa=document.createElement("div");
   capa.className="pago-capa"; capa.id="pagoCapa"; capa.setAttribute("role","dialog"); capa.setAttribute("aria-modal","true"); capa.setAttribute("aria-label","Comparte tu arquetipo");
   capa.innerHTML=generoTxt(`<div class="pago-caja">
@@ -1837,6 +1877,8 @@ function abrirFlyer(onContinuar){
           <div class="t-nom">${esc(S.real?BANCO[S.real][0]:"")}</div>
           <div class="t-ese">${esc(S.real?BANCO[S.real][1]:"")}</div>
         </div>
+        ${zodiaco?`<div class="t-zodiaco"><span class="t-animal-ico" aria-hidden="true">${ANIMAL_EMOJI[zodiaco.animal]||"✦"}</span><div><span class="t-lbl" style="margin:0">Tu animal chino</span><b>${esc(zodiaco.animal)} de ${esc(zodiaco.elemento)}</b></div></div>`:""}
+        ${S.real?`<div class="t-mapa" aria-hidden="true">${mapaSVG(S.pReal,S.pPerc)}</div>`:""}
         <div class="t-pie"><b>¿Cuál es el tuyo?</b><span>Descúbrelo con ${esc(CONFIG.instagram)}</span></div>
       </div>
     </div>
@@ -1909,26 +1951,66 @@ async function tipoCambio(cur){
 }
 const PRIORIDAD=["BO","MX","US","ES","CO","PE","CL","AR","EC","AE"];
 const PAISES_CALC=(()=>{ const todos=Object.keys(REG_CUR).map(r=>[nombrePais(r),REG_CUR[r],r]); const top=PRIORIDAD.map(r=>todos.find(x=>x[2]===r)); const resto=todos.filter(x=>!PRIORIDAD.includes(x[2])).sort((a,b)=>a[0].localeCompare(b[0],"es")); return [...top,...resto,["Otro país","USD","XX"]]; })();
-async function precioLocal(el,usd,prod,cuotas){
+function reducirImagenB64(file){
+  return new Promise((ok,no)=>{
+    const url=URL.createObjectURL(file), im=new Image();
+    im.onload=()=>{ const k=Math.min(1,1200/Math.max(im.width,im.height)), c=document.createElement("canvas");
+      c.width=Math.round(im.width*k); c.height=Math.round(im.height*k);
+      c.getContext("2d").drawImage(im,0,0,c.width,c.height); URL.revokeObjectURL(url); ok(c.toDataURL("image/jpeg",0.8)); };
+    im.onerror=()=>{ URL.revokeObjectURL(url); no(new Error("imagen")); };
+    im.src=url;
+  });
+}
+async function precioLocal(el,usd,prod,cuotas,tipo){
   prod=prod||"el Diagnóstico de Identidad"; const cq=cuotas?cuotas.split("x").map(Number):null;
+  tipo=tipo||(usd>=500?"auditoria":usd<=30?"mini":"diagnostico");
   if(!el) return;
   const pl=paisLocal(); const ini=pl?Math.max(0,PAISES_CALC.findIndex(x=>x[2]===pl[2])):PAISES_CALC.length-1;
-  el.innerHTML=`<div class="ccalc"><div class="cm-top"><span>Calcula en tu moneda</span><select aria-label="Tu país">${PAISES_CALC.map((x,k)=>`<option value="${k}"${k===ini?" selected":""}>${esc(x[0])}</option>`).join("")}</select></div><div class="cm-monto" aria-live="polite">—</div><div class="cm-nota"></div></div>`;
+  const uid="qr"+Math.random().toString(36).slice(2,9);
+  el.innerHTML=`<div class="ccalc"><div class="cm-top"><span>Calcula en tu moneda</span><select aria-label="Tu país">${PAISES_CALC.map((x,k)=>`<option value="${k}"${k===ini?" selected":""}>${esc(x[0])}</option>`).join("")}</select></div><div class="cm-monto" aria-live="polite">—</div><div class="cm-nota"></div><div class="qr-bo" id="${uid}" hidden></div></div>`;
   el.hidden=false;
-  const sel=el.querySelector("select"), monto=el.querySelector(".cm-monto"), nota=el.querySelector(".cm-nota");
+  const sel=el.querySelector("select"), monto=el.querySelector(".cm-monto"), nota=el.querySelector(".cm-nota"), caja=el.querySelector("#"+uid);
   async function pintar(){
     const [pais,cur]=PAISES_CALC[+sel.value];
     const extra=(fx,c)=> cq ? `<span class="cm-cuotas">o ${cq[0]} cuotas de ${c==="USD"?"USD "+cq[1]:fmtMoneda(cq[1]*fx,c)}</span>` : "";
+    let montoBOB="";
     if(cur==="USD"){ monto.innerHTML=`USD ${usd}${extra(1,"USD")}`; nota.innerHTML="Pagas en dólares, sin conversión."; }
     else{
       monto.innerHTML=`<small>≈</small> …`;
       const fx=await tipoCambio(cur);
       if(!fx){ monto.innerHTML=`USD ${usd}`; nota.innerHTML="No pudimos cargar el tipo de cambio. Tu banco hace la conversión."; }
-      else{ monto.innerHTML=`<small>≈</small> ${fmtMoneda(usd*fx,cur)}${extra(fx,cur)}`; nota.innerHTML= cur==="BOB" ? "Tipo de cambio 11 Bs por dólar. Pago en QR en Bs. se acepta." : "Tipo de cambio de hoy. Tu banco hace la conversión al pagar."; }
+      else{ montoBOB=cur==="BOB"?fmtMoneda(usd*fx,cur):""; monto.innerHTML=`<small>≈</small> ${fmtMoneda(usd*fx,cur)}${extra(fx,cur)}`; nota.innerHTML= cur==="BOB" ? "Tipo de cambio 11 Bs por dólar." : "Tipo de cambio de hoy. Tu banco hace la conversión al pagar."; }
     }
-    if(cur==="BOB"){
-      const wa="https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent("Hola Ana, quiero "+prod+" y quiero pagar con QR o transferencia en Bolivia.");
-      nota.innerHTML+=`<br>¿Tu tarjeta no pasa en dólares? <a href="${esc(wa)}" target="_blank" rel="noopener">Te paso QR o transferencia por WhatsApp</a>`;
+    caja.hidden=cur!=="BOB";
+    if(cur==="BOB" && !caja.dataset.ok){
+      caja.dataset.ok="1";
+      const wa="https://wa.me/"+CONFIG.whatsapp+"?text="+encodeURIComponent("Hola Ana, pagué "+prod+" por QR. Te mando el comprobante.");
+      caja.innerHTML=`<img src="/img/qr-bcp.jpg" alt="QR de pago, Banco de Crédito BCP, Quantum Branding" class="qr-img" loading="lazy">
+        <p class="qr-ayuda">Escanea desde tu banco e ingresa ${montoBOB||"el monto en bolivianos"}.</p>
+        <label class="qr-correo-lbl"><small>Tu correo (para avisarte apenas se confirme)</small><input type="email" class="qr-correo" placeholder="tu@correo.com" value="${esc(S.email||"")}"></label>
+        <label class="subir-cap"><b>Ya pagué por QR</b><small>Sube tu comprobante de pago</small><input type="file" accept="image/*" class="qr-file"></label>
+        <p class="error qr-err" hidden></p>
+        <button class="btn full qr-btn" type="button" disabled>Enviar comprobante</button>
+        <p class="nota qr-estado" hidden></p>`;
+      const file=caja.querySelector(".qr-file"), btn=caja.querySelector(".qr-btn"), err=caja.querySelector(".qr-err"), estado=caja.querySelector(".qr-estado"), correo=caja.querySelector(".qr-correo");
+      file.addEventListener("change",()=>{ btn.disabled=!file.files.length; err.hidden=true; });
+      btn.addEventListener("click",async ()=>{
+        if(!file.files.length) return;
+        btn.disabled=true; btn.textContent="Enviando…"; err.hidden=true;
+        if(correo.value.trim()) S.email=correo.value.trim();
+        let imagen=null;
+        try{ imagen=await reducirImagenB64(file.files[0]); }catch(e){}
+        try{
+          await fetch("/api/qr",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+            tipo, nombre:S.nombre||"", email:correo.value.trim()||S.email||"", telefono:S.telnum||"",
+            monto:montoBOB||("USD "+usd), ref:S.real?refMini():"", imagen:imagen?{base64:imagen}:null
+          })}).catch(()=>{});
+        }catch(e){}
+        btn.textContent="Enviar comprobante"; btn.disabled=false;
+        estado.textContent="Listo. Ana revisa tu comprobante y te confirma. Ábrele WhatsApp y reenvíale la captura por si acaso:";
+        estado.hidden=false;
+        window.open(wa,"_blank","noopener");
+      });
     }
   }
   sel.addEventListener("change",pintar); pintar();
