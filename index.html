@@ -1868,7 +1868,9 @@ async function dibujarTarjetaCanvas(){
       const octx=off.getContext("2d");
       const esc2=Math.max(W/im.width,bgH/im.height);
       const iw=im.width*esc2, ih=im.height*esc2;
-      octx.drawImage(im,(W-iw)/2,(bgH-ih)/2,iw,ih);
+      // Anclado arriba (no centrado): estas ilustraciones tienen la cabeza del animal en el tercio
+      // superior y la parte de abajo vacía, así que un recorte centrado le cortaba la cabeza.
+      octx.drawImage(im,(W-iw)/2,0,iw,ih);
       const mg=octx.createLinearGradient(0,0,0,bgH);
       mg.addColorStop(0,"rgba(0,0,0,1)"); mg.addColorStop(.72,"rgba(0,0,0,1)");
       mg.addColorStop(.86,"rgba(0,0,0,.5)"); mg.addColorStop(1,"rgba(0,0,0,0)");
