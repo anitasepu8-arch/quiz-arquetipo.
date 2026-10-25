@@ -463,7 +463,6 @@ select:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 .oferta .cuotas b{color:var(--oro-claro);font-weight:600}
 .oferta .pago-local{margin:4px 0 8px}
 .cm-cuotas{display:block;font-family:var(--body);font-weight:500;font-size:13px;color:var(--oro-claro);margin-top:2px}
-.cm{border:1px solid var(--linea);border-radius:14px;padding:12px 14px;background:rgba(245,241,232,.03)}
 .cm-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .cm-top span{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
 .cm-top select{background:var(--tinto);color:var(--crema);border:1px solid var(--linea);border-radius:999px;padding:7px 12px;font-family:var(--body);font-size:13px;max-width:55%}
@@ -543,8 +542,9 @@ function reducirImagen(file){
     im.onerror=()=>{ URL.revokeObjectURL(url); no(new Error("imagen")); }; im.src=url; });
 }
 function pintarChat(cargando){
-  const box=q("#capMsgs");
+  const box=q("#capMsgs"); if(!box) return;
   box.innerHTML=CAPTURA.msgs.map(m=>`<div class="cm ${m.role}">${esc(m.mostrar||m.texto)}</div>`).join("")+(cargando?`<div class="cm assistant">Analizando…</div>`:"");
+  box.lastElementChild?.scrollIntoView({block:"end"});
 }
 async function enviarCaptura(texto,mostrar){
   CAPTURA.msgs.push({role:"user",texto,mostrar:mostrar||texto}); pintarChat(true);

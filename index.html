@@ -463,7 +463,7 @@ select:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 .oferta .cuotas b{color:var(--oro-claro);font-weight:600}
 .oferta .pago-local{margin:4px 0 8px}
 .cm-cuotas{display:block;font-family:var(--body);font-weight:500;font-size:13px;color:var(--oro-claro);margin-top:2px}
-.cm{border:1px solid var(--linea);border-radius:14px;padding:12px 14px;background:rgba(245,241,232,.03)}
+.ccalc{border:1px solid var(--linea);border-radius:14px;padding:12px 14px;background:rgba(245,241,232,.03)}
 .cm-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .cm-top span{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
 .cm-top select{background:var(--tinto);color:var(--crema);border:1px solid var(--linea);border-radius:999px;padding:7px 12px;font-family:var(--body);font-size:13px;max-width:55%}
@@ -1758,7 +1758,7 @@ async function precioLocal(el,usd,prod,cuotas){
   prod=prod||"el Diagnóstico de Identidad"; const cq=cuotas?cuotas.split("x").map(Number):null;
   if(!el) return;
   const pl=paisLocal(); const ini=pl?Math.max(0,PAISES_CALC.findIndex(x=>x[2]===pl[2])):PAISES_CALC.length-1;
-  el.innerHTML=`<div class="cm"><div class="cm-top"><span>Calcula en tu moneda</span><select aria-label="Tu país">${PAISES_CALC.map((x,k)=>`<option value="${k}"${k===ini?" selected":""}>${esc(x[0])}</option>`).join("")}</select></div><div class="cm-monto" aria-live="polite">—</div><div class="cm-nota"></div></div>`;
+  el.innerHTML=`<div class="ccalc"><div class="cm-top"><span>Calcula en tu moneda</span><select aria-label="Tu país">${PAISES_CALC.map((x,k)=>`<option value="${k}"${k===ini?" selected":""}>${esc(x[0])}</option>`).join("")}</select></div><div class="cm-monto" aria-live="polite">—</div><div class="cm-nota"></div></div>`;
   el.hidden=false;
   const sel=el.querySelector("select"), monto=el.querySelector(".cm-monto"), nota=el.querySelector(".cm-nota");
   async function pintar(){
