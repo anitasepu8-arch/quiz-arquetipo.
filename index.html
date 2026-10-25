@@ -1841,9 +1841,9 @@ async function dibujarTarjetaCanvas(){
     return lineas;
   }
   // bloque inferior: etiqueta, nombre, animal, esencia, pie
-  let y=Math.round(H*.60);
+  let y=Math.round(H*.58);
   ctx.font="500 29px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
-  ctx.fillText("MI ARQUETIPO DE MARCA",76,y); y+=58;
+  ctx.fillText("MI ARQUETIPO DE MARCA",76,y); y+=110;
   ctx.font="800 104px Montserrat, sans-serif"; ctx.fillStyle="#F5F1E8";
   const lineasNom=envolver(nom.toUpperCase(),W-152).slice(0,2);
   lineasNom.forEach(l=>{ ctx.fillText(l,76,y); y+=100; });
