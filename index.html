@@ -136,6 +136,14 @@ input::-webkit-calendar-picker-indicator{filter:invert(.8) sepia(.4)}
 .revelar{animation:revela 1s cubic-bezier(.2,.7,.2,1)}
 @keyframes revela{from{opacity:.0;letter-spacing:.2em;filter:blur(6px)}to{opacity:1}}
 
+.pantalla.r4{padding-bottom:88px}
+.pantalla.r4>*{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.pantalla.r4>*.en-vista{opacity:1;transform:none}
+.sticky-cta{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;justify-content:center;
+  padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+  background:linear-gradient(180deg,rgba(14,5,6,0) 0%,rgba(14,5,6,.94) 32%,rgba(14,5,6,.98) 100%)}
+.sticky-cta .btn{max-width:480px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+
 .comparar{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .lado{padding:16px;border-radius:14px;border:1px solid var(--linea);display:flex;flex-direction:column;gap:6px;min-width:0}
 .lado .r{font-family:var(--display);font-weight:700;font-size:10px;letter-spacing:.22em;text-transform:uppercase}
@@ -1234,7 +1242,14 @@ function render(){
       `En 12 meses, si nada cambia: ${PROYECCION[S.busca]}`
     ].filter(Boolean);
     const testis = CONFIG.testimonios.length ? carruselTestis() : "";
-    h=`<section class="pantalla">
+    const stickyCta = alto
+      ? `<a class="btn full" href="${esc(llamada)}" target="_blank" rel="noopener">Agendar mi llamada</a>`
+      : (tramoD
+        ? `<a class="btn full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Ver todo lo que revela mi Diagnóstico</a>`
+        : (recoMini
+          ? `<button class="btn full" type="button" data-amini>Empezar por el Mini · USD 27</button>`
+          : `<a class="btn full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Ver todo lo que revela mi Diagnóstico</a>`));
+    h=`<section class="pantalla r4">
       <span class="kicker">Dijiste: «${esc(D[0])}»</span>
       <p class="cierre">${esc(D[1])}</p>
       <div class="costo"><h3>Lo que te cuesta no actuar</h3><ul>${costos.map(c=>`<li>${esc(c)}</li>`).join("")}</ul></div>
@@ -1333,7 +1348,8 @@ function render(){
         <button class="btn sec full" id="aEmail">Recibir mi resultado por correo y WhatsApp</button>
         <button class="volver" id="repetir" style="align-self:center">Hacer el quiz de nuevo</button>
       </div>
-    </section>`;
+    </section>
+    <div class="sticky-cta" id="r4Sticky">${stickyCta}</div>`;
   }
   if(P==="mini"){
     const B=bloqueos(), al=alineacion(), area=S.real?AREA[bloqueoMini()]:null;
@@ -1423,6 +1439,16 @@ function render(){
     h+=`<div class="verif"><b>Verificación (solo con #verificar)</b><br>Camino de Vida: ${caminoDeVida(d,m,a)} → 1º eje ${NUM_EJES[caminoDeVida(d,m,a)][0]} · Día ${d}: ${ejesDelDia(d).join(" + ")} · Animal: ${animalChino(d,m,a)}${ANL[a]?` (Año Nuevo Lunar ${a}: ${ANL[a][1]}/${ANL[a][0]})`:""}<br>Puntos: ${ORDEN.map(e=>`${e} ${S.pReal[e]}`).join(" · ")}<br>Resultado: ${BANCO[S.real][0]} (${S.real})</div>`;
   }
   app.innerHTML=generoTxt(h); bind(); window.scrollTo(0,0); guardarAvance();
+  if(S.paso==="r4") revelarR4();
+}
+function revelarR4(){
+  const sec=app.querySelector(".pantalla.r4"); if(!sec) return;
+  const els=[...sec.children];
+  if(!("IntersectionObserver" in window)){ els.forEach(e=>e.classList.add("en-vista")); return; }
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add("en-vista"); io.unobserve(en.target); } });
+  },{threshold:.12, rootMargin:"0px 0px -6% 0px"});
+  els.forEach(e=>io.observe(e));
 }
 
 function bind(){
