@@ -280,8 +280,17 @@ input::-webkit-calendar-picker-indicator{filter:invert(.8) sepia(.4)}
 .an-i .sig{display:block;margin-top:6px;font-size:13px;line-height:1.45;color:var(--crema);opacity:.9}
 .qinc-box{display:flex;flex-direction:column;gap:10px}
 .qinc-box>b{font-family:var(--display);font-size:15px;color:var(--oro)}
+.oferta-audit{border:1.5px solid var(--oro);border-radius:16px;padding:20px 18px;display:flex;flex-direction:column;gap:12px;background:rgba(212,175,120,.07)}
+.oferta-audit h3{margin:0;font-family:var(--display);font-weight:800;font-size:19px;line-height:1.32;color:var(--crema)}
+.kicker.oro{color:var(--oro)}
+.lead-sm{margin:0;color:var(--crema-2);font-size:14px;line-height:1.5}
+.precio-audit{font-family:var(--display);font-weight:800;font-size:26px;color:var(--crema);margin:2px 0}
+.precio-audit small{font-size:14px;color:var(--crema-2);font-weight:600;margin-left:6px}
 .qinc{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
-.qinc li{font-size:14px;line-height:1.45;color:var(--crema-2);padding-left:20px;position:relative}
+.qinc li{font-size:14px;line-height:1.45;color:var(--crema-2);padding-left:20px;position:relative;opacity:0;animation:liIn .5s cubic-bezier(.2,.7,.2,1) forwards}
+.qinc li:nth-child(1){animation-delay:.05s}.qinc li:nth-child(2){animation-delay:.12s}.qinc li:nth-child(3){animation-delay:.19s}
+.qinc li:nth-child(4){animation-delay:.26s}.qinc li:nth-child(5){animation-delay:.33s}.qinc li:nth-child(6){animation-delay:.40s}.qinc li:nth-child(7){animation-delay:.47s}
+@keyframes liIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
 .qinc li::before{content:"✓";position:absolute;left:0;color:var(--oro);font-weight:700}
 .qinc li b{color:var(--crema)}
 .subir-cap{display:flex;flex-direction:column;gap:6px;border:1.5px dashed var(--turquesa);border-radius:14px;padding:16px;text-align:center;cursor:pointer}
@@ -1464,9 +1473,22 @@ function bind(){
       ${(A.formato||A.mejor)?`<div class="an-bien"><b>Lo que sí te funciona</b>${A.formato?`<span>${esc(A.formato.texto)} Ahí está tu terreno.</span>`:""}${A.mejor&&A.mejor.texto?`<span>Tu mejor publicación reciente tuvo ${esc(A.mejor.interacciones)} interacciones, ${esc(A.mejor.veces)} veces tu promedio: «${esc(A.mejor.texto)}»${A.mejor.url?` <a href="${esc(A.mejor.url)}" target="_blank" rel="noopener">Verla</a>`:""}</span>`:""}</div>`:""}
       <p class="an-arq">Como <b>${esc(nombreArq(S.real))}</b>, tu diseño vende cuando puedes ${esc(BANCO[S.real][3])}. Tu contenido rinde más cuando te deja ${esc(CONTENIDO_EJE[ejeTop])}.</p>
       <div class="an-cta">
-        <p>Esto es lo que se ve desde afuera. En la <b>Auditoría de Marca™</b> reviso tu contenido contra tu diseño completo y te dejo el plan para corregirlo.</p>
-        <a class="btn full" href="${esc(waA)}" target="_blank" rel="noopener">Revisar mi análisis con Ana</a>
-        <a class="btn sec full" href="${esc(CONFIG.links.auditoria)}" target="_blank" rel="noopener">Ver qué incluye la Auditoría</a>
+        <div class="oferta-audit">
+          <span class="kicker oro">El siguiente nivel</span>
+          <h3>La Auditoría de Marca™ incluye tu Diagnóstico de Identidad completo</h3>
+          <p class="lead-sm">No es solo mirar tus redes: es ver tu negocio completo — cómo lo piensas, cómo lo estás construyendo y si tu modelo de trabajo realmente es para ti.</p>
+          <ul class="qinc">
+            <li><b>Tu Diagnóstico de Identidad:</b> incluido, no aparte.</li>
+            <li><b>Qué postear y para quién:</b> tu contenido y tu público objetivo, alineados a tu diseño.</li>
+            <li><b>Tu oferta:</b> qué mejorar y por qué no estás vendiendo tanto como quisieras.</li>
+            <li><b>Tu negocio completo:</b> tu modelo de trabajo y tu estrategia, no solo tus redes.</li>
+            <li><b>Tu siguiente paso para escalar:</b> un plan que puedas sostener y que esté alineado a ti.</li>
+          </ul>
+          <div class="precio-audit">USD 555 <small>o ${CONFIG.auditoriaCuotas.n} cuotas de USD ${CONFIG.auditoriaCuotas.monto}</small></div>
+          <a class="btn full" href="${esc(waA)}" target="_blank" rel="noopener">Revisar mi análisis con Ana</a>
+          <a class="btn sec full" href="${esc(CONFIG.links.auditoria)}" target="_blank" rel="noopener">Ver qué incluye la Auditoría</a>
+        </div>
+        <p class="otra">¿Todavía no tienes tu Diagnóstico completo? <a href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Hazlo primero (USD 152)</a></p>
       </div>
     </div>`);
     S.resAFull=res.innerHTML; S.resA=compactoHtml(A); res.innerHTML=S.resA; guardarAvance();
