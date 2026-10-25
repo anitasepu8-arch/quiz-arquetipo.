@@ -9,7 +9,7 @@ const CAMPOS = [
   "dedica", "negocio", "modelo", "modelo_detalle", "modelo_encaje", "ingreso", "ubicacion",
   "busca", "dolor", "tiempo", "alineacion_vida", "alineacion_negocio", "acepta_mensajes", "paso",
   "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid",
-  "cuenta", "analisis",
+  "cuenta", "analisis", "redes", "marca", "instagram", "decision",
 ];
 
 const limpiar = (v, max = 400) => (v === undefined || v === null ? "" : String(v).slice(0, max).trim());

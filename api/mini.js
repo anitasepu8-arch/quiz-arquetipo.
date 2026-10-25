@@ -30,8 +30,9 @@ export default function handler(req, res) {
     arquetipo: nombreArq,
     ejes: ref.ejes,
     perfil: { titulo: hombre ? "Cómo estás hecho" : "Cómo estás hecha", texto: desc, puntos: [PERFIL_EJE[principal][0], PERFIL_EJE[segundo][1], PERFIL_EJE[segundo][2]].map(g) },
-    superpoder: { titulo: sp.titulo, texto: g(sp.texto), usa: g(sp.usa), desperdicia: g(sp.desperdicia) },
-    bloqueo: { titulo: g(bl.titulo), texto: g(bl.texto), senales: bl.senales.map(g), costo: g(bl.costo) },
+    superpoder: { titulo: sp.titulo, texto: g(sp.texto), usa: g(sp.usa), desperdicia: g(sp.desperdicia), total: ref.nSp || 1 },
+    bloqueo: { titulo: g(bl.titulo), texto: g(bl.texto), senales: bl.senales.map(g), costo: g(bl.costo), total: ref.nBl || 1 },
+    decision: !!ref.decision,
     accion: { titulo: g(bl.accion.titulo), texto: g(bl.accion.texto), pasos: bl.accion.pasos.map(([d, t]) => [d, g(t)]) },
     credito: { vence, venceTexto: fechaLarga(vence), precio: 125 },
   });

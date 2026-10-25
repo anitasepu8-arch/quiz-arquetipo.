@@ -7,11 +7,19 @@ const desdeB64u = (s) => Buffer.from(String(s).replace(/-/g, "+").replace(/_/g, 
 
 // Referencia corta que viaja por Stripe (client_reference_id, máx. 200, solo A-Z a-z 0-9 - _):
 // m1-<eje1><eje2><superpoder><bloqueo>-<f|m>-<AAAAMMDD>   ej.: m1-3402-f-19880928
+// m2-<eje1><eje2><superpoder><bloqueo>-<n.º superpoderes><n.º bloqueos>-<decisión s|n|x>-<f|m>-<AAAAMMDD>
+//    ej.: m2-3402-53-s-f-19880928  (5 superpoderes, 3 bloqueos, tiene una decisión pendiente)
 export function leerReferencia(ref) {
-  const m = /^m1-([0-7])([0-7])([0-7])([0-7])-([fm])-(\d{8})$/.exec(String(ref || ""));
+  const r = String(ref || "");
+  const m2 = /^m2-([0-7])([0-7])([0-7])([0-7])-([1-8])([1-8])-([snx])-([fm])-(\d{8})$/.exec(r);
+  if (m2) {
+    const [, a, b, sp, bl, nSp, nBl, dec, g, f] = m2;
+    return { ejes: [EJES[+a], EJES[+b]], sp: EJES[+sp], bl: EJES[+bl], g, fecha: f, nSp: +nSp, nBl: +nBl, decision: dec === "s" };
+  }
+  const m = /^m1-([0-7])([0-7])([0-7])([0-7])-([fm])-(\d{8})$/.exec(r);
   if (!m) return null;
   const [, a, b, sp, bl, g, f] = m;
-  return { ejes: [EJES[+a], EJES[+b]], sp: EJES[+sp], bl: EJES[+bl], g, fecha: f };
+  return { ejes: [EJES[+a], EJES[+b]], sp: EJES[+sp], bl: EJES[+bl], g, fecha: f, nSp: 1, nBl: 1, decision: false };
 }
 
 function firma(texto) {

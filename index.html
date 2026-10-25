@@ -267,6 +267,7 @@ input::-webkit-calendar-picker-indicator{filter:invert(.8) sepia(.4)}
 .analisis .salto{border-top:1px dashed var(--linea);padding-top:16px;display:flex;flex-direction:column;gap:10px}
 .analisis .salto p{margin:0;font-size:15px}
 .analisis .salto b{color:var(--oro)}
+.sub-preg{font-family:var(--display);font-weight:700;font-size:18px;line-height:1.3;margin:6px 0 0}
 .capt{border-top:1px dashed var(--linea);padding-top:16px;display:flex;flex-direction:column;gap:10px}
 .capt h4{font-size:18px;line-height:1.2}
 .capt .sube{display:block;text-align:center;cursor:pointer}
@@ -687,6 +688,9 @@ const INGRESO = [
   ["3000","Entre USD 3.000 y 10.000"],
   ["10000","Entre USD 10.000 y 50.000"],
   ["50000","Más de USD 50.000"]];
+const REDES = [["si","Sí"],["aveces","A veces"],["no","No"]];
+const MARCA = [["reconocen","Sí, me reconocen y me recuerdan"],["algo","Algo, pero no me eligen por eso"],["no","No, vendo sin que me reconozcan"]];
+const DECISION = [["si","Sí"],["no","No"]];
 const BUSCA = [
   ["vocacion","Saber para qué soy buena y a qué dedicarme"],
   ["decision","Tomar una decisión importante que tengo pendiente"],
@@ -762,11 +766,11 @@ const sinIngreso = ()=> S.dedica==="estudio" || S.dedica==="hogar";
 const MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
 
 /* ===== ESTADO ===== */
-const NUEVO = ()=>({utm:leerUTM(), paso:"inicio", nombre:"", genero:"", d:"", m:"", a:"", hora:"", horaEstado:"", lugar:"", dedica:null, giro:"", modelo:null, modeloTxt:"", ubic:null, ingreso:null, busca:null, tiempo:null, esc:[null,null,null], escTxt:[null,null,null], apuesta:null, opcApuesta:null, dolor:null, real:null, perc:null, pReal:null, pPerc:null, email:""});
+const NUEVO = ()=>({utm:leerUTM(), paso:"inicio", redes:null, marca:null, insta:"", decision:null, nombre:"", genero:"", d:"", m:"", a:"", hora:"", horaEstado:"", lugar:"", dedica:null, giro:"", modelo:null, modeloTxt:"", ubic:null, ingreso:null, busca:null, tiempo:null, esc:[null,null,null], escTxt:[null,null,null], apuesta:null, opcApuesta:null, dolor:null, real:null, perc:null, pReal:null, pPerc:null, email:""});
 let S = NUEVO();
-const FLUJO = ["inicio","datos","teaser","dedica","giro","modelo","ingreso","ubicacion","busca","dolor","tiempo","e0","e1","e2","apuesta","calc","r1","r2","r3","r4","tarjeta","email","listo","mini"];
-const CONTABLES = ["datos","dedica","giro","modelo","ingreso","ubicacion","busca","dolor","tiempo","e0","e1","e2","apuesta"];
-const PREGUNTAS = ["dedica","giro","modelo","ingreso","ubicacion","busca","dolor","tiempo","e0","e1","e2","apuesta"];
+const FLUJO = ["inicio","datos","teaser","dedica","giro","modelo","redes","ingreso","ubicacion","busca","dolor","tiempo","e0","e1","e2","apuesta","decision","calc","r1","r2","r3","r4","tarjeta","email","listo","mini"];
+const CONTABLES = ["datos","dedica","giro","modelo","redes","ingreso","ubicacion","busca","dolor","tiempo","e0","e1","e2","apuesta","decision"];
+const PREGUNTAS = ["dedica","giro","modelo","redes","ingreso","ubicacion","busca","dolor","tiempo","e0","e1","e2","apuesta","decision"];
 const app=document.getElementById("app");
 
 const tieneNegocio = ()=> S.dedica==="negocio" || S.dedica==="independiente";
@@ -787,7 +791,7 @@ function datosLead(estado){
     ingreso: S.ingreso||"", ubicacion: S.ubic?UBIC.find(x=>x[0]===S.ubic)[1]:"",
     busca: S.busca||"", dolor: S.busca&&S.dolor!==null?DOLORES[S.busca][S.dolor][0]:"", tiempo: S.tiempo||"",
     alineacion_vida: al?al.vida:"", alineacion_negocio: al?al.neg:"",
-    telefono: S.telefono||"", acepta_mensajes: S.okmsg?"si":"", cuenta: S.cuenta||"", analisis: S.analisis||"",
+    telefono: S.telefono||"", acepta_mensajes: S.okmsg?"si":"", cuenta: S.cuenta||"", analisis: S.analisis||"", redes: S.redes||"", marca: S.marca?MARCA.find(x=>x[0]===S.marca)[1]:"", instagram: S.insta?"@"+S.insta:"", decision: S.decision||"",
     paso: S.paso, ...S.utm };
 }
 function carruselTestis(){
@@ -813,7 +817,7 @@ function recalcularGuardado(){
   }
 }
 function borrarAvance(){ try{ localStorage.removeItem(CLAVE); }catch(e){} }
-function flujo(){ return FLUJO.filter(p=>(p!=="ingreso"||!sinIngreso()) && ((p!=="giro"&&p!=="modelo")||tieneNegocio())); }
+function flujo(){ return FLUJO.filter(p=>(p!=="ingreso"||!sinIngreso()) && ((p!=="giro"&&p!=="modelo"&&p!=="redes")||tieneNegocio())); }
 function ir(p){ S.paso=p; render(); }
 function siguiente(){ const f=flujo(); ir(f[f.indexOf(S.paso)+1]); }
 function atras(){ const f=flujo(); const i=f.indexOf(S.paso); if(i>0) ir(f[i-1]); }
@@ -995,6 +999,21 @@ function render(){
         <p class="error" id="err" hidden></p>
         <button class="btn full" type="submit">Continuar</button>
       </form></section>`;
+  }
+  if(P==="redes"){
+    h=`<section class="pantalla">${volver}<span class="kicker">Tu negocio en redes</span><h2>¿Usas tus redes para <em>promocionar tu negocio</em>?</h2>
+      <div class="opciones">${REDES.map((x,k)=>`<button class="op" data-redes="${k}" aria-pressed="${S.redes===x[0]}"><span class="letra">${String.fromCharCode(65+k)}</span><span>${esc(x[1])}</span></button>`).join("")}</div>
+      <h3 class="sub-preg">¿Tu negocio ya tiene una marca que la gente reconoce, o vendes sin que te reconozcan?</h3>
+      <div class="opciones">${MARCA.map((x,k)=>`<button class="op" data-marca="${k}" aria-pressed="${S.marca===x[0]}"><span class="letra">${String.fromCharCode(65+k)}</span><span>${esc(x[1])}</span></button>`).join("")}</div>
+      <form class="campos" id="fredes" novalidate>
+        <label for="insta">Tu Instagram <small>Lo uso para tu mini-auditoría gratis de tus redes.</small><input id="insta" value="${esc(S.insta)}" placeholder="@tumarca" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+        <p class="error" id="err" hidden></p>
+        <button class="btn full" type="submit">Continuar</button>
+      </form></section>`;
+  }
+  if(P==="decision"){
+    h=`<section class="pantalla">${volver}<span class="kicker">Una última pregunta</span><h2>¿Tienes una decisión importante que tomar en tu vida <em>— en tu negocio o en cualquier área?</em></h2>
+      ${opciones(DECISION.map(x=>x[1]), DECISION.findIndex(x=>x[0]===S.decision), "data-decision")}</section>`;
   }
   if(P==="ingreso"){
     h=`<section class="pantalla">${volver}<span class="kicker">Tu momento</span><h2>¿Cuánto generas al mes con tu trabajo o negocio?</h2>
@@ -1196,6 +1215,7 @@ function render(){
           <p class="porque">${esc(porque)}</p>
           <p>Es exclusivamente para ti. Vemos cómo funcionas, tus dones, patrones, dinero, decisiones y aquello que te hace única.</p>
           <p class="para-ti">${esc(PARA_TI[S.busca])}</p>
+      ${S.decision==="si"?`<p class="para-ti">Tienes una decisión pendiente. Tu diseño completo te ayuda a tomar una decisión alineada, a lo que te conviene.</p>`:""}
           <ul>
             <li>Todos tus bloqueos y cómo destrabarlos</li>
             <li>Acceso a un cuestionario para que preguntes lo que quieras</li>
@@ -1209,6 +1229,7 @@ function render(){
       ${lejos ? "" : lineaLlamadaSuave}`:`      <span class="kicker">Tienes dos formas de seguir</span>
       <p class="porque">${esc(porque)}</p>
       <p class="para-ti">${esc(PARA_TI[S.busca])}</p>
+      ${S.decision==="si"?`<p class="para-ti">Tienes una decisión pendiente. Tu diseño completo te ayuda a tomar una decisión alineada, a lo que te conviene.</p>`:""}
       ${comparativa(recoMini)}
       <button class="btn ${recoMini?'':'sec'} full" id="aMini">${recoMini?"Empezar por el Mini · USD 27":"Ver el Mini Exprés · USD 27"}</button>
       <a class="btn ${recoMini?'sec':''} full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Ver todo lo que revela mi Diagnóstico</a>
@@ -1355,6 +1376,19 @@ function bind(){
     if(S.modelo==="otro" && S.modeloTxt.length<5){ err.textContent="Cuéntame en pocas palabras cómo funciona tu negocio."; err.hidden=false; return; }
     siguiente();
   });
+  app.querySelectorAll("[data-redes]").forEach(b=>b.onclick=()=>{ S.redes=REDES[+b.dataset.redes][0]; app.querySelectorAll("[data-redes]").forEach(x=>x.setAttribute("aria-pressed",x===b)); });
+  app.querySelectorAll("[data-marca]").forEach(b=>b.onclick=()=>{ S.marca=MARCA[+b.dataset.marca][0]; app.querySelectorAll("[data-marca]").forEach(x=>x.setAttribute("aria-pressed",x===b)); });
+  q("#fredes")?.addEventListener("submit",ev=>{
+    ev.preventDefault(); const err=q("#err"); const v=q("#insta").value.trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i,"").replace(/[/?].*$/,"").replace(/^@/,"");
+    const mal=m=>{ err.textContent=m; err.hidden=false; };
+    if(!S.redes) return mal("Elige si usas tus redes para promocionar tu negocio.");
+    if(!S.marca) return mal("Elige si la gente ya reconoce tu marca.");
+    if(v && !/^[A-Za-z0-9._]{1,30}$/.test(v)) return mal("Revisa tu usuario de Instagram: solo letras, números, puntos y guiones bajos.");
+    if(!v && S.redes!=="no") return mal("Escribe tu usuario de Instagram (por ejemplo @tumarca).");
+    S.insta=v; if(v && !S.cuenta) S.cuenta="@"+v;
+    siguiente();
+  });
+  app.querySelectorAll("[data-decision]").forEach(b=>b.onclick=()=>{ S.decision=DECISION[+b.dataset.decision][0]; siguiente(); });
   app.querySelectorAll("[data-ingreso]").forEach(b=>b.onclick=()=>{ S.ingreso=INGRESO[+b.dataset.ingreso][0]; siguiente(); });
   app.querySelectorAll("[data-ubic]").forEach(b=>b.onclick=()=>{ S.ubic=UBIC[+b.dataset.ubic][0]; siguiente(); });
   app.querySelectorAll("[data-busca]").forEach(b=>b.onclick=()=>{ const v=BUSCA[+b.dataset.busca][0]; if(v!==S.busca) S.dolor=null; S.busca=v; siguiente(); });
@@ -1559,7 +1593,10 @@ function refMini(){
   const sp=NUM_EJES[caminoDeVida(+S.d,+S.m,+S.a)][0];
   const bl=bloqueoMini();
   const f=String(S.a)+String(S.m).padStart(2,"0")+String(S.d).padStart(2,"0");
-  return `m1-${i(a)}${i(b)}${i(sp)}${i(bl)}-${S.genero==="m"?"m":"f"}-${f}`;
+  const nSp=Math.min(8,Math.max(1,ORDEN.filter(e=>S.pReal&&S.pReal[e]>0).length));
+  const nBl=Math.min(8,Math.max(1,new Set([bl,...bloqueos()]).size));
+  const dec=S.decision==="si"?"s":(S.decision==="no"?"n":"x");
+  return `m2-${i(a)}${i(b)}${i(sp)}${i(bl)}-${nSp}${nBl}-${dec}-${S.genero==="m"?"m":"f"}-${f}`;
 }
 function linkMini(){
   const base=CONFIG.links.mini;
@@ -1625,6 +1662,7 @@ function abrirPago(url){
     <div class="pago-top"><div><b>Diagnóstico de Identidad™</b><small>Personalizado · cupos del mes</small></div><button class="pago-x" type="button" aria-label="Cerrar">×</button></div>
     <div class="pago-info" id="pagoInfo">
       <h3>Tu arquetipo es la portada.<br><em>El Diagnóstico es el mapa completo.</em></h3>
+      ${S.decision==="si"?`<div class="pago-tuyo">Tienes una decisión pendiente. Tu diseño completo te ayuda a tomar una decisión alineada, a lo que te conviene.</div>`:""}
       ${arq?`<div class="pago-tuyo">El quiz te mostró <b>${esc(arq)}</b>: 2 de tus ejes. El Diagnóstico abre todo tu diseño y lo cruza con lo que estás viviendo hoy.</div>`:""}
       <p>Un documento hecho solo para ti: cómo funcionas, qué te distingue y qué te pide atención en esta etapa. No es una predicción. Es entenderte mejor para decidir mejor.</p>
       <div><div class="rot">7 lecturas</div><div class="pago-chips"><span>Cómo funcionas</span><span>Qué te distingue</span><span>Tus dones</span><span>Tus sombras</span><span>Tu dinero</span><span>Tus decisiones</span><span>Tus oportunidades</span></div></div>
