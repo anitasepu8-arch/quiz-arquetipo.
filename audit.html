@@ -90,10 +90,13 @@ h2{font-size:clamp(26px,6.6vw,34px)}
 .acciones{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 .btn{font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;
   border:0;border-radius:999px;padding:18px 30px;background:var(--oro);color:var(--tinto);text-decoration:none;text-align:center;
-  display:inline-flex;align-items:center;justify-content:center;gap:10px;transition:background .2s, transform .15s;box-shadow:0 10px 30px -12px rgba(212,175,120,.6)}
-.btn:hover{background:var(--oro-claro)}
-.btn:active{transform:scale(.98)}
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;transition:background .2s ease,transform .2s cubic-bezier(.2,.7,.2,1),box-shadow .25s ease;box-shadow:0 10px 30px -12px rgba(212,175,120,.6)}
+.btn:hover{background:var(--oro-claro);transform:translateY(-2px);box-shadow:0 14px 34px -10px rgba(212,175,120,.75)}
+.btn:active{transform:scale(.97) translateY(0)}
 .btn.full{width:100%}
+@keyframes pulso{0%,100%{box-shadow:0 10px 30px -12px rgba(212,175,120,.6)}50%{box-shadow:0 10px 36px -8px rgba(212,175,120,.95)}}
+#waAud{animation:pulso 2.6s ease-in-out infinite}
+#waAud:hover{animation:none}
 .btn.sec{background:transparent;color:var(--crema-2);box-shadow:none;border:1px solid var(--linea);font-weight:600}
 .btn.sec:hover{color:var(--crema);border-color:var(--oro)}
 .volver{font:inherit;font-size:13px;color:var(--crema-2);background:none;border:0;cursor:pointer;padding:4px 0;align-self:flex-start;letter-spacing:.04em}
@@ -246,7 +249,9 @@ input::-webkit-calendar-picker-indicator{filter:invert(.8) sepia(.4)}
 .an-carga{display:flex;gap:12px;align-items:center;padding:16px;border-radius:14px;background:rgba(14,5,6,.45);border:1px solid var(--linea);color:var(--crema-2);font-size:15px}
 .an-carga i{flex:none;width:22px;height:22px;border-radius:50%;border:2.5px solid rgba(53,201,193,.25);border-top-color:var(--turquesa);animation:giro 1s linear infinite}
 @keyframes giro{to{transform:rotate(360deg)}}
-.an-res{display:flex;flex-direction:column;gap:14px}
+.an-res{display:flex;flex-direction:column;gap:14px;animation:entra .5s cubic-bezier(.2,.7,.2,1)}
+.an-i{animation:entra .45s cubic-bezier(.2,.7,.2,1)}
+.an-i:nth-child(2){animation-delay:.05s}.an-i:nth-child(3){animation-delay:.1s}.an-i:nth-child(4){animation-delay:.15s}.an-i:nth-child(5){animation-delay:.2s}
 .an-cab{font-size:13px;color:var(--crema-2)}.an-cab b{color:var(--crema);font-weight:600}
 .an-freno{padding:18px;border-radius:16px;border:1.5px solid #F08A8A;background:linear-gradient(160deg,rgba(122,26,26,.65),rgba(78,0,0,.35));display:flex;flex-direction:column;gap:10px}
 .an-freno .kicker{color:#F3A7A7}.an-freno h4{margin:0;font-family:var(--display);font-weight:800;font-size:20px;line-height:1.2}
@@ -272,7 +277,8 @@ input::-webkit-calendar-picker-indicator{filter:invert(.8) sepia(.4)}
 .capt h4{font-size:18px;line-height:1.2}
 .capt .sube{display:block;text-align:center;cursor:pointer}
 #capMsgs{display:flex;flex-direction:column;gap:8px;max-height:60vh;overflow:auto}
-.cm{padding:12px 14px;border-radius:14px;font-size:15px;line-height:1.45;white-space:pre-wrap;max-width:92%}
+.cm{padding:12px 14px;border-radius:14px;font-size:15px;line-height:1.45;white-space:pre-wrap;max-width:92%;animation:msgIn .35s cubic-bezier(.2,.7,.2,1)}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .cm.user{align-self:flex-end;background:rgba(53,201,193,.15)}
 .cm.assistant{align-self:flex-start;background:rgba(255,255,255,.06)}
 .capform{display:flex;gap:8px}
@@ -281,12 +287,17 @@ input::-webkit-calendar-picker-indicator{filter:invert(.8) sepia(.4)}
 .qinc-box{display:flex;flex-direction:column;gap:10px}
 .qinc-box>b{font-family:var(--display);font-size:15px;color:var(--oro)}
 .qinc{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
-.qinc li{font-size:14px;line-height:1.45;color:var(--crema-2);padding-left:20px;position:relative}
+.qinc li{font-size:14px;line-height:1.45;color:var(--crema-2);padding-left:20px;position:relative;opacity:0;animation:liIn .5s cubic-bezier(.2,.7,.2,1) forwards}
+.qinc li:nth-child(1){animation-delay:.05s}.qinc li:nth-child(2){animation-delay:.12s}.qinc li:nth-child(3){animation-delay:.19s}
+.qinc li:nth-child(4){animation-delay:.26s}.qinc li:nth-child(5){animation-delay:.33s}.qinc li:nth-child(6){animation-delay:.40s}.qinc li:nth-child(7){animation-delay:.47s}
+@keyframes liIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
 .qinc li::before{content:"✓";position:absolute;left:0;color:var(--oro);font-weight:700}
 .qinc li b{color:var(--crema)}
-.subir-cap{display:flex;flex-direction:column;gap:6px;border:1.5px dashed var(--turquesa);border-radius:14px;padding:16px;text-align:center;cursor:pointer}
+.subir-cap{display:flex;flex-direction:column;gap:6px;border:1.5px dashed var(--turquesa);border-radius:14px;padding:16px;text-align:center;cursor:pointer;transition:border-color .25s ease,background .25s ease,transform .2s ease;animation:borde 3s ease-in-out infinite}
+.subir-cap:hover{border-color:var(--oro);background:rgba(212,175,120,.06);transform:translateY(-1px);animation:none}
 .subir-cap b{font-family:var(--display);font-size:15px;color:var(--crema)}
 .subir-cap small{font-size:12.5px;color:var(--crema-2)}
+@keyframes borde{0%,100%{box-shadow:0 0 0 0 rgba(53,201,193,0)}50%{box-shadow:0 0 0 5px rgba(53,201,193,.08)}}
 .modelo{border:1px solid var(--linea);border-radius:18px;padding:20px 18px;display:flex;flex-direction:column;gap:12px;background:rgba(245,241,232,.02)}
 .modelo h3{font-size:13px;letter-spacing:.2em;text-transform:uppercase}
 .modelo p{margin:0;font-size:15px}
@@ -488,7 +499,7 @@ select:focus-visible{outline:2px solid var(--turquesa);outline-offset:3px}
 <header class="cab"><div class="cab-in"><div class="cab-fila"><div class="logo">QUANTUM <span>BRANDING</span></div><div class="cuenta">MINI-AUDITORÍA</div></div></div></header>
 <main id="app" aria-live="polite"><section class="pantalla">
   <span class="kicker">Mini-auditoría gratis</span>
-  <h2>Mira qué está <em>frenando tu marca</em> en redes.</h2>
+  <h2 class="revelar">Mira qué está <em>frenando tu marca</em> en redes.</h2>
   <p class="lead">Pon tu @ y sube una captura de tu perfil o de tus Insights. En menos de un minuto ves lo que no está funcionando, con tus números reales.</p>
   <div class="analisis">
     <div class="qinc-box"><b>Lo que revela la auditoría:</b>
