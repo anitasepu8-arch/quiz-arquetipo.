@@ -837,7 +837,7 @@ const MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","
 /* ===== ESTADO ===== */
 const NUEVO = ()=>({utm:leerUTM(), paso:"inicio", redes:null, marca:null, insta:"", decision:null, nombre:"", genero:"", d:"", m:"", a:"", hora:"", horaEstado:"", lugar:"", dedica:null, giro:"", modelo:null, modeloTxt:"", ubic:null, ingreso:null, busca:null, tiempo:null, esc:[null,null,null], escTxt:[null,null,null], apuesta:null, opcApuesta:null, dolor:null, real:null, perc:null, pReal:null, pPerc:null, email:""});
 let S = NUEVO();
-const FLUJO = ["inicio","datos","teaser","dedica","giro","modelo","redes","ingreso","ubicacion","busca","dolor","tiempo","e0","e1","e2","apuesta","decision","calc","r1","tarjeta","r2","r3","r4","email","listo","mini"];
+const FLUJO = ["inicio","datos","teaser","dedica","giro","modelo","redes","ingreso","ubicacion","busca","dolor","tiempo","e0","e1","e2","apuesta","decision","calc","r1","r2","r3","r4","tarjeta","email","listo","mini"];
 const CONTABLES = ["datos","dedica","giro","modelo","redes","ingreso","ubicacion","busca","dolor","tiempo","e0","e1","e2","apuesta","decision"];
 const PREGUNTAS = ["dedica","giro","modelo","redes","ingreso","ubicacion","busca","dolor","tiempo","e0","e1","e2","apuesta","decision"];
 const app=document.getElementById("app");
@@ -1344,6 +1344,7 @@ function render(){
       </div>`:""}
       <div class="acciones" style="flex-direction:column;align-items:stretch">
         <a class="btn sec full" href="${esc(waLink(`Hola Ana, hice el quiz y quiero hablar contigo antes de decidir.\n${resumenQuiz()}`))}" target="_blank" rel="noopener">¿Tienes dudas? Habla con Ana por WhatsApp</a>
+        <button class="btn sec full" id="aTarjeta">Ver mi tarjeta para historias</button>
         <button class="btn sec full" id="aEmail">Recibir mi resultado por correo y WhatsApp</button>
         <button class="volver" id="repetir" style="align-self:center">Hacer el quiz de nuevo</button>
       </div>
@@ -1407,7 +1408,7 @@ function render(){
         </div>
         <div class="t-gate" id="tGate"><button class="btn full" id="aDescargarTarjeta" type="button">Descargar tarjeta y ver resultado</button></div>
       </div>
-      <p class="lead" style="text-align:center">Descarga tu tarjeta, súbela a tus historias etiquetando <strong>${esc(CONFIG.instagram)}</strong> y te reposteo.</p>
+      <p class="lead" style="text-align:center">Descarga tu tarjeta, súbela a tus historias, etiquétame <strong>${esc(CONFIG.instagram)}</strong> y te reposteo.</p>
     </section>`;
   }
   if(P==="email"){
@@ -1454,14 +1455,14 @@ function bind(){
   const q=s=>app.querySelector(s);
   q("#go")?.addEventListener("click",siguiente);
   q("#atras")?.addEventListener("click",atras);
-  q("#aR4")?.addEventListener("click",atras);
+  q("#aR4")?.addEventListener("click",()=>ir("r4"));
   q("#aTarjeta")?.addEventListener("click",()=>ir("tarjeta"));
   q("#aDescargarTarjeta")?.addEventListener("click",async()=>{
     const btn=q("#aDescargarTarjeta"); if(!btn) return;
     btn.disabled=true; btn.textContent="Descargando…";
     try{ await descargarTarjetaPNG(); }catch(e){}
     btn.textContent="✓ Descargado";
-    setTimeout(siguiente,800);
+    setTimeout(()=>ir("r4"),800);
   });
   q("#aMini")?.addEventListener("click",()=>abrirFlyer(abrirPagoMini));
   q("#aEmail")?.addEventListener("click",()=>ir("email"));
