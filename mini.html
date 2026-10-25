@@ -77,8 +77,7 @@ li{display:flex;gap:10px;align-items:baseline;font-size:15px}li::before{content:
 <body><main id="app"><div class="estado"><div class="marca">QUANTUM <span>BRANDING</span></div><p>Cargando tu Mini Diagnóstico…</p></div></main>
 <script>
 const WA="17865188044";
-const PAGO_DIAG="https://buy.stripe.com/aFa8wP4nW53Y14576U4F20e";
-const CUPON=""; // Código de descuento del Mini en Systeme (ej. MINI27). Vacío = se pide por WhatsApp.
+const PAGO_DIAG="https://buy.stripe.com/3cIdR9dYwdAu6op4YM4F20f"; // Diagnóstico con el descuento de USD 27 ya aplicado ($125)
 const ICO_OK=`<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg>`;
 const ICO_LOCK=`<svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg>`;
 const COMPARA=[
@@ -128,7 +127,6 @@ function masTxt(d){
   try{ const r=await fetch("/api/mini?t="+encodeURIComponent(t||"")); if(r.ok) d=await r.json(); }catch(e){}
   if(!d){ app.innerHTML=`<div class="estado"><div class="marca">QUANTUM <span>BRANDING</span></div><p>No pudimos abrir este enlace. Revisa que esté completo o escríbele a Ana.</p><a class="btn" href="https://wa.me/${WA}?text=${encodeURIComponent("Hola Ana, compré el Mini Diagnóstico y no puedo abrir mi enlace.")}">Escribirle a Ana</a></div>`; return; }
   document.title=`${d.arquetipo} · Mini Diagnóstico Exprés`;
-  const waCredito=`https://wa.me/${WA}?text=${encodeURIComponent(`Hola Ana, tengo mi Mini Diagnóstico (${d.arquetipo}) y quiero pasar al Diagnóstico completo con mi descuento de USD 27.`)}`;
   app.innerHTML=`
   <div class="top"><div class="marca">QUANTUM <span>BRANDING</span></div><button class="pdf" onclick="window.print()">Guardar PDF</button></div>
   <section class="portada">
@@ -170,8 +168,8 @@ function masTxt(d){
     <p>${masTxt(d)} Eso, y cuándo te conviene actuar, se revela en tu Diagnóstico de Identidad™.</p>
     ${comparativa(d.credito.precio)}
     <div class="formu"><b>Tu formulario, sin límite de preguntas</b><p>En tu Diagnóstico me haces todas las preguntas que quieras, sobre cualquier área de tu vida: tu negocio, tu dinero, tu pareja, tu familia, tu siguiente etapa. Las que necesites. Y te respondo cómo resolver cada una desde tu diseño.</p></div>
-    <p class="credito"><b>Tus USD 27 se descuentan</b> si tomas el Diagnóstico de Identidad™ hasta el <b>${esc(d.credito.venceTexto)}</b>. Pagas USD ${d.credito.precio}.${CUPON?` Usa el código <b>${esc(CUPON)}</b> al pagar.`:""}</p>
-    ${CUPON?`<a class="btn no-print" href="${PAGO_DIAG}" target="_blank" rel="noopener">Quiero mi Diagnóstico</a>`:`<a class="btn no-print" href="${waCredito}" target="_blank" rel="noopener">Quiero mi Diagnóstico con descuento</a>`}
+    <p class="credito"><b>Tus USD 27 se descuentan</b> si tomas el Diagnóstico de Identidad™ hasta el <b>${esc(d.credito.venceTexto)}</b>. Pagas USD ${d.credito.precio}.</p>
+    <a class="btn no-print" href="${PAGO_DIAG}" target="_blank" rel="noopener">Quiero mi Diagnóstico con descuento</a>
   </section>
   <p class="pie">Quantum Branding · @anitasepum<br>Este documento es personal y se basa en tu fecha de nacimiento.</p>`;
 })();

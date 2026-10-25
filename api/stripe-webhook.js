@@ -5,8 +5,10 @@
 //   MAILERLITE_API_KEY         ya existente
 //   ML_GROUP_MINI               id del grupo "Mini · comprado" en MailerLite
 //   ML_GROUP_DIAGNOSTICO        id del grupo "Diagnóstico · comprado" en MailerLite (202324811542693007)
-// El Diagnóstico ($152, Payment Link directo sin client_reference_id) se distingue del Mini ($27) por el monto
-// pagado (amount_total en centavos): 15200 = Diagnóstico, cualquier otro valor se procesa como Mini (compatibilidad).
+// El Diagnóstico (Payment Link directo sin client_reference_id) se distingue del Mini ($27) por el monto
+// pagado (amount_total en centavos): 15200 = Diagnóstico completo ($152), 12500 = Diagnóstico con el
+// descuento de USD 27 ya aplicado ($125, para quien ya pagó el Mini). Cualquier otro valor se procesa
+// como Mini (compatibilidad).
 import crypto from "node:crypto";
 import { crearToken, leerReferencia } from "./_mini-token.js";
 
@@ -56,7 +58,7 @@ export default async function handler(req, res) {
 
   // Diagnóstico de Identidad™ ($152): Payment Link directo, sin datos del quiz.
   // Solo hace falta guardar el nombre y meterlo al grupo que dispara el correo con el PDF del formulario.
-  if (s.amount_total === 15200) {
+  if (s.amount_total === 15200 || s.amount_total === 12500) {
     if (!email) { console.error("Diagnóstico sin correo", s.id); return res.status(200).json({ ok: false }); }
     const grupoDiag = process.env.ML_GROUP_DIAGNOSTICO || "202324811542693007";
     try {

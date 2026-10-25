@@ -3,6 +3,15 @@
 <meta name="description" content="Hay 28 arquetipos. Solo uno es el tuyo. Descúbrelo gratis con tu fecha de nacimiento.">
 <meta property="og:title" content="Tu Arquetipo de Marca · Quantum Branding">
 <meta property="og:description" content="Hay 28 arquetipos. Solo uno es el tuyo. Y probablemente no es el que crees.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://quiz.quantumbranding.iprosper28.com/">
+<meta property="og:image" content="https://quiz.quantumbranding.iprosper28.com/img/og-portada.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tu Arquetipo de Marca · Quantum Branding">
+<meta name="twitter:description" content="Hay 28 arquetipos. Solo uno es el tuyo. Y probablemente no es el que crees.">
+<meta name="twitter:image" content="https://quiz.quantumbranding.iprosper28.com/img/og-portada.png">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head><body>
 <title>Tu Arquetipo de Marca</title>
@@ -796,12 +805,20 @@ const PARA_TI = {
   noavanza:"Para ti: qué está frenando tu trabajo o negocio y qué cambiar primero.",
   cobrar:"Para ti: qué te hace única y cómo ponerlo en tu precio.",
   escalar:"Para ti: qué tiene que cambiar en tu marca para crecer sin que todo dependa de ti."};
-const GANCHO = {
-  vocacion:"Tu diseño tiene <em>3 superpoderes</em>. Ahí está la respuesta a qué dedicarte: no en lo que te gusta, en lo que te sale natural.",
-  decision:"Tu diseño tiene <em>3 superpoderes</em>. Cuando los conoces, la decisión que tienes pendiente deja de ser un salto al vacío.",
-  noavanza:"Tu diseño tiene <em>3 superpoderes</em> de negocio. Lo más probable es que hoy uses uno. Los otros dos son los que harían que tu trabajo rinda.",
-  cobrar:"Tu diseño tiene <em>3 superpoderes</em> de negocio. Lo más probable es que hoy uses uno. Los otros dos son los que te harían cobrar lo que vales.",
-  escalar:"Tu diseño tiene <em>3 superpoderes</em> de negocio. Escalar es construir sobre los tres, no seguir empujando con uno."};
+/* Número real de superpoderes: cuántas de las 8 áreas de vida tienen peso en el diseño de la persona (varía por persona, igual que en el Mini). */
+function numSuperpoderes(){ return Math.max(1, ORDEN.filter(e=>S.pReal && S.pReal[e]>0).length); }
+function gancho(){
+  const n=numSuperpoderes(), otros=n-1;
+  const resto=otros>0?`Los otros ${otros} son los que harían que tu trabajo rinda.`:"Lo más probable es que hoy no lo estés usando a tu favor.";
+  const restoCobrar=otros>0?`Los otros ${otros} son los que te harían cobrar lo que vales.`:"Lo más probable es que hoy no lo estés usando a tu favor.";
+  const G = {
+    vocacion:`Tu diseño tiene <em>${n} superpoder${n===1?"":"es"}</em>. Ahí está la respuesta a qué dedicarte: no en lo que te gusta, en lo que te sale natural.`,
+    decision:`Tu diseño tiene <em>${n} superpoder${n===1?"":"es"}</em>. Cuando los conoces, la decisión que tienes pendiente deja de ser un salto al vacío.`,
+    noavanza:`Tu diseño tiene <em>${n} superpoder${n===1?"":"es"}</em> de negocio. Lo más probable es que hoy uses uno. ${resto}`,
+    cobrar:`Tu diseño tiene <em>${n} superpoder${n===1?"":"es"}</em> de negocio. Lo más probable es que hoy uses uno. ${restoCobrar}`,
+    escalar:`Tu diseño tiene <em>${n} superpoder${n===1?"":"es"}</em> de negocio. Escalar es construir sobre los ${n}, no seguir empujando con uno.`};
+  return G[S.busca] || G.vocacion;
+}
 const sinIngreso = ()=> S.dedica==="estudio" || S.dedica==="hogar";
 
 const MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
@@ -1218,7 +1235,7 @@ function render(){
       <span class="kicker">Dijiste: «${esc(D[0])}»</span>
       <p class="cierre">${esc(D[1])}</p>
       <div class="costo"><h3>Lo que te cuesta no actuar</h3><ul>${costos.map(c=>`<li>${esc(c)}</li>`).join("")}</ul></div>
-      <p class="gancho">${GANCHO[S.busca]}</p>
+      <p class="gancho">${gancho()}</p>
       <p class="lead">Esto fue tu nombre y tu esencia. Tu decodificación completa revela tus superpoderes, tus bloqueos y cómo usar tu diseño a tu favor.</p>
       <div class="pitch">${pitch.map(p=>`<p>${p}</p>`).join("")}</div>
       ${alto||tramoD?"":testis}
@@ -2059,11 +2076,32 @@ async function precioLocal(el,usd,prod,cuotas,tipo){
 /* Calculadoras de moneda dentro de las pantallas (data-calc) */
 new MutationObserver(()=>{ document.querySelectorAll("#app .pago-local[data-calc]:not([data-ok])").forEach(el=>{ el.dataset.ok="1"; precioLocal(el, +el.dataset.calc, el.dataset.prod, el.dataset.cuotas); }); }).observe(document.getElementById("app"),{childList:true,subtree:true});
 
-/* Regreso de Stripe tras pagar el Mini */
+/* Regreso de Stripe tras pagar el Mini: muestra el enlace directo apenas esté listo (normalmente en segundos),
+   con el correo como respaldo si tarda más. */
 (function(){ try{ const q=new URLSearchParams(location.search); if(q.get("mini")!=="ok") return;
-  const c=document.createElement("div"); c.className="pago-capa"; c.innerHTML=`<div class="pago-caja" style="height:auto;padding:28px 22px;gap:14px;text-align:center"><span class="kicker">Pago confirmado</span><h2 style="margin:0">Tu Mini Diagnóstico va en camino.</h2><p>En unos minutos te llega a tu correo, con tu enlace personal. Revisa también la carpeta de promociones o spam.</p><button class="btn full" type="button">Entendido</button></div>`;
-  c.querySelector("button").onclick=()=>{ c.remove(); history.replaceState(null,"",location.pathname); };
+  let email=""; try{ const av=leerAvance(); email=(av&&av.email)||S.email||""; }catch(e){}
+  const c=document.createElement("div"); c.className="pago-capa";
+  const pintar=(link)=>{
+    c.innerHTML = link
+      ? `<div class="pago-caja" style="height:auto;padding:28px 22px;gap:14px;text-align:center"><span class="kicker">Pago confirmado</span><h2 style="margin:0">Tu Mini Diagnóstico está listo.</h2><p>También te lo mandamos a tu correo por si lo quieres guardar.</p><a class="btn full" href="${esc(link)}">Ver mi Mini Diagnóstico</a><button class="btn sec full" type="button">Cerrar</button></div>`
+      : `<div class="pago-caja" style="height:auto;padding:28px 22px;gap:14px;text-align:center"><span class="kicker">Pago confirmado</span><h2 style="margin:0">Preparando tu Mini Diagnóstico…</h2><p>Esto toma unos segundos. En cuanto esté listo aparece aquí el botón, y también te llega a tu correo.</p><button class="btn sec full" type="button">Cerrar</button></div>`;
+    c.querySelector("button").onclick=()=>{ c.remove(); history.replaceState(null,"",location.pathname); };
+  };
+  pintar("");
   document.body.appendChild(c);
+  if(email){
+    let intentos=0;
+    const poll=async()=>{
+      intentos++;
+      try{
+        const r=await fetch("/api/mini-estado?email="+encodeURIComponent(email));
+        const j=await r.json();
+        if(j&&j.ok&&j.link){ pintar(j.link); return; }
+      }catch(e){}
+      if(intentos<10 && document.body.contains(c)) setTimeout(poll,1500);
+    };
+    setTimeout(poll,1200);
+  }
 }catch(e){} })();
 </script>
 
