@@ -1724,10 +1724,11 @@ function bind(){
   });
 }
 
-/* Link directo a "diferencia Mini vs Diagnóstico + pagar", sin pasar por el quiz: quiz.../?ver=comparar */
-try{ if(new URLSearchParams(location.search).get("ver")==="comparar") S.paso="comparar"; }catch(e){}
-
 render();
+
+/* Link directo a "diferencia Mini vs Diagnóstico + pagar", sin pasar por el quiz: quiz.../?ver=comparar
+   En un setTimeout para que corra después de que el resto del script (COMPARA, comparativa, etc.) ya esté definido. */
+setTimeout(()=>{ try{ if(new URLSearchParams(location.search).get("ver")==="comparar") ir("comparar"); }catch(e){} }, 0);
 
 
 /* ===== Mini: enlace de pago de Stripe con los datos del quiz (para entregar el Mini automático) ===== */
