@@ -1150,6 +1150,7 @@ function render(){
   }
   if(P==="r3"){
     const coincide=S.real===S.perc, al=alineacion(), B=bloqueos();
+    const nSp=Math.min(8,Math.max(1,ORDEN.filter(e=>S.pReal&&S.pReal[e]>0).length));
     const fila=(t,p)=>{ const [n,c]=nivel(p); return `<div class="nivel"><div class="nivel-top"><span>${t}</span><span class="pct ${c}">${p} %</span></div>${barra(p)}<span class="niv ${c}">${n}</span></div>`; };
     h=`<section class="pantalla">
       <span class="kicker">Tus respuestas</span>
@@ -1176,6 +1177,13 @@ function render(){
         ${B.map((e,k)=>`<div class="bloq">${ICO_CANDADO}<div><span class="b-t">${k===0?"Bloqueo principal":"Bloqueo "+(k+1)}</span><span class="borroso">Bloqueo oculto</span></div></div>`).join("")}
         <p class="nota">Tu bloqueo principal se revela en el Mini Diagnóstico Exprés. ${B.length>1?"Todos tus bloqueos, y cómo destrabarlos,":"Cómo destrabarlo"} en tu Diagnóstico de Identidad.</p>
       </div>`:`<div class="alerta">No aparecen bloqueos activos: usas lo que tu diseño pide. El siguiente paso es que tu trabajo lo cobre.</div>`}
+      <div class="bloqueos">
+        <h3>Esto también está calculado en tu diseño</h3>
+        <div class="bloq">${ICO_CANDADO}<div><span class="b-t">${nSp===1?"Tu superpoder de negocio":"Tus "+nSp+" superpoderes de negocio"}</span><span class="borroso">Para hacer dinero</span></div></div>
+        <div class="bloq">${ICO_CANDADO}<div><span class="b-t">Tu modelo de negocio</span><span class="borroso">El más natural para ti</span></div></div>
+        <div class="bloq">${ICO_CANDADO}<div><span class="b-t">Tu dirección</span><span class="borroso">Hacia dónde ir ahora</span></div></div>
+        <p class="nota">Esto se revela en tu Mini Diagnóstico Exprés y tu Diagnóstico de Identidad.</p>
+      </div>
       <button class="btn full" id="go">Qué te cuesta no actuar</button>
     </section>`;
   }
