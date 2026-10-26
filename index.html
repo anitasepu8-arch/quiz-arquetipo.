@@ -1278,6 +1278,12 @@ function render(){
           <p>Es exclusivamente para ti. Vemos cómo funcionas, tus dones, patrones, dinero, decisiones y aquello que te hace única.</p>
           <a class="btn sec full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Ver todo lo que revela mi Diagnóstico</a>
         </div>
+        <div class="oferta">
+          <p class="ligero">¿O prefieres empezar aún más ligero?</p>
+          <div class="cab-of"><h3>Mini Diagnóstico Exprés</h3><span class="precio"><small>USD</small>27</span></div>
+          <p>Tu nombre completo, tu primer superpoder y tu bloqueo principal. Si tomas el Diagnóstico en los 7 días siguientes, estos USD 27 se descuentan.</p>
+          <button class="btn sec full" type="button" data-amini>Empezar por el Mini · USD 27</button>
+        </div>
       </div>`:tramoD?`<span class="kicker">Tus opciones</span>
       <details class="cmp-det"><summary class="btn sec full">Ver Mini vs Diagnóstico completo</summary>
       <h3 class="cp-tit">Mini vs Diagnóstico completo</h3>
@@ -1299,6 +1305,12 @@ function render(){
           </ul>
           <a class="btn full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Ver todo lo que revela mi Diagnóstico</a>
           <details class="pago-det"><summary>Calcula el precio en tu moneda</summary><div class="pago-local" data-calc="152" data-prod="el Diagnóstico de Identidad"></div></details>
+        </div>
+        <div class="oferta">
+          <p class="ligero">¿Prefieres empezar más ligero?</p>
+          <div class="cab-of"><h3>Mini Diagnóstico Exprés</h3><span class="precio"><small>USD</small>27</span></div>
+          <p>Tu nombre completo, tu primer superpoder y tu bloqueo principal. Si tomas el Diagnóstico en los 7 días siguientes, estos USD 27 se descuentan.</p>
+          <button class="btn sec full" type="button" data-amini>Empezar por el Mini · USD 27</button>
         </div>
         ${lejos ? cardLlamadaVisible + cardAuditoriaUpgrade : cardAuditoriaUpgrade}
       </div>
@@ -1387,6 +1399,29 @@ function render(){
       </div>
       <div class="faq">${faq.map(f=>`<details><summary>${esc(f[0])}</summary><p>${esc(f[1])}</p></details>`).join("")}</div>
       <p class="otra">¿Prefieres ver todo de una vez, con cuestionario y WhatsApp de Ana? <a href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Diagnóstico de Identidad™ (USD 152)</a></p>
+    </section>`;
+  }
+  if(P==="comparar"){
+    h=`<section class="pantalla">
+      <span class="kicker">Mini Diagnóstico Exprés vs Diagnóstico de Identidad™</span>
+      <h2>Esta es la diferencia entre los dos.</h2>
+      <p class="lead">Elige el que te sirve hoy. Si tomas el Diagnóstico en los 7 días después del Mini, esos USD 27 se descuentan: no pagas dos veces.</p>
+      ${comparativa(false)}
+      <div class="ofertas">
+        <div class="oferta reco">
+          <span class="badge">Para empezar</span>
+          <div class="cab-of"><h3>Mini Diagnóstico Exprés</h3><span class="precio"><small>USD</small>27</span></div>
+          <p>Tu arquetipo completo con tu nombre exacto, tu primer superpoder y tu bloqueo principal, a partir de tu fecha de nacimiento.</p>
+          <a class="btn full" href="${esc(CONFIG.links.mini)}" target="_blank" rel="noopener">Quiero mi Mini Diagnóstico</a>
+        </div>
+        <div class="oferta">
+          <div class="cab-of"><h3>Diagnóstico de Identidad™</h3><span class="precio"><small>USD</small>152</span></div>
+          <p>Todo tu diseño: tus superpoderes, todos tus bloqueos y cómo destrabarlos, tu modelo de negocio, un formulario privado para tus preguntas y mi WhatsApp.</p>
+          <a class="btn sec full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Ver todo lo que revela mi Diagnóstico</a>
+        </div>
+      </div>
+      <p class="otra">¿Prefieres hacer primero el quiz gratis para ver tu arquetipo? <a href="/">Empezar el quiz</a></p>
+      <p class="otra">¿Tienes dudas? <a href="${esc(waLink("Hola Ana, tengo dudas sobre el Mini Diagnóstico y el Diagnóstico de Identidad."))}" target="_blank" rel="noopener">Escríbele a Ana por WhatsApp</a></p>
     </section>`;
   }
   if(P==="tarjeta"){
@@ -1688,6 +1723,9 @@ function bind(){
     ir("listo");
   });
 }
+
+/* Link directo a "diferencia Mini vs Diagnóstico + pagar", sin pasar por el quiz: quiz.../?ver=comparar */
+try{ if(new URLSearchParams(location.search).get("ver")==="comparar") S.paso="comparar"; }catch(e){}
 
 render();
 
