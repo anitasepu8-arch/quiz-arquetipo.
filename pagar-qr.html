@@ -79,14 +79,15 @@ a.volver{display:block;text-align:center;margin-top:18px;color:var(--crema-2);fo
 <script>
 const q = new URLSearchParams(location.search);
 const WHATSAPP = "17865188044";
-const NOMBRES = { mini: "el Mini Diagnóstico Exprés", diagnostico: "el Diagnóstico de Identidad" };
+const NOMBRES = { mini: "el Mini Diagnóstico Exprés", diagnostico: "el Diagnóstico de Identidad", auditoria: "la Auditoría de Marca" };
+const USD_DEFAULT = { mini: 27, diagnostico: 152, auditoria: 555 };
 
 function limpiar(v, max){ return (v==null?"":String(v)).slice(0, max||400).trim(); }
 function fmtBs(n){ return "Bs " + Math.round(n).toLocaleString("es-BO"); }
 function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 
-const tipo = ["mini","diagnostico"].includes(q.get("tipo")) ? q.get("tipo") : "diagnostico";
-const usd = Math.max(1, parseFloat(q.get("usd")) || (tipo==="mini" ? 27 : 152));
+const tipo = ["mini","diagnostico","auditoria"].includes(q.get("tipo")) ? q.get("tipo") : "diagnostico";
+const usd = Math.max(1, parseFloat(q.get("usd")) || USD_DEFAULT[tipo]);
 const productoTexto = limpiar(q.get("producto"), 120) || NOMBRES[tipo];
 const nombre = limpiar(q.get("nombre"), 100);
 const emailInicial = limpiar(q.get("email"), 200);
@@ -96,7 +97,8 @@ const montoBs = usd * 11;
 document.title = "Pagar " + productoTexto + " por QR · Quantum Branding";
 document.getElementById("subtitulo").textContent = "Pago de " + productoTexto + " a la tasa preferencial de Ana.";
 document.getElementById("monto").innerHTML = fmtBs(montoBs) + " <small>· USD " + usd + "</small>";
-document.getElementById("ayuda").textContent = "Escanea desde tu banco e ingresa " + fmtBs(montoBs) + ".";
+document.getElementById("ayuda").textContent = "Escanea desde tu banco e ingresa " + fmtBs(montoBs) + "."
+  + (tipo === "auditoria" ? " ¿Prefieres pagar en 2 cuotas? Escríbele a Ana por WhatsApp para coordinarlo." : "");
 if (emailInicial) document.getElementById("correo").value = emailInicial;
 
 function reducirImagenB64(file){
