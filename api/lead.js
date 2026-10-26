@@ -10,7 +10,7 @@
 
 const CAMPOS = [
   "estado", "genero", "fecha_nac", "hora_nac", "lugar_nac", "arquetipo", "arquetipo_percibido",
-  "dedica", "negocio", "modelo", "modelo_detalle", "modelo_encaje", "ingreso", "ubicacion",
+  "dedica", "negocio", "modelo", "modelo_detalle", "modelo_encaje", "ingreso", "ubicacion", "pais",
   "busca", "dolor", "tiempo", "alineacion_vida", "alineacion_negocio", "acepta_mensajes", "paso",
   "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid",
   "cuenta", "analisis", "redes", "marca", "instagram", "decision", "mini_pago_link",
@@ -18,33 +18,58 @@ const CAMPOS = [
 
 const limpiar = (v, max = 400) => (v === undefined || v === null ? "" : String(v).slice(0, max).trim());
 
-// Mismo tipo de cambio fijo que usa el front (TIPO_FIJO.BOB en index.html).
+// Mismo tipo de cambio fijo que usa el front (TIPO_FIJO.BOB en index.html): tasa preferencial
+// que Ana garantiza ella misma por QR — distinta (y más baja) que la que Stripe muestra al
+// convertir a bolivianos en su propio checkout, que fluctúa con el tipo de cambio paralelo.
 const bs = (usd) => "Bs " + Math.round(usd * 11).toLocaleString("es-BO");
 
-// CTA del producto a recomendar, según tramo de ingreso y si paga en bolivianos (QR) o en tarjeta (USD).
-// Solo se usa en el correo de "Quiz completado sin compra": en los otros, el producto ya está fijo por la fase.
+// Estilo del botón de pago: dorado y grande por defecto; chico/discreto cuando el QR pasa a ser
+// la opción principal (Bolivia) y la tarjeta queda como alternativa.
+const ESTILO_BOTON_GRANDE = "display:inline-block;background:#D4AF78;color:#1a1008;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:bold";
+const ESTILO_BOTON_CHICO = "color:#D4AF78;font-size:13px;text-decoration:none;font-weight:bold";
+
+// Botón de pago con tarjeta (Stripe, USD): texto y estilo originales si no es Bolivia;
+// para Bolivia queda como alternativa chica, porque ahí el QR (tasa preferencial) es el principal.
+function botonValores(esBolivia, textoDefault) {
+  return {
+    style: esBolivia ? ESTILO_BOTON_CHICO : ESTILO_BOTON_GRANDE,
+    texto: esBolivia ? "¿Prefieres pagar con tarjeta? (USD, tasa de Stripe)" : textoDefault,
+  };
+}
+
+// Botón de pago por QR + WhatsApp: SOLO para Bolivia (detectado por país, no por región amplia
+// "Latinoamérica"), con la tasa preferencial fija de Ana. Vacío para todos los demás, así el
+// botón queda invisible en la plantilla (ver nota de escapado de HTML más abajo).
+function qrValores(esBolivia, usd, producto) {
+  if (!esBolivia) return { link: "", texto: "", nota: "" };
+  const monto = bs(usd);
+  const wa = "https://wa.me/17865188044?text=" + encodeURIComponent(`Hola Ana, quiero pagar ${producto} (${monto}, tasa preferencial) por QR. Te mando el comprobante.`);
+  return { link: wa, texto: `Pagar por QR · ${monto}`, nota: "Tasa preferencial fija (no la de Stripe). Envía el comprobante por WhatsApp y confirmo tu pago." };
+}
+
+// CTA del producto a recomendar, según tramo de ingreso. Solo se usa en el correo de "Quiz
+// completado sin compra": en los otros, el producto ya está fijo por la fase.
 // IMPORTANTE: MailerLite inserta el valor de un campo personalizado como TEXTO PLANO escapado dentro de
 // un correo HTML (builder_html), no como HTML real. Por eso esto devuelve valores sueltos (link/texto/nota)
 // para rellenar un botón YA armado en la plantilla del correo, en vez de devolver las etiquetas <p>/<a> armadas.
-function ctaValores(ingreso, latam) {
-  const precioMini = latam ? `USD 27 (${bs(27)} por QR)` : "USD 27";
-  const precioDiag = latam ? `USD 152 (${bs(152)} por QR)` : "USD 152";
-  const precioDiagDesc = latam ? `USD 125 (${bs(125)} por QR)` : "USD 125";
+function ctaValores(ingreso) {
   if (["10000", "50000"].includes(ingreso)) {
     const wa = "https://wa.me/17865188044?text=" + encodeURIComponent("Hola Ana, hice el quiz y quiero agendar una llamada.");
-    return { link: wa, texto: "Agendar mi llamada", nota: "" };
+    return { link: wa, texto: "Agendar mi llamada", nota: "", qr: { link: "", texto: "", nota: "" } };
   }
   if (ingreso === "3000") {
     return {
       link: "https://buy.stripe.com/aFa8wP4nW53Y14576U4F20e",
-      texto: `Ver mi Diagnóstico de Identidad · ${precioDiag}`,
-      nota: `¿Prefieres algo más ligero? El Mini Diagnóstico Exprés (${precioMini}) también está disponible.`,
+      texto: "Ver mi Diagnóstico de Identidad · USD 152",
+      nota: "¿Prefieres algo más ligero? El Mini Diagnóstico Exprés (USD 27) también está disponible.",
+      producto: "el Diagnóstico de Identidad", precioUsd: 152,
     };
   }
   return {
     link: "https://quiz.quantumbranding.iprosper28.com/",
-    texto: `Ver mi Mini Diagnóstico · ${precioMini}`,
-    nota: `Si tomas el Diagnóstico completo en los 7 días siguientes, esos USD 27 se descuentan y te queda en ${precioDiagDesc}.`,
+    texto: "Ver mi Mini Diagnóstico · USD 27",
+    nota: "Si tomas el Diagnóstico completo en los 7 días siguientes, esos USD 27 se descuentan y te queda en USD 125.",
+    producto: "el Mini Diagnóstico Exprés", precioUsd: 27,
   };
 }
 
@@ -98,13 +123,41 @@ export default async function handler(req, res) {
   // Valores calculados para los correos de seguimiento segmentados (ver automatizaciones "... — recordatorio").
   // Se guardan como campos sueltos de texto plano (no HTML armado): ver nota en ctaValores/contextoValores.
   const negocioSi = ["negocio", "independiente"].includes(limpiar(b.dedica));
-  const latam = limpiar(b.ubicacion) === "Latinoamérica";
+  // Bolivia específicamente (no "Latinoamérica" en general): ahí Ana ofrece QR con tasa preferencial propia.
+  const esBolivia = limpiar(b.pais) === "BO";
   fields.quiz_negocio_sn = negocioSi ? "si" : "no";
 
-  const cta = ctaValores(limpiar(b.ingreso), latam);
+  const cta = ctaValores(limpiar(b.ingreso));
   fields.quiz_cta_link = limpiar(cta.link, 500);
   fields.quiz_cta_texto = limpiar(cta.texto, 200);
   fields.quiz_cta_nota = limpiar(cta.nota, 300);
+  fields.quiz_cta_style = botonValores(esBolivia, cta.texto).style;
+  const ctaQr = cta.producto ? qrValores(esBolivia, cta.precioUsd, cta.producto) : { link: "", texto: "", nota: "" };
+  fields.quiz_cta_qr_link = limpiar(ctaQr.link, 500);
+  fields.quiz_cta_qr_texto = limpiar(ctaQr.texto, 200);
+  fields.quiz_cta_qr_nota = limpiar(ctaQr.nota, 300);
+
+  // Botón de pago fijo por email (Fase1 s0 "Ver Diagnóstico", Fase1 s1-2 Mini, Fase2 Diagnóstico, Fase5 Diagnóstico con descuento).
+  fields.quiz_pago_style = botonValores(esBolivia, "").style; // mismo estilo para todos los contextos
+  fields.quiz_pago_ver_texto = botonValores(esBolivia, "Ver el Diagnóstico de Identidad").texto;
+  fields.quiz_pago_mini_texto = botonValores(esBolivia, "Completar mi pago · USD 27").texto;
+  fields.quiz_pago_f2_texto = botonValores(esBolivia, "Completar mi pago · USD 152").texto;
+  fields.quiz_pago_f5_texto = botonValores(esBolivia, "Ver mi Diagnóstico con descuento · USD 125").texto;
+
+  const qrDiag152 = qrValores(esBolivia, 152, "el Diagnóstico de Identidad");
+  fields.quiz_qr_diag152_link = limpiar(qrDiag152.link, 500);
+  fields.quiz_qr_diag152_texto = limpiar(qrDiag152.texto, 200);
+  fields.quiz_qr_diag152_nota = limpiar(qrDiag152.nota, 300);
+
+  const qrMini = qrValores(esBolivia, 27, "el Mini Diagnóstico Exprés");
+  fields.quiz_qr_mini_link = limpiar(qrMini.link, 500);
+  fields.quiz_qr_mini_texto = limpiar(qrMini.texto, 200);
+  fields.quiz_qr_mini_nota = limpiar(qrMini.nota, 300);
+
+  const qrDiag125 = qrValores(esBolivia, 125, "mi Diagnóstico con descuento");
+  fields.quiz_qr_diag125_link = limpiar(qrDiag125.link, 500);
+  fields.quiz_qr_diag125_texto = limpiar(qrDiag125.texto, 200);
+  fields.quiz_qr_diag125_nota = limpiar(qrDiag125.nota, 300);
 
   const ctx = contextoValores(negocioSi, limpiar(b.alineacion_vida), limpiar(b.alineacion_negocio), limpiar(b.marca) === "Sí, me reconocen y me recuerdan", ["si", "aveces"].includes(limpiar(b.redes)));
   fields.quiz_contexto_1 = limpiar(ctx.p1, 400);

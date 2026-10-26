@@ -861,6 +861,7 @@ function datosLead(estado){
     busca: S.busca||"", dolor: S.busca&&S.dolor!==null?DOLORES[S.busca][S.dolor][0]:"", tiempo: S.tiempo||"",
     alineacion_vida: al?al.vida:"", alineacion_negocio: al?al.neg:"",
     telefono: S.telefono||"", acepta_mensajes: S.okmsg?"si":"", cuenta: S.cuenta||"", analisis: S.analisis||"", redes: S.redes||"", marca: S.marca?MARCA.find(x=>x[0]===S.marca)[1]:"", instagram: S.insta?"@"+S.insta:"", decision: S.decision||"",
+    pais: (typeof paisLocal==="function" && paisLocal()) ? paisLocal()[2] : "",
     paso: S.paso, ...S.utm };
 }
 function carruselTestis(){
