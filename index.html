@@ -1180,24 +1180,10 @@ function render(){
   }
   if(P==="r4"){
     const ing = S.ingreso;
-    const recoMini = sinIngreso() || S.dedica==="transicion" || ing==="0" || (ing==="nd" && S.busca==="vocacion");
+    const recoMini = sinIngreso() || S.dedica==="transicion" || ["0","500","1500"].includes(ing) || (ing==="nd" && S.busca==="vocacion");
     const alto = ing==="10000"||ing==="50000";
     const tramoD = ing==="3000";
-    const lejos = ["usa","europa","dubai"].includes(S.ubic);
     const llamada = CONFIG.links.llamada || waLink(`Hola Ana, hice el quiz y quiero agendar una llamada.\n${resumenQuiz()}`);
-    const cardAuditoriaUpgrade = `<div class="oferta">
-          <p class="ligero">¿Quieres el plan completo?</p>
-          <div class="cab-of"><h3>Auditoría de Marca™</h3><span class="precio"><small>USD</small>555</span></div>
-          <p class="cuotas">o <b>${CONFIG.auditoriaCuotas.n} cuotas de USD ${CONFIG.auditoriaCuotas.monto}</b></p>
-          <div class="pago-local" data-calc="555" data-prod="la Auditoría de Marca" data-cuotas="${CONFIG.auditoriaCuotas.n}x${CONFIG.auditoriaCuotas.monto}"></div>
-          <p>Incluye tu Diagnóstico completo, la auditoría de tu negocio y tu marca, tus pilares de contenido y la estrategia lista para implementar.</p>
-          <a class="btn sec full" href="${esc(CONFIG.links.auditoria)}" target="_blank" rel="noopener">Ver la Auditoría</a>
-        </div>`;
-    const cardLlamadaVisible = `<div class="oferta llamada">
-          <p class="llamada-t">A tu nivel, una llamada puede ahorrarte meses.</p>
-          <a class="btn full" href="${esc(llamada)}" target="_blank" rel="noopener">Agenda aquí</a>
-        </div>`;
-    const lineaLlamadaSuave = `<p class="otra">¿Quieres que lo veamos en llamada? <a href="${esc(llamada)}" target="_blank" rel="noopener">Agenda aquí</a></p>`;
     const auditoria = tieneNegocio();
     const D = DOLORES[S.busca][S.dolor];
     const rg = RANGO[ing];
@@ -1256,41 +1242,15 @@ function render(){
       <p class="gancho">${gancho()}</p>
       <p class="lead">Esto fue tu nombre y tu esencia. Tu decodificación completa revela tus superpoderes, tus bloqueos y cómo usar tu diseño a tu favor.</p>
       <div class="pitch">${pitch.map(p=>`<p>${p}</p>`).join("")}</div>
-      ${alto||tramoD?"":testis}
-      ${alto?`<span class="kicker">Tus opciones</span>
-      <details class="cmp-det"><summary class="btn sec full">Ver Mini vs Diagnóstico completo</summary>
-      <h3 class="cp-tit">Mini vs Diagnóstico completo</h3>
-      ${comparativa(false)}
-      </details>
       ${testis}
-      <div class="ofertas">
+      ${alto?`<div class="ofertas">
         <div class="oferta reco">
           <span class="badge">Recomendado para ti</span>
-          <h3 class="titulo-llamada">¿Auditoría o trabajo 1:1? Agenda tu llamada</h3>
-          <p class="porque">A tu nivel, cada decisión de marca mueve miles de dólares. La Auditoría incluye tu Diagnóstico completo más la auditoría de tu negocio, tus pilares de contenido y la estrategia lista para implementar. Sin vueltas: qué falla y el plan para corregirlo.</p>
+          <h3 class="titulo-llamada">A tu nivel, una llamada puede ahorrarte meses</h3>
+          <p class="porque">Cada decisión de marca mueve miles de dólares. En la llamada vemos tu Diagnóstico, tu negocio y el plan para corregir lo que falla.</p>
           <a class="btn full" href="${esc(llamada)}" target="_blank" rel="noopener">Agendar mi llamada</a>
-          <a class="btn sec full" href="${esc(CONFIG.links.auditoria)}" target="_blank" rel="noopener">Ver la Auditoría (USD 555 o ${CONFIG.auditoriaCuotas.n} cuotas de ${CONFIG.auditoriaCuotas.monto})</a>
-          <div class="pago-local" data-calc="555" data-prod="la Auditoría de Marca" data-cuotas="${CONFIG.auditoriaCuotas.n}x${CONFIG.auditoriaCuotas.monto}"></div>
         </div>
-        <div class="oferta">
-          <p class="ligero">¿Prefieres empezar más ligero?</p>
-          <div class="cab-of"><h3>Diagnóstico de Identidad™</h3><span class="precio"><small>USD</small>152</span></div>
-          <p>Es exclusivamente para ti. Vemos cómo funcionas, tus dones, patrones, dinero, decisiones y aquello que te hace única.</p>
-          <a class="btn sec full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Ver todo lo que revela mi Diagnóstico</a>
-        </div>
-        <div class="oferta">
-          <p class="ligero">¿O prefieres empezar aún más ligero?</p>
-          <div class="cab-of"><h3>Mini Diagnóstico Exprés</h3><span class="precio"><small>USD</small>27</span></div>
-          <p>Tu nombre completo, tu primer superpoder y tu bloqueo principal. Si tomas el Diagnóstico en los 7 días siguientes, estos USD 27 se descuentan.</p>
-          <button class="btn sec full" type="button" data-amini>Empezar por el Mini · USD 27</button>
-        </div>
-      </div>`:tramoD?`<span class="kicker">Tus opciones</span>
-      <details class="cmp-det"><summary class="btn sec full">Ver Mini vs Diagnóstico completo</summary>
-      <h3 class="cp-tit">Mini vs Diagnóstico completo</h3>
-      ${comparativa(false)}
-      </details>
-      ${testis}
-      <div class="ofertas">
+      </div>`:tramoD?`<div class="ofertas">
         <div class="oferta reco">
           <span class="badge">Recomendado para ti</span>
           <div class="cab-of"><h3>Diagnóstico de Identidad™</h3><span class="precio"><small>USD</small>152</span></div>
@@ -1306,22 +1266,19 @@ function render(){
           <a class="btn full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Ver todo lo que revela mi Diagnóstico</a>
           <details class="pago-det"><summary>Calcula el precio en tu moneda</summary><div class="pago-local" data-calc="152" data-prod="el Diagnóstico de Identidad"></div></details>
         </div>
-        <div class="oferta">
-          <p class="ligero">¿Prefieres empezar más ligero?</p>
+        <p class="otra">¿Prefieres algo más ligero? <button type="button" class="link-chico" data-amini style="background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;cursor:pointer">Empieza por el Mini · USD 27</button> — si tomas el Diagnóstico dentro de los 7 días siguientes, esos USD 27 se descuentan y te queda en USD 125.</p>
+      </div>`:`<div class="ofertas">
+        <div class="oferta reco">
+          <span class="badge">Recomendado para ti</span>
           <div class="cab-of"><h3>Mini Diagnóstico Exprés</h3><span class="precio"><small>USD</small>27</span></div>
-          <p>Tu nombre completo, tu primer superpoder y tu bloqueo principal. Si tomas el Diagnóstico en los 7 días siguientes, estos USD 27 se descuentan.</p>
-          <button class="btn sec full" type="button" data-amini>Empezar por el Mini · USD 27</button>
-        </div>
-        ${lejos ? cardLlamadaVisible + cardAuditoriaUpgrade : cardAuditoriaUpgrade}
-      </div>
-      ${lejos ? "" : lineaLlamadaSuave}`:`      <span class="kicker">Tienes dos formas de seguir</span>
-      <p class="porque">${esc(porque)}</p>
-      <p class="para-ti">${esc(PARA_TI[S.busca])}</p>
+          <p class="porque">${esc(porque)}</p>
+          <p class="para-ti">${esc(PARA_TI[S.busca])}</p>
       ${S.decision==="si"?`<p class="para-ti">Tienes una decisión pendiente. Tu diseño completo te ayuda a tomar una decisión alineada a lo que te conviene, te acerca a tu propósito y a cumplir tus metas y tus objetivos en torno al dinero.</p>`:""}
-      ${comparativa(recoMini)}
-      <button class="btn ${recoMini?'':'sec'} full" id="aMini">${recoMini?"Empezar por el Mini · USD 27":"Ver el Mini Exprés · USD 27"}</button>
-      <a class="btn ${recoMini?'sec':''} full" href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Ver todo lo que revela mi Diagnóstico</a>
-`}
+          <p>Tu nombre completo, tu primer superpoder y tu bloqueo principal: para que sepas qué tienes, sin compromiso grande.</p>
+          <button class="btn full" type="button" data-amini>Empezar por el Mini · USD 27</button>
+        </div>
+        <p class="otra">Si después quieres tu diseño completo, el <b>Diagnóstico de Identidad™ (USD 152)</b> te queda en <b>USD 125</b> si lo tomas dentro de los 7 días siguientes a tu Mini. <a href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Verlo</a></p>
+      </div>`}
       <p class="espejo">${esc(espejo)}</p>
       ${auditoria?`<div class="analisis">
         ${(alto||tramoD)?`<span class="kicker">Para ti, que ya facturas</span>
@@ -1355,9 +1312,9 @@ function render(){
         </div>`}
       </div>`:""}
       <div class="acciones" style="flex-direction:column;align-items:stretch">
-        <a class="btn sec full" href="${esc(waLink(`Hola Ana, hice el quiz y quiero hablar contigo antes de decidir.\n${resumenQuiz()}`))}" target="_blank" rel="noopener">¿Tienes dudas? Habla con Ana por WhatsApp</a>
         <button class="btn sec full" id="aTarjeta">Ver mi tarjeta para historias</button>
         <button class="btn sec full" id="aEmail">Recibir mi resultado por correo y WhatsApp</button>
+        <p class="otra" style="text-align:center"><a href="${esc(waLink(`Hola Ana, hice el quiz y quiero hablar contigo antes de decidir.\n${resumenQuiz()}`))}" target="_blank" rel="noopener">¿Tienes dudas? Escríbele a Ana por WhatsApp</a></p>
         <button class="volver" id="repetir" style="align-self:center">Hacer el quiz de nuevo</button>
       </div>
     </section>
