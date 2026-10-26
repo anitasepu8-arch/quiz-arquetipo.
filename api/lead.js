@@ -1,15 +1,19 @@
 // Recibe los datos del quiz y los guarda en MailerLite (crea o actualiza el contacto).
 // Variables de entorno en Vercel:
-//   MAILERLITE_API_KEY      clave de API de MailerLite (Integraciones → API)
-//   ML_GROUP_INICIADO       id del grupo "Quiz · iniciado"   (opcional)
-//   ML_GROUP_COMPLETADO     id del grupo "Quiz · completado" (opcional)
+//   MAILERLITE_API_KEY         clave de API de MailerLite (Integraciones → API)
+//   ML_GROUP_INICIADO          id del grupo "Quiz · iniciado"   (opcional)
+//   ML_GROUP_COMPLETADO        id del grupo "Quiz · completado" (opcional)
+//   ML_GROUP_PAGO_ABIERTO_MINI id del grupo "Pago · Mini abierto sin completar" (default: 202403942273910636)
+//   ML_GROUP_PAGO_ABIERTO_DIAG id del grupo "Pago · Diagnóstico abierto sin completar" (default: 202403942930319163)
+// estado "pago_abierto" (Diagnóstico) y "pago_abierto_mini" (Mini) disparan el recordatorio del mismo día
+// en MailerLite (automatizaciones "Pago · ... abierto — recordatorio mismo día").
 
 const CAMPOS = [
   "estado", "genero", "fecha_nac", "hora_nac", "lugar_nac", "arquetipo", "arquetipo_percibido",
   "dedica", "negocio", "modelo", "modelo_detalle", "modelo_encaje", "ingreso", "ubicacion",
   "busca", "dolor", "tiempo", "alineacion_vida", "alineacion_negocio", "acepta_mensajes", "paso",
   "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid",
-  "cuenta", "analisis", "redes", "marca", "instagram", "decision",
+  "cuenta", "analisis", "redes", "marca", "instagram", "decision", "mini_pago_link",
 ];
 
 const limpiar = (v, max = 400) => (v === undefined || v === null ? "" : String(v).slice(0, max).trim());
@@ -37,6 +41,8 @@ export default async function handler(req, res) {
   const groups = [];
   if (process.env.ML_GROUP_INICIADO) groups.push(process.env.ML_GROUP_INICIADO);
   if (b.estado === "completado" && process.env.ML_GROUP_COMPLETADO) groups.push(process.env.ML_GROUP_COMPLETADO);
+  if (b.estado === "pago_abierto_mini") groups.push(process.env.ML_GROUP_PAGO_ABIERTO_MINI || "202403942273910636");
+  if (b.estado === "pago_abierto") groups.push(process.env.ML_GROUP_PAGO_ABIERTO_DIAG || "202403942930319163");
 
   try {
     const r = await fetch("https://connect.mailerlite.com/api/subscribers", {

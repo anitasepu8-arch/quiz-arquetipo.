@@ -1868,6 +1868,7 @@ function cerrarPago(){ const c=document.getElementById("pagoCapa"); if(c){ c.rem
 function abrirPagoMini(){
   cerrarPago();
   const B=bloqueos(), area=S.real?AREA[bloqueoMini()]:null;
+  const mLink=linkMini();
   const capa=document.createElement("div");
   capa.className="pago-capa"; capa.id="pagoCapa"; capa.setAttribute("role","dialog"); capa.setAttribute("aria-modal","true"); capa.setAttribute("aria-label","Mini Diagnóstico Exprés");
   capa.innerHTML=generoTxt(`<div class="pago-caja">
@@ -1884,11 +1885,14 @@ function abrirPagoMini(){
       <div class="pago-local" id="pagoLocalMini" hidden></div>
     </div>
     <div class="pago-acc">
-      <a class="btn full" href="${esc(linkMini())}" rel="noopener">Quiero mi Mini Diagnóstico · USD 27</a>
+      <a class="btn full" id="irPagarMini" href="${esc(mLink)}" rel="noopener">Quiero mi Mini Diagnóstico · USD 27</a>
       <div class="nota">Pago único y seguro. Sin suscripción.<br><a href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">¿Prefieres ver todo de una vez? Diagnóstico de Identidad™ (USD 152)</a></div>
     </div>
   </div>`);
   capa.addEventListener("click",e=>{ if(e.target===capa||e.target.closest(".pago-x")) cerrarPago(); });
+  capa.querySelector("#irPagarMini")?.addEventListener("click",()=>{
+    if(S.email){ try{ fetch("/api/lead",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...datosLead("pago_abierto_mini"),mini_pago_link:mLink}),keepalive:true}).catch(()=>{}); }catch(e){} }
+  });
   document.body.appendChild(capa); document.body.style.overflow="hidden";
   capa.querySelector(".pago-x").focus();
   precioLocal(capa.querySelector("#pagoLocalMini"),27,"el Mini Diagnóstico");
