@@ -1149,8 +1149,7 @@ function render(){
     </section>`;
   }
   if(P==="r3"){
-    const coincide=S.real===S.perc, al=alineacion(), B=bloqueos();
-    const nSp=Math.min(8,Math.max(1,ORDEN.filter(e=>S.pReal&&S.pReal[e]>0).length));
+    const coincide=S.real===S.perc, al=alineacion();
     const fila=(t,p)=>{ const [n,c]=nivel(p); return `<div class="nivel"><div class="nivel-top"><span>${t}</span><span class="pct ${c}">${p} %</span></div>${barra(p)}<span class="niv ${c}">${n}</span></div>`; };
     h=`<section class="pantalla">
       <span class="kicker">Tus respuestas</span>
@@ -1172,26 +1171,14 @@ function render(){
           <p class="nota">${em[0]==="si"?"Cómo posicionarte dentro de tu modelo":"Qué modelo sí va con tu diseño"} se revela en tu Diagnóstico de Identidad.</p></div>`; })()}
       <div class="mapa"><h3>Tus 8 ejes</h3>${mapaSVG(S.pReal,S.pPerc)}
         <div class="leyenda"><span><i style="background:var(--oro)"></i>Tu diseño</span><span><i style="background:var(--turquesa)"></i>Cómo operas</span></div></div>
-      ${B.length?`<div class="bloqueos">
-        <h3>Tienes ${B.length===1?"1 bloqueo activo":B.length+" bloqueos activos"}</h3>
-        ${B.map((e,k)=>`<div class="bloq">${ICO_CANDADO}<div><span class="b-t">${k===0?"Bloqueo principal":"Bloqueo "+(k+1)}</span><span class="borroso">Bloqueo oculto</span></div></div>`).join("")}
-        <p class="nota">Tu bloqueo principal se revela en el Mini Diagnóstico Exprés. ${B.length>1?"Todos tus bloqueos, y cómo destrabarlos,":"Cómo destrabarlo"} en tu Diagnóstico de Identidad.</p>
-      </div>`:`<div class="alerta">No aparecen bloqueos activos: usas lo que tu diseño pide. El siguiente paso es que tu trabajo lo cobre.</div>`}
-      <div class="bloqueos">
-        <h3>Esto también está calculado en tu diseño</h3>
-        <div class="bloq">${ICO_CANDADO}<div><span class="b-t">${nSp===1?"Tu superpoder de negocio":"Tus "+nSp+" superpoderes de negocio"}</span><span class="borroso">Para hacer dinero</span></div></div>
-        <div class="bloq">${ICO_CANDADO}<div><span class="b-t">Tu modelo de negocio</span><span class="borroso">El más natural para ti</span></div></div>
-        <div class="bloq">${ICO_CANDADO}<div><span class="b-t">Tu dirección</span><span class="borroso">Hacia dónde ir ahora</span></div></div>
-        <p class="nota">Esto se revela en tu Mini Diagnóstico Exprés y tu Diagnóstico de Identidad.</p>
-      </div>
       <button class="btn full" id="go">Qué te cuesta no actuar</button>
     </section>`;
   }
   if(P==="r4"){
     const ing = S.ingreso;
-    const recoMini = sinIngreso() || S.dedica==="transicion" || ["0","500","1500"].includes(ing) || (ing==="nd" && S.busca==="vocacion");
+    const recoMini = sinIngreso() || S.dedica==="transicion" || ing==="0" || (ing==="nd" && S.busca==="vocacion");
     const alto = ing==="10000"||ing==="50000";
-    const tramoD = ing==="3000";
+    const tramoD = ["500","1500","3000"].includes(ing);
     const llamada = CONFIG.links.llamada || waLink(`Hola Ana, hice el quiz y quiero agendar una llamada.\n${resumenQuiz()}`);
     const auditoria = tieneNegocio();
     const D = DOLORES[S.busca][S.dolor];
@@ -1227,12 +1214,12 @@ function render(){
       lineaTramo ? esc(lineaTramo) : "",
       `Dijiste que quieres ${esc(OBJETIVO[S.busca])}. Este es el primer paso.`
     ].filter(Boolean);
-    const al=alineacion(), B=bloqueos(), r=RANGO[ing];
+    const al=alineacion(), r=RANGO[ing], Bn=bloqueos().length;
     const peor = al.neg<=al.vida ? [sinIngreso()?"tu trabajo o tus estudios":"tu trabajo o negocio", al.neg] : ["tu vida", al.vida];
     const costos = [
       `${TIEMPO_TXT[S.tiempo]} «${D[0].charAt(0).toLowerCase()+D[0].slice(1)}».`,
       `${peor[0].charAt(0).toUpperCase()+peor[0].slice(1)} está ${peor[1]} % alinead${peor[0]==="tu vida"?"a":"o"} con tu diseño. Lo que no está alineado tiende a pedirte más esfuerzo por cada resultado.`,
-      B.length ? `Tienes ${B.length===1?"1 bloqueo activo":B.length+" bloqueos activos"}. Mientras sigan ahí, tienden a repetir el mismo patrón en cada cosa que empiezas.` : null,
+      Bn ? `Tienes ${Bn===1?"1 bloqueo activo":Bn+" bloqueos activos"}. Mientras sigan ahí, tienden a repetir el mismo patrón en cada cosa que empiezas.` : null,
       (r && ["cobrar","noavanza","escalar"].includes(S.busca)) ? (r[1] ? `Con lo que generas hoy, cobrar solo un 10 % por debajo de lo que vales son entre USD ${fmt(r[0])} y ${fmt(r[1])} al mes: entre USD ${fmt(r[0]*12)} y ${fmt(r[1]*12)} al año.` : `Con lo que generas hoy, cobrar solo un 10 % por debajo de lo que vales son más de USD ${fmt(r[0])} al mes: más de USD ${fmt(r[0]*12)} al año.`) : null,
       `En 12 meses, si nada cambia: ${PROYECCION[S.busca]}`
     ].filter(Boolean);
@@ -1330,7 +1317,7 @@ function render(){
     <div class="sticky-cta" id="r4Sticky">${stickyCta}</div>`;
   }
   if(P==="mini"){
-    const B=bloqueos(), al=alineacion(), area=S.real?AREA[bloqueoMini()]:null;
+    const al=alineacion();
     const D=DOLORES[S.busca][S.dolor];
     const testis = CONFIG.testimonios.length ? carruselTestis() : "";
     const faq = [
@@ -1342,13 +1329,13 @@ function render(){
     h=`<section class="pantalla">
       <button class="volver" id="aR4">← Volver a mis opciones</button>
       <span class="kicker">Mini Diagnóstico Exprés</span>
-      <h2>${esc(S.nombre)}, ${area?`tu bloqueo principal está en <em>${esc(area)}</em>.`:`tu diseño está activo.`} Esto es lo que te falta ver.</h2>
+      <h2>${esc(S.nombre)}, tu diseño está activo. Esto es lo que te falta ver.</h2>
       <p class="lead">Dijiste: <strong>«${esc(D[0])}»</strong>. El Mini te muestra por qué pasa y qué lo destraba, a partir de tu fecha de nacimiento.</p>
       <div class="incluye-mini">
         <h3>Lo que vas a recibir</h3>
         <div class="item"><span class="num">1</span><div><b>El nombre completo de tu perfil</b><span>Más allá del arquetipo: la combinación exacta que te hace distinta.</span></div></div>
         <div class="item"><span class="num">2</span><div><b>Tu primer superpoder</b><span>El talento que hoy usas a medias y cómo ponerlo a trabajar ${sinIngreso()?"en lo que elijas":"en tu negocio"}.</span></div></div>
-        <div class="item"><span class="num">3</span><div><b>Tu bloqueo principal${area?`, el de ${esc(area)}`:""}</b><span>Cómo se llama, por qué aparece y cómo se ve en tu día a día.</span></div></div>
+        <div class="item"><span class="num">3</span><div><b>Tu bloqueo principal</b><span>Cómo se llama, por qué aparece y cómo se ve en tu día a día.</span></div></div>
       </div>
       <div class="costo"><h3>Si no lo ves ahora</h3><ul>
         <li>Tu ${sinIngreso()?"trabajo o tus estudios":"trabajo o negocio"} sigue ${al.neg} % alineado con tu diseño.</li>
@@ -1894,18 +1881,17 @@ function abrirAuditoria(){
 /* ===== Ventana de pago del Mini Exprés: overlay simple, precio y CTA ===== */
 function abrirPagoMini(){
   cerrarPago();
-  const B=bloqueos(), area=S.real?AREA[bloqueoMini()]:null;
   const mLink=linkMini();
   const capa=document.createElement("div");
   capa.className="pago-capa"; capa.id="pagoCapa"; capa.setAttribute("role","dialog"); capa.setAttribute("aria-modal","true"); capa.setAttribute("aria-label","Mini Diagnóstico Exprés");
   capa.innerHTML=generoTxt(`<div class="pago-caja">
     <div class="pago-top"><div><b>Mini Diagnóstico Exprés</b><small>Resultado inmediato</small></div><button class="pago-x" type="button" aria-label="Cerrar">×</button></div>
     <div class="pago-info">
-      <h3>${esc(S.nombre||"")?esc(S.nombre)+", esto":"Esto"} es lo que te falta ver${area?`, con tu bloqueo en <em>${esc(area)}</em>`:""}.</h3>
+      <h3>${esc(S.nombre||"")?esc(S.nombre)+", esto":"Esto"} es lo que te falta ver.</h3>
       <div><div class="rot">Qué recibes</div><ul class="pago-lista">
         <li>El nombre completo de tu perfil<small>Más allá del arquetipo: la combinación exacta que te hace distinta.</small></li>
         <li>Tu primer superpoder<small>El talento que hoy usas a medias y cómo ponerlo a trabajar.</small></li>
-        <li>Tu bloqueo principal${area?`, el de ${esc(area)}`:""}<small>Cómo se llama, por qué aparece y cómo se ve en tu día a día.</small></li>
+        <li>Tu bloqueo principal<small>Cómo se llama, por qué aparece y cómo se ve en tu día a día.</small></li>
       </ul></div>
       <div class="pago-precio"><strong>USD 27</strong><span>pago único</span></div>
       <p class="pago-costo">Si tomas el Diagnóstico completo en los 7 días siguientes, estos USD 27 se descuentan.</p>
