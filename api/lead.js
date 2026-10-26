@@ -18,6 +18,8 @@ const CAMPOS = [
 
 const limpiar = (v, max = 400) => (v === undefined || v === null ? "" : String(v).slice(0, max).trim());
 
+const BASE = "https://quiz.quantumbranding.iprosper28.com";
+
 // Mismo tipo de cambio fijo que usa el front (TIPO_FIJO.BOB en index.html): tasa preferencial
 // que Ana garantiza ella misma por QR — distinta (y más baja) que la que Stripe muestra al
 // convertir a bolivianos en su propio checkout, que fluctúa con el tipo de cambio paralelo.
@@ -37,14 +39,20 @@ function botonValores(esBolivia, textoDefault) {
   };
 }
 
-// Botón de pago por QR + WhatsApp: SOLO para Bolivia (detectado por país, no por región amplia
+// Botón de pago por QR: SOLO para Bolivia (detectado por país, no por región amplia
 // "Latinoamérica"), con la tasa preferencial fija de Ana. Vacío para todos los demás, así el
 // botón queda invisible en la plantilla (ver nota de escapado de HTML más abajo).
-function qrValores(esBolivia, usd, producto) {
+// Apunta a una página propia (pagar-qr.html) con el QR y un botón para subir el comprobante,
+// que llama a /api/qr y de ahí a /api/qr-aprobar — no depende de que la persona escriba por
+// WhatsApp para que el pago se registre; WhatsApp queda solo como respaldo dentro de esa página.
+function qrValores(esBolivia, usd, producto, tipo, nombre, emailPersona) {
   if (!esBolivia) return { link: "", texto: "", nota: "" };
   const monto = bs(usd);
-  const wa = "https://wa.me/17865188044?text=" + encodeURIComponent(`Hola Ana, quiero pagar ${producto} (${monto}, tasa preferencial) por QR. Te mando el comprobante.`);
-  return { link: wa, texto: `Pagar por QR · ${monto}`, nota: "Tasa preferencial fija (no la de Stripe). Envía el comprobante por WhatsApp y confirmo tu pago." };
+  const params = new URLSearchParams({ tipo: tipo || "diagnostico", usd: String(usd), producto });
+  if (nombre) params.set("nombre", nombre);
+  if (emailPersona) params.set("email", emailPersona);
+  const link = `${BASE}/pagar-qr.html?${params.toString()}`;
+  return { link, texto: `Pagar por QR · ${monto}`, nota: "Tasa preferencial fija (no la de Stripe). Sube tu comprobante en esa página y confirmo tu pago." };
 }
 
 // CTA del producto a recomendar, según tramo de ingreso. Solo se usa en el correo de "Quiz
@@ -134,7 +142,7 @@ export default async function handler(req, res) {
   fields.quiz_cta_texto = limpiar(ctaBoton.texto, 200);
   fields.quiz_cta_nota = limpiar(cta.nota, 300);
   fields.quiz_cta_style = ctaBoton.style;
-  const ctaQr = cta.producto ? qrValores(esBolivia, cta.precioUsd, cta.producto) : { link: "", texto: "", nota: "" };
+  const ctaQr = cta.producto ? qrValores(esBolivia, cta.precioUsd, cta.producto, cta.precioUsd === 27 ? "mini" : "diagnostico", fields.name, email) : { link: "", texto: "", nota: "" };
   fields.quiz_cta_qr_link = limpiar(ctaQr.link, 500);
   fields.quiz_cta_qr_texto = limpiar(ctaQr.texto, 200);
   fields.quiz_cta_qr_nota = limpiar(ctaQr.nota, 300);
@@ -146,17 +154,17 @@ export default async function handler(req, res) {
   fields.quiz_pago_f2_texto = botonValores(esBolivia, "Completar mi pago · USD 152").texto;
   fields.quiz_pago_f5_texto = botonValores(esBolivia, "Ver mi Diagnóstico con descuento · USD 125").texto;
 
-  const qrDiag152 = qrValores(esBolivia, 152, "el Diagnóstico de Identidad");
+  const qrDiag152 = qrValores(esBolivia, 152, "el Diagnóstico de Identidad", "diagnostico", fields.name, email);
   fields.quiz_qr_diag152_link = limpiar(qrDiag152.link, 500);
   fields.quiz_qr_diag152_texto = limpiar(qrDiag152.texto, 200);
   fields.quiz_qr_diag152_nota = limpiar(qrDiag152.nota, 300);
 
-  const qrMini = qrValores(esBolivia, 27, "el Mini Diagnóstico Exprés");
+  const qrMini = qrValores(esBolivia, 27, "el Mini Diagnóstico Exprés", "mini", fields.name, email);
   fields.quiz_qr_mini_link = limpiar(qrMini.link, 500);
   fields.quiz_qr_mini_texto = limpiar(qrMini.texto, 200);
   fields.quiz_qr_mini_nota = limpiar(qrMini.nota, 300);
 
-  const qrDiag125 = qrValores(esBolivia, 125, "mi Diagnóstico con descuento");
+  const qrDiag125 = qrValores(esBolivia, 125, "mi Diagnóstico con descuento", "diagnostico", fields.name, email);
   fields.quiz_qr_diag125_link = limpiar(qrDiag125.link, 500);
   fields.quiz_qr_diag125_texto = limpiar(qrDiag125.texto, 200);
   fields.quiz_qr_diag125_nota = limpiar(qrDiag125.nota, 300);
