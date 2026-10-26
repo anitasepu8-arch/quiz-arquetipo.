@@ -21,27 +21,36 @@ const limpiar = (v, max = 400) => (v === undefined || v === null ? "" : String(v
 // Mismo tipo de cambio fijo que usa el front (TIPO_FIJO.BOB en index.html).
 const bs = (usd) => "Bs " + Math.round(usd * 11).toLocaleString("es-BO");
 
-// Bloque de CTA del producto a recomendar, según tramo de ingreso y si paga en bolivianos (QR) o en tarjeta (USD).
+// CTA del producto a recomendar, según tramo de ingreso y si paga en bolivianos (QR) o en tarjeta (USD).
 // Solo se usa en el correo de "Quiz completado sin compra": en los otros, el producto ya está fijo por la fase.
-function ctaBloque(ingreso, latam) {
+// IMPORTANTE: MailerLite inserta el valor de un campo personalizado como TEXTO PLANO escapado dentro de
+// un correo HTML (builder_html), no como HTML real. Por eso esto devuelve valores sueltos (link/texto/nota)
+// para rellenar un botón YA armado en la plantilla del correo, en vez de devolver las etiquetas <p>/<a> armadas.
+function ctaValores(ingreso, latam) {
   const precioMini = latam ? `USD 27 (${bs(27)} por QR)` : "USD 27";
   const precioDiag = latam ? `USD 152 (${bs(152)} por QR)` : "USD 152";
   const precioDiagDesc = latam ? `USD 125 (${bs(125)} por QR)` : "USD 125";
-  const btn = (href, texto) => `<p style="text-align:center;margin:24px 0"><a href="${href}" style="display:inline-block;background:#D4AF78;color:#1a1008;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:bold">${texto}</a></p>`;
   if (["10000", "50000"].includes(ingreso)) {
     const wa = "https://wa.me/17865188044?text=" + encodeURIComponent("Hola Ana, hice el quiz y quiero agendar una llamada.");
-    return btn(wa, "Agendar mi llamada");
+    return { link: wa, texto: "Agendar mi llamada", nota: "" };
   }
   if (ingreso === "3000") {
-    return btn("https://buy.stripe.com/aFa8wP4nW53Y14576U4F20e", `Ver mi Diagnóstico de Identidad · ${precioDiag}`)
-      + `<p style="font-size:13px;color:#777">¿Prefieres algo más ligero? El Mini Diagnóstico Exprés (${precioMini}) también está disponible.</p>`;
+    return {
+      link: "https://buy.stripe.com/aFa8wP4nW53Y14576U4F20e",
+      texto: `Ver mi Diagnóstico de Identidad · ${precioDiag}`,
+      nota: `¿Prefieres algo más ligero? El Mini Diagnóstico Exprés (${precioMini}) también está disponible.`,
+    };
   }
-  return btn("https://quiz.quantumbranding.iprosper28.com/", `Ver mi Mini Diagnóstico · ${precioMini}`)
-    + `<p style="font-size:13px;color:#777">Si tomas el Diagnóstico completo en los 7 días siguientes, esos USD 27 se descuentan y te queda en ${precioDiagDesc}.</p>`;
+  return {
+    link: "https://quiz.quantumbranding.iprosper28.com/",
+    texto: `Ver mi Mini Diagnóstico · ${precioMini}`,
+    nota: `Si tomas el Diagnóstico completo en los 7 días siguientes, esos USD 27 se descuentan y te queda en ${precioDiagDesc}.`,
+  };
 }
 
-// Bloque de contexto (brecha de alineación + redes/reconocimiento), reutilizado en los correos de seguimiento.
-function contextoBloque(negocioSi, alineVida, alineNeg, marcaReconocen, usaRedes) {
+// Contexto (brecha de alineación + redes/reconocimiento), reutilizado en los correos de seguimiento.
+// Mismo motivo que arriba: devuelve hasta 2 frases sueltas en texto plano, no HTML armado.
+function contextoValores(negocioSi, alineVida, alineNeg, marcaReconocen, usaRedes) {
   const partes = [];
   if (alineVida !== "" && alineVida !== undefined) {
     const v = Number(alineVida) || 0;
@@ -63,7 +72,7 @@ function contextoBloque(negocioSi, alineVida, alineNeg, marcaReconocen, usaRedes
       ? "Ya construiste reconocimiento en redes: el siguiente paso es afinarlo. Te ofrezco una mini-auditoría gratis de tu Instagram o TikTok, y si quieres ir más a fondo, la Auditoría de Marca completa."
       : "Antes de pensar en auditar tu contenido, lo que más urge es visibilidad: que te vean y te recuerden. Eso empieza por tu Diagnóstico de Identidad, no por auditar lo que todavía no existe.");
   }
-  return partes.map((t) => `<p>${t}</p>`).join("\n");
+  return { p1: partes[0] || "", p2: partes[1] || "" };
 }
 
 export default async function handler(req, res) {
@@ -86,15 +95,20 @@ export default async function handler(req, res) {
     if (v !== "") fields["quiz_" + k] = v;
   }
 
-  // Bloques calculados para los correos de seguimiento segmentados (ver automatizaciones "... — recordatorio").
+  // Valores calculados para los correos de seguimiento segmentados (ver automatizaciones "... — recordatorio").
+  // Se guardan como campos sueltos de texto plano (no HTML armado): ver nota en ctaValores/contextoValores.
   const negocioSi = ["negocio", "independiente"].includes(limpiar(b.dedica));
   const latam = limpiar(b.ubicacion) === "Latinoamérica";
   fields.quiz_negocio_sn = negocioSi ? "si" : "no";
-  fields.quiz_cta_bloque = limpiar(ctaBloque(limpiar(b.ingreso), latam), 1500);
-  fields.quiz_contexto_bloque = limpiar(
-    contextoBloque(negocioSi, limpiar(b.alineacion_vida), limpiar(b.alineacion_negocio), limpiar(b.marca) === "Sí, me reconocen y me recuerdan", ["si", "aveces"].includes(limpiar(b.redes))),
-    1500
-  );
+
+  const cta = ctaValores(limpiar(b.ingreso), latam);
+  fields.quiz_cta_link = limpiar(cta.link, 500);
+  fields.quiz_cta_texto = limpiar(cta.texto, 200);
+  fields.quiz_cta_nota = limpiar(cta.nota, 300);
+
+  const ctx = contextoValores(negocioSi, limpiar(b.alineacion_vida), limpiar(b.alineacion_negocio), limpiar(b.marca) === "Sí, me reconocen y me recuerdan", ["si", "aveces"].includes(limpiar(b.redes)));
+  fields.quiz_contexto_1 = limpiar(ctx.p1, 400);
+  fields.quiz_contexto_2 = limpiar(ctx.p2, 400);
 
   const groups = [];
   if (process.env.ML_GROUP_INICIADO) groups.push(process.env.ML_GROUP_INICIADO);
