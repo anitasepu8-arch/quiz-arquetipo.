@@ -862,6 +862,7 @@ function datosLead(estado){
     alineacion_vida: al?al.vida:"", alineacion_negocio: al?al.neg:"",
     telefono: S.telefono||"", acepta_mensajes: S.okmsg?"si":"", cuenta: S.cuenta||"", analisis: S.analisis||"", redes: S.redes||"", marca: S.marca?MARCA.find(x=>x[0]===S.marca)[1]:"", instagram: S.insta?"@"+S.insta:"", decision: S.decision||"",
     pais: (typeof paisLocal==="function" && paisLocal()) ? paisLocal()[2] : "",
+    mini_ref: S.real?refMini():"",
     paso: S.paso, ...S.utm };
 }
 function carruselTestis(){

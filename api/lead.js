@@ -13,7 +13,7 @@ const CAMPOS = [
   "dedica", "negocio", "modelo", "modelo_detalle", "modelo_encaje", "ingreso", "ubicacion", "pais",
   "busca", "dolor", "tiempo", "alineacion_vida", "alineacion_negocio", "acepta_mensajes", "paso",
   "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid",
-  "cuenta", "analisis", "redes", "marca", "instagram", "decision", "mini_pago_link",
+  "cuenta", "analisis", "redes", "marca", "instagram", "decision", "mini_pago_link", "mini_ref",
 ];
 
 const limpiar = (v, max = 400) => (v === undefined || v === null ? "" : String(v).slice(0, max).trim());
@@ -45,12 +45,15 @@ function botonValores(esBolivia, textoDefault) {
 // Apunta a una página propia (pagar-qr.html) con el QR y un botón para subir el comprobante,
 // que llama a /api/qr y de ahí a /api/qr-aprobar — no depende de que la persona escriba por
 // WhatsApp para que el pago se registre; WhatsApp queda solo como respaldo dentro de esa página.
-function qrValores(esBolivia, usd, producto, tipo, nombre, emailPersona) {
+function qrValores(esBolivia, usd, producto, tipo, nombre, emailPersona, ref) {
   if (!esBolivia) return { link: "", texto: "", nota: "" };
   const monto = bs(usd);
   const params = new URLSearchParams({ tipo: tipo || "diagnostico", usd: String(usd), producto });
   if (nombre) params.set("nombre", nombre);
   if (emailPersona) params.set("email", emailPersona);
+  // Para el Mini: sin esta referencia, al aprobar el pago no hay forma de generar el enlace
+  // personal (superpoderes/bloqueos reales) y la persona recibe solo un correo genérico.
+  if (ref) params.set("ref", ref);
   const link = `${BASE}/pagar-qr.html?${params.toString()}`;
   return { link, texto: `Pagar por QR · ${monto}`, nota: "Tasa preferencial fija (no la de Stripe). Sube tu comprobante en esa página y confirmo tu pago." };
 }
@@ -142,7 +145,7 @@ export default async function handler(req, res) {
   fields.quiz_cta_texto = limpiar(ctaBoton.texto, 200);
   fields.quiz_cta_nota = limpiar(cta.nota, 300);
   fields.quiz_cta_style = ctaBoton.style;
-  const ctaQr = cta.producto ? qrValores(esBolivia, cta.precioUsd, cta.producto, cta.precioUsd === 27 ? "mini" : "diagnostico", fields.name, email) : { link: "", texto: "", nota: "" };
+  const ctaQr = cta.producto ? qrValores(esBolivia, cta.precioUsd, cta.producto, cta.precioUsd === 27 ? "mini" : "diagnostico", fields.name, email, cta.precioUsd === 27 ? fields.quiz_mini_ref : "") : { link: "", texto: "", nota: "" };
   fields.quiz_cta_qr_link = limpiar(ctaQr.link, 500);
   fields.quiz_cta_qr_texto = limpiar(ctaQr.texto, 200);
   fields.quiz_cta_qr_nota = limpiar(ctaQr.nota, 300);
@@ -159,7 +162,7 @@ export default async function handler(req, res) {
   fields.quiz_qr_diag152_texto = limpiar(qrDiag152.texto, 200);
   fields.quiz_qr_diag152_nota = limpiar(qrDiag152.nota, 300);
 
-  const qrMini = qrValores(esBolivia, 27, "el Mini Diagnóstico Exprés", "mini", fields.name, email);
+  const qrMini = qrValores(esBolivia, 27, "el Mini Diagnóstico Exprés", "mini", fields.name, email, fields.quiz_mini_ref);
   fields.quiz_qr_mini_link = limpiar(qrMini.link, 500);
   fields.quiz_qr_mini_texto = limpiar(qrMini.texto, 200);
   fields.quiz_qr_mini_nota = limpiar(qrMini.nota, 300);
