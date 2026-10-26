@@ -1412,7 +1412,7 @@ function render(){
           <span class="badge">Para empezar</span>
           <div class="cab-of"><h3>Mini Diagnóstico Exprés</h3><span class="precio"><small>USD</small>27</span></div>
           <p>Tu arquetipo completo con tu nombre exacto, tu primer superpoder y tu bloqueo principal, a partir de tu fecha de nacimiento.</p>
-          <a class="btn full" href="${esc(CONFIG.links.mini)}" target="_blank" rel="noopener">Quiero mi Mini Diagnóstico</a>
+          <button class="btn full" type="button" id="irMiniDatos">Quiero mi Mini Diagnóstico</button>
         </div>
         <div class="oferta">
           <div class="cab-of"><h3>Diagnóstico de Identidad™</h3><span class="precio"><small>USD</small>152</span></div>
@@ -1423,6 +1423,26 @@ function render(){
       <p class="otra">¿Prefieres hacer primero el quiz gratis para ver tu arquetipo? <a href="/">Empezar el quiz</a></p>
       <p class="otra">¿Tienes dudas? <a href="${esc(waLink("Hola Ana, tengo dudas sobre el Mini Diagnóstico y el Diagnóstico de Identidad."))}" target="_blank" rel="noopener">Escríbele a Ana por WhatsApp</a></p>
     </section>`;
+  }
+  if(P==="minidatos"){
+    h=`<section class="pantalla">
+      <button class="volver" id="aComparar">← Volver</button>
+      <span class="kicker">Último paso antes de pagar</span>
+      <h2>Con esto se <em>calcula</em> tu Mini Diagnóstico.</h2>
+      <p class="lead">Como entraste por este link y no por el quiz, necesito estos datos para que tu Mini salga exacto.</p>
+      <form class="campos" id="fminidatos" novalidate>
+        <label for="nombre">Tu nombre<input id="nombre" autocomplete="given-name" value="${esc(S.nombre)}" placeholder="Cómo te llamas"></label>
+        <div class="genero"><span class="glbl">Soy</span><div class="genero-op" role="group" aria-label="Soy">
+          <button type="button" class="mini ${S.genero==="f"?"on":""}" data-genero="f" aria-pressed="${S.genero==="f"}">Mujer</button>
+          <button type="button" class="mini ${S.genero==="m"?"on":""}" data-genero="m" aria-pressed="${S.genero==="m"}">Hombre</button>
+        </div></div>
+        <label for="correo0">Tu correo <small>Para enviarte el pago y tu Mini Diagnóstico.</small><input id="correo0" type="email" autocomplete="email" value="${esc(S.email)}" placeholder="tu@correo.com"></label>
+        <label for="fd">Fecha de nacimiento${selectFecha()}</label>
+        <h3 class="sub-preg">¿Tienes una decisión importante que tomar en tu vida, en tu negocio o en cualquier área?</h3>
+        <div class="opciones">${DECISION.map((x,k)=>`<button class="op" data-decisionmini="${k}" aria-pressed="${S.decision===x[0]}"><span class="letra">${String.fromCharCode(65+k)}</span><span>${esc(x[1])}</span></button>`).join("")}</div>
+        <p class="error" id="err" hidden></p>
+        <button class="btn full" type="submit">Continuar a pagar · USD 27</button>
+      </form></section>`;
   }
   if(P==="tarjeta"){
     const zodiaco=animalCompleto(+S.d,+S.m,+S.a);
@@ -1501,6 +1521,8 @@ function bind(){
   });
   q("#aMini")?.addEventListener("click",()=>abrirPagoMini());
   q("#aEmail")?.addEventListener("click",()=>ir("email"));
+  q("#irMiniDatos")?.addEventListener("click",()=>ir("minidatos"));
+  q("#aComparar")?.addEventListener("click",()=>ir("comparar"));
   q("#repetir")?.addEventListener("click",()=>{ borrarAvance(); S=NUEVO(); render(); });
   q("#continuar")?.addEventListener("click",()=>{ const p=leerAvance(); if(!p) return; S=Object.assign(NUEVO(),p); recalcularGuardado(); if(S.paso==="calc") S.paso="r1"; render(); });
   q("#nuevo")?.addEventListener("click",()=>{ borrarAvance(); S=NUEVO(); S.paso="datos"; render(); });
@@ -1526,6 +1548,10 @@ function bind(){
     siguiente();
   });
   app.querySelectorAll("[data-decision]").forEach(b=>b.onclick=()=>{ S.decision=DECISION[+b.dataset.decision][0]; siguiente(); });
+  app.querySelectorAll("[data-decisionmini]").forEach(b=>b.onclick=()=>{
+    S.decision=DECISION[+b.dataset.decisionmini][0];
+    app.querySelectorAll("[data-decisionmini]").forEach(x=>x.setAttribute("aria-pressed", x===b));
+  });
   app.querySelectorAll("[data-ingreso]").forEach(b=>b.onclick=()=>{ S.ingreso=INGRESO[+b.dataset.ingreso][0]; siguiente(); });
   app.querySelectorAll("[data-ubic]").forEach(b=>b.onclick=()=>{ S.ubic=UBIC[+b.dataset.ubic][0]; siguiente(); });
   app.querySelectorAll("[data-busca]").forEach(b=>b.onclick=()=>{ const v=BUSCA[+b.dataset.busca][0]; if(v!==S.busca) S.dolor=null; S.busca=v; siguiente(); });
@@ -1709,6 +1735,23 @@ function bind(){
     if(nueva!==S.real){ S.real=nueva; S.pReal=puntosReal(d,m,a); S.opcApuesta=null; S.apuesta=null; }
     enviarLead("iniciado");
     siguiente();
+  });
+  q("#fminidatos")?.addEventListener("submit",ev=>{
+    ev.preventDefault(); const err=q("#err");
+    S.nombre=q("#nombre").value.trim(); S.email=q("#correo0").value.trim(); S.d=q("#fd").value.replace(/\D/g,""); S.m=q("#fm").value; S.a=q("#fa").value.replace(/\D/g,"");
+    const mal=m=>{ err.textContent=m; err.hidden=false; };
+    if(!S.nombre) return mal("Escribe tu nombre para continuar.");
+    if(!S.genero) return mal("Elige Mujer u Hombre para escribir tu resultado como corresponde.");
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.email)) return mal("Revisa tu correo: falta algo, por ejemplo la @ o el dominio.");
+    if(!S.d||!S.m||!S.a) return mal("Escribe el día, elige el mes y escribe el año en que naciste.");
+    if(+S.d<1||+S.d>31) return mal("El día va del 1 al 31.");
+    if(S.a.length!==4||+S.a<1920||+S.a>new Date().getFullYear()-10) return mal("Escribe el año completo, por ejemplo 1988.");
+    if(!S.decision) return mal("Elige si tienes una decisión importante pendiente.");
+    const d=+S.d, m=+S.m, a=+S.a, f=new Date(a,m-1,d);
+    if(f.getMonth()!==m-1) return mal(`El ${d} de ${MESES[m-1]} no existe en ${a}. Revisa el día.`);
+    S.real=arquetipoReal(d,m,a); S.pReal=puntosReal(d,m,a); S.opcApuesta=null; S.apuesta=null;
+    enviarLead("iniciado");
+    location.href=linkMini();
   });
 
   q("#femail")?.addEventListener("submit",async ev=>{
