@@ -1439,7 +1439,7 @@ function render(){
         <label for="correo0">Tu correo <small>Para enviarte el pago y tu Mini Diagnóstico.</small><input id="correo0" type="email" autocomplete="email" value="${esc(S.email)}" placeholder="tu@correo.com"></label>
         <label for="fd">Fecha de nacimiento${selectFecha()}</label>
         <h3 class="sub-preg">¿Tienes una decisión importante que tomar en tu vida, en tu negocio o en cualquier área?</h3>
-        <div class="opciones">${DECISION.map((x,k)=>`<button class="op" data-decisionmini="${k}" aria-pressed="${S.decision===x[0]}"><span class="letra">${String.fromCharCode(65+k)}</span><span>${esc(x[1])}</span></button>`).join("")}</div>
+        <div class="opciones">${DECISION.map((x,k)=>`<button class="op" type="button" data-decisionmini="${k}" aria-pressed="${S.decision===x[0]}"><span class="letra">${String.fromCharCode(65+k)}</span><span>${esc(x[1])}</span></button>`).join("")}</div>
         <p class="error" id="err" hidden></p>
         <button class="btn full" type="submit">Continuar a pagar · USD 27</button>
       </form></section>`;
