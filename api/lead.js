@@ -128,10 +128,12 @@ export default async function handler(req, res) {
   fields.quiz_negocio_sn = negocioSi ? "si" : "no";
 
   const cta = ctaValores(limpiar(b.ingreso));
+  // El tramo "agendar llamada" no es una compra: ahí no aplica el QR ni el botón chico de Bolivia.
+  const ctaBoton = botonValores(cta.producto ? esBolivia : false, cta.texto);
   fields.quiz_cta_link = limpiar(cta.link, 500);
-  fields.quiz_cta_texto = limpiar(cta.texto, 200);
+  fields.quiz_cta_texto = limpiar(ctaBoton.texto, 200);
   fields.quiz_cta_nota = limpiar(cta.nota, 300);
-  fields.quiz_cta_style = botonValores(esBolivia, cta.texto).style;
+  fields.quiz_cta_style = ctaBoton.style;
   const ctaQr = cta.producto ? qrValores(esBolivia, cta.precioUsd, cta.producto) : { link: "", texto: "", nota: "" };
   fields.quiz_cta_qr_link = limpiar(ctaQr.link, 500);
   fields.quiz_cta_qr_texto = limpiar(ctaQr.texto, 200);
