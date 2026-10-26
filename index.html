@@ -1308,7 +1308,7 @@ function render(){
           <p>¿Quieres saltar directo a la solución? La <b>Auditoría de Marca™ (USD 555 o ${CONFIG.auditoriaCuotas.n} cuotas de USD ${CONFIG.auditoriaCuotas.monto})</b> incluye tu Diagnóstico de Identidad completo, la auditoría de tu negocio y tu marca, tus pilares de contenido y toda la estrategia lista para implementar.</p>
           <p>El análisis te dice qué falla; la Auditoría te da el plan para corregirlo en tu negocio.</p>
           <a class="btn full" href="${esc(waLink(`Hola Ana, hice el quiz y quiero la Auditoría de Marca.\n${resumenQuiz()}`))}" target="_blank" rel="noopener">Quiero la Auditoría: hablar con Ana</a>
-          <a class="btn sec full" href="${esc(CONFIG.links.auditoria)}" target="_blank" rel="noopener">Ver qué incluye la Auditoría</a>
+          <button class="btn sec full" type="button" id="verAuditoria">Ver qué incluye la Auditoría</button>
         </div>`}
       </div>`:""}
       <div class="acciones" style="flex-direction:column;align-items:stretch">
@@ -1483,6 +1483,7 @@ function bind(){
     setTimeout(()=>ir("r4"),800);
   });
   q("#aMini")?.addEventListener("click",()=>abrirPagoMini());
+  q("#verAuditoria")?.addEventListener("click",()=>abrirAuditoria());
   q("#aEmail")?.addEventListener("click",()=>ir("email"));
   q("#irMiniDatos")?.addEventListener("click",()=>ir("minidatos"));
   q("#aComparar")?.addEventListener("click",()=>ir("comparar"));
@@ -1603,7 +1604,7 @@ function bind(){
           </ul>
           <div class="precio-audit">USD 555 <small>o ${CONFIG.auditoriaCuotas.n} cuotas de USD ${CONFIG.auditoriaCuotas.monto}</small></div>
           <a class="btn full" href="${esc(waA)}" target="_blank" rel="noopener">Revisar mi análisis con Ana</a>
-          <a class="btn sec full" href="${esc(CONFIG.links.auditoria)}" target="_blank" rel="noopener">Ver qué incluye la Auditoría</a>
+          <button class="btn sec full" type="button" id="verAuditoria">Ver qué incluye la Auditoría</button>
         </div>
         <p class="otra">¿Todavía no tienes tu Diagnóstico completo? <a href="${esc(CONFIG.links.pagoDiagnostico||CONFIG.links.diagnostico)}" target="_blank" rel="noopener" data-pago="diagnostico">Hazlo primero (USD 152)</a></p>
       </div>
@@ -1863,6 +1864,23 @@ function abrirPago(url){
   precioLocal(capa.querySelector("#pagoLocal"),152);
 }
 function cerrarPago(){ const c=document.getElementById("pagoCapa"); if(c){ c.remove(); document.body.style.overflow=""; } }
+
+/* ===== Ventana "Qué incluye la Auditoría": overlay sobrepuesto, no cambia de pantalla ===== */
+function abrirAuditoria(){
+  cerrarPago();
+  const capa=document.createElement("div");
+  capa.className="pago-capa"; capa.id="pagoCapa"; capa.setAttribute("role","dialog"); capa.setAttribute("aria-modal","true"); capa.setAttribute("aria-label","Qué incluye la Auditoría de Marca");
+  capa.innerHTML=`<div class="pago-caja">
+    <div class="pago-top"><div><b>Auditoría de Marca™</b><small>Qué incluye</small></div><button class="pago-x" type="button" aria-label="Cerrar">×</button></div>
+    <div class="pago-marco" id="audMarco"><div class="pago-cargando">Cargando…</div></div>
+    <div class="pago-pie">¿No carga aquí? <a href="${esc(CONFIG.links.auditoria)}" target="_blank" rel="noopener">Abrir en pantalla completa</a></div>
+  </div>`;
+  capa.addEventListener("click",e=>{ if(e.target===capa||e.target.closest(".pago-x")) cerrarPago(); });
+  const f=document.createElement("iframe"); f.src=CONFIG.links.auditoria; f.title="Qué incluye la Auditoría de Marca";
+  capa.querySelector("#audMarco").appendChild(f);
+  document.body.appendChild(capa); document.body.style.overflow="hidden";
+  capa.querySelector(".pago-x").focus();
+}
 
 /* ===== Ventana de pago del Mini Exprés: overlay simple, precio y CTA ===== */
 function abrirPagoMini(){
