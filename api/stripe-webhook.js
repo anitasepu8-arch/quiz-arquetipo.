@@ -104,9 +104,13 @@ export default async function handler(req, res) {
     }
     // 3) Quien tiene negocio entra además a "Mini · comprado con negocio": una automatización aparte
     //    le ofrece la mini-auditoría gratis 24 h después. No toca la automatización de entrega.
+    //    Pausa de 4s antes de esta segunda alta: si entra al mismo segundo que "Mini · comprado",
+    //    MailerLite puede registrar un solo evento de disparador y perder una de las dos automatizaciones
+    //    que escuchan ese grupo (visto en compras reales, ej. 26 oct 19:26:56).
     const dedica = String(sub.fields?.quiz_dedica || "");
     const grupoNegocio = process.env.ML_GROUP_MINI_NEGOCIO || "202276509645276405";
     if (id && ["negocio", "independiente"].includes(dedica)) {
+      await new Promise((r) => setTimeout(r, 4000));
       await ml(`/subscribers/${id}/groups/${grupoNegocio}`, "DELETE").catch(() => {});
       const gn = await ml(`/subscribers/${id}/groups/${grupoNegocio}`, "POST").catch(() => null);
       if (gn && !gn.ok) console.error("MailerLite grupo negocio", gn.status);
